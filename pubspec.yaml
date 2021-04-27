@@ -1,0 +1,260 @@
+name: dragginator
+description: Dragginator
+
+# The following line prevents the package from being accidentally published to
+# pub.dev using `pub publish`. This is preferred for private packages.
+publish_to: 'none' # Remove this line if you wish to publish to pub.dev
+
+# The following defines the version and build number for your application.
+# A version number is three numbers separated by dots, like 1.2.43
+# followed by an optional build number separated by a +.
+# Both the version and the builder number may be overridden in flutter
+# build by specifying --build-name and --build-number, respectively.
+# In Android, build-name is used as versionName while build-number used as versionCode.
+# Read more about Android versioning at https://developer.android.com/studio/publish/versioning
+# In iOS, build-name is used as CFBundleShortVersionString while build-number used as CFBundleVersion.
+# Read more about iOS versioning at
+# https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
+version: 1.0.0+0
+
+environment:
+  sdk: '>=2.12.0 <3.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+  flutter_localizations:
+    sdk: flutter
+
+  # The following adds the Cupertino Icons font to your application.
+  # Use with the CupertinoIcons class for iOS style icons.
+  cupertino_icons: ^1.0.2
+
+  # Securley store data in a keystore
+  flutter_secure_storage: ^4.1.0
+
+  # Shared prefs
+  shared_preferences: ^2.0.5
+
+  # Flare for animations
+  flare_flutter: ^3.0.0-nullsafety.1
+
+  asn1lib: ^0.9.0-nullsafety.0 
+  
+  # Websockets
+  web_socket_channel: ^2.0.0
+
+  # Platform-specific build info
+  package_info: ^2.0.0
+
+  # Device-specific info
+  device_info: ^2.0.0
+
+  # JSON Serialization
+  json_annotation: ^4.0.0
+
+  # Localization
+  intl: ^0.17.0
+
+  # BigDecimal alternative
+  decimal: ^1.0.0
+
+  # Logger
+  logger: ^1.0.0
+
+  # Native webview plugin
+  flutter_webview_plugin: 
+    git:
+      url: https://github.com/redDwarf03/flutter_webview_plugin.git
+      ref: master
+
+  bip32: 
+    git: 
+      url: https://github.com/redDwarf03/bip32-dart.git
+      ref: master
+
+  bip39: ^1.0.6
+  
+  # SQLite
+  sqflite: ^2.0.0+3
+
+  # Android/iOS path provider
+  path_provider: ^2.0.1
+  
+  # TouchID/FaceID
+  local_auth: ^1.1.0
+ 
+  # Eventbus
+  event_taxi: ^1.0.0
+
+  # SVG
+  flutter_svg: ^0.21.0-nullsafety.0
+  
+  ffi: ^1.0.0
+
+  flutter_launcher_icons: ^0.9.0
+
+  # QR Codes
+  qr_flutter: ^4.0.0
+  # Generator
+  barcode_scan:
+    git:
+      url: https://github.com/redDwarf03/flutter_barcode_reader.git
+      ref: master
+  
+  flutter_radar_chart: ^0.2.0
+
+  flip_card: ^0.5.0
+
+  scrolling_page_indicator:
+    git: 
+     url: https://github.com/redDwarf03/FlutterScrollingPageIndicator.git
+     ref: master
+  
+  # Deep link support
+  uni_links:
+    git:
+      url: https://github.com/redDwarf03/uni_links.git
+      ref: nfc_android
+
+  # HTTP client
+  http: ^0.13.0
+
+  # Easy hexadecimal encoding and decoding
+  hex: ^0.2.0
+
+  pointycastle: ^3.0.0-nullsafety.2
+  
+  # Vibrate
+  vibrate:
+    git:
+      url: https://github.com/redDwarf03/flutter_vibrate.git
+      ref: master
+
+  # Toast
+  oktoast: ^3.0.0
+
+  # Slidable list actions
+  flutter_slidable: ^0.6.0-nullsafety.0
+
+  circular_profile_avatar: ^2.0.1-nullsafety
+
+  # Lock helper
+  synchronized: ^3.0.0
+
+  # Service provider
+  get_it: ^6.0.0
+  
+  quiver: ^3.0.0
+
+  convert: ^3.0.0
+
+  bs58check: 
+    git: 
+      url: https://github.com/redDwarf03/bs58check-dart.git
+      ref: master
+
+  # Root/Jailbreak detection
+  root_checker:
+    git:
+      url: https://github.com/redDwarf03/root_checker.git
+      ref: master
+
+  # Validation utilities
+  validators2: ^3.0.0
+
+  # Auto resize text widget
+  auto_size_text: ^3.0.0-nullsafety.0
+
+  # Avoid keyboard from overlapping text fields
+  keyboard_avoider: 
+    git:
+      url: https://github.com/redDwarf03/keyboard_avoider.git
+      ref: master
+
+  hash:  
+    git: 
+      url: https://github.com/redDwarf03/hash.git
+      ref: master
+
+  fast_base58: ^0.1.9
+ 
+  diacritic: ^0.1.3
+  
+  fluttericon: ^2.0.0
+
+  event_bus: ^2.0.0
+
+  flutter_cube: ^0.1.1
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  build_runner: ^1.7.0
+  json_serializable: ^4.0.3
+
+# For information on the generic Dart part of this file, see the
+# following page: https://www.dartlang.org/tools/pub/pubspec
+
+flutter_icons:
+  android: true
+  ios: true
+  image_path: "assets/dragginator_icon_bis_color.png"
+
+# The following section is specific to Flutter.
+flutter:
+  fonts:
+    - family: Lato
+      fonts:
+        - asset: fonts/Lato-Black.ttf
+        - asset: fonts/Lato-BlackItalic.ttf
+        - asset: fonts/Lato-Bold.ttf
+        - asset: fonts/Lato-BoldItalic.ttf
+        - asset: fonts/Lato-Hairline.ttf
+        - asset: fonts/Lato-HairlineItalic.ttf
+        - asset: fonts/Lato-Heavy.ttf
+        - asset: fonts/Lato-HeavyItalic.ttf
+        - asset: fonts/Lato-Italic.ttf
+        - asset: fonts/Lato-Light.ttf
+        - asset: fonts/Lato-LightItalic.ttf
+        - asset: fonts/Lato-Medium.ttf
+        - asset: fonts/Lato-MediumItalic.ttf
+        - asset: fonts/Lato-Regular.ttf
+        - asset: fonts/Lato-SemiBold.ttf
+        - asset: fonts/Lato-SemiBoldItalic.ttf
+        - asset: fonts/Lato-Thin.ttf
+        - asset: fonts/Lato-ThinItalic.ttf
+    - family: AppIcons
+      fonts:
+        - asset: fonts/AppIcons.ttf
+          weight: 500
+    - family: Comfortaa
+      fonts:
+        - asset: fonts/Comfortaa-Bold.ttf
+          weight: 700
+        - asset: fonts/Comfortaa-Regular.ttf
+          weight: 400
+        - asset: fonts/Comfortaa-Light.ttf
+          weight: 300
+  assets:
+    - assets/QR.svg
+    - assets/icon.png
+    - assets/send_animation.flr
+    - assets/searchseedqr_animation_magnifyingglassonly.flr
+    - assets/searchseedqr_animation_glassonly.flr
+    - assets/searchseedqr_animation_qronly.flr
+    - assets/searchseedmanual_animation_magnifyingglassonly.flr
+    - assets/searchseedmanual_animation_glassonly.flr
+    - assets/searchseedmanual_animation_seedonly.flr
+    - assets/sharecard_logo.svg
+    - assets/pulltosend_animation.flr
+    - assets/sheethandle_animation.flr
+    - assets/dragginator_background.png
+    
+
+  # The following line ensures that the Material Icons font is
+  # included with your application, so that you can use the icons in
+  # the material Icons class.
+  uses-material-design: true
+
+  
