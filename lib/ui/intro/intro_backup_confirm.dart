@@ -10,7 +10,6 @@ import 'package:dragginator/app_icons.dart';
 import 'package:dragginator/service_locator.dart';
 import 'package:dragginator/ui/widgets/buttons.dart';
 import 'package:dragginator/ui/widgets/security.dart';
-import 'package:dragginator/util/sharedprefsutil.dart';
 import 'package:dragginator/model/vault.dart';
 
 class IntroBackupConfirm extends StatefulWidget {
@@ -24,7 +23,7 @@ class _IntroBackupConfirmState extends State<IntroBackupConfirm> {
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      backgroundColor: StateContainer.of(context).curTheme.backgroundDark,
+      backgroundColor: StateContainer.of(context).curTheme.backgroundDarkest,
       body: LayoutBuilder(
         builder: (context, constraints) => SafeArea(
               minimum: EdgeInsets.only(

@@ -98,17 +98,17 @@ class _SendConfirmSheetState extends State<SendConfirmSheet> {
             .then((value) => contact);
         String contactName = contact == null ? null : contact.name;
         Navigator.of(context).popUntil(RouteUtils.withNameLike('/home'));
-        StateContainer.of(context).requestUpdate();
+        StateContainer.of(context).requestUpdateHistory();
         Sheets.showAppHeightNineSheet(
             context: context,
             closeOnTap: true,
             removeUntilHome: true,
             widget: SendCompleteSheet(
-                title: widget.title,
-                amountRaw: widget.amountRaw,
-                destination: destinationAltered,
-                contactName: contactName,
-               ));
+              title: widget.title,
+              amountRaw: widget.amountRaw,
+              destination: destinationAltered,
+              contactName: contactName,
+            ));
       }
     });
   }
@@ -238,7 +238,6 @@ class _SendConfirmSheetState extends State<SendConfirmSheet> {
                                         fontFamily: 'Lato',
                                       ),
                                     ),
-                                    
                                   ],
                                 ),
                               )
@@ -349,32 +348,10 @@ class _SendConfirmSheetState extends State<SendConfirmSheet> {
                             Stack(children: <Widget>[
                               Column(
                                 children: [
-                                  // "optional parameters" text
-                                  Container(
-                                    margin:
-                                        EdgeInsets.only(top: 0.0, bottom: 10),
-                                    child: Column(
-                                      children: <Widget>[
-                                        Text(
-                                          CaseChange.toUpperCase(
-                                              AppLocalization.of(context)
-                                                  .optionalParameters,
-                                              context),
-                                          style: TextStyle(
-                                            color: StateContainer.of(context)
-                                                .curTheme
-                                                .text60,
-                                            fontSize: 16.0,
-                                            fontWeight: FontWeight.w700,
-                                            fontFamily: 'Lato',
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                  widget.operation ==
-                                          AddressTxsResponseResult
-                                              .TOKEN_TRANSFER
+                                  widget.operation == "" ||
+                                          widget.operation ==
+                                              AddressTxsResponseResult
+                                                  .TOKEN_TRANSFER
                                       ? SizedBox()
                                       : Container(
                                           margin: EdgeInsets.only(
@@ -399,9 +376,10 @@ class _SendConfirmSheetState extends State<SendConfirmSheet> {
                                             ],
                                           ),
                                         ),
-                                  widget.operation ==
-                                          AddressTxsResponseResult
-                                              .TOKEN_TRANSFER
+                                  widget.operation == "" ||
+                                          widget.operation ==
+                                              AddressTxsResponseResult
+                                                  .TOKEN_TRANSFER
                                       ? SizedBox()
                                       : Container(
                                           padding: EdgeInsets.symmetric(
@@ -434,62 +412,68 @@ class _SendConfirmSheetState extends State<SendConfirmSheet> {
                                               fontFamily: 'Lato',
                                             ),
                                           )),
-                                  Container(
-                                    margin:
-                                        EdgeInsets.only(top: 10.0, bottom: 0),
-                                    child: Column(
-                                      children: <Widget>[
-                                        Text(
-                                          CaseChange.toUpperCase(
-                                              AppLocalization.of(context)
-                                                  .openfield,
-                                              context),
-                                          style: TextStyle(
-                                            color: StateContainer.of(context)
-                                                .curTheme
-                                                .primary60,
-                                            fontSize: 12.0,
-                                            fontWeight: FontWeight.w300,
-                                            fontFamily: 'Lato',
+                                  widget.comment == "" || widget.openfield == ""
+                                      ? SizedBox()
+                                      : Container(
+                                          margin: EdgeInsets.only(
+                                              top: 10.0, bottom: 0),
+                                          child: Column(
+                                            children: <Widget>[
+                                              Text(
+                                                CaseChange.toUpperCase(
+                                                    AppLocalization.of(context)
+                                                        .openfield,
+                                                    context),
+                                                style: TextStyle(
+                                                  color:
+                                                      StateContainer.of(context)
+                                                          .curTheme
+                                                          .primary60,
+                                                  fontSize: 12.0,
+                                                  fontWeight: FontWeight.w300,
+                                                  fontFamily: 'Lato',
+                                                ),
+                                              ),
+                                            ],
                                           ),
                                         ),
-                                      ],
-                                    ),
-                                  ),
-                                  Container(
-                                      padding: EdgeInsets.symmetric(
-                                          horizontal: 25.0, vertical: 15.0),
-                                      margin: EdgeInsets.only(
-                                          left: MediaQuery.of(context)
-                                                  .size
-                                                  .width *
-                                              0.105,
-                                          right: MediaQuery.of(context)
-                                                  .size
-                                                  .width *
-                                              0.105),
-                                      width: double.infinity,
-                                      decoration: BoxDecoration(
-                                        color: StateContainer.of(context)
-                                            .curTheme
-                                            .backgroundDarkest,
-                                        borderRadius: BorderRadius.circular(25),
-                                      ),
-                                      child: Text(
-                                        removeDiacritics(widget.operation ==
-                                                AddressTxsResponseResult
-                                                    .TOKEN_TRANSFER
-                                            ? widget.comment
-                                            : widget.openfield),
-                                        style: TextStyle(
-                                          color: StateContainer.of(context)
-                                              .curTheme
-                                              .primary60,
-                                          fontSize: 14.0,
-                                          fontWeight: FontWeight.w300,
-                                          fontFamily: 'Lato',
-                                        ),
-                                      )),
+                                  widget.comment == "" || widget.openfield == ""
+                                      ? SizedBox()
+                                      : Container(
+                                          padding: EdgeInsets.symmetric(
+                                              horizontal: 25.0, vertical: 15.0),
+                                          margin: EdgeInsets.only(
+                                              left: MediaQuery.of(context)
+                                                      .size
+                                                      .width *
+                                                  0.105,
+                                              right: MediaQuery.of(context)
+                                                      .size
+                                                      .width *
+                                                  0.105),
+                                          width: double.infinity,
+                                          decoration: BoxDecoration(
+                                            color: StateContainer.of(context)
+                                                .curTheme
+                                                .backgroundDarkest,
+                                            borderRadius:
+                                                BorderRadius.circular(25),
+                                          ),
+                                          child: Text(
+                                            removeDiacritics(widget.operation ==
+                                                    AddressTxsResponseResult
+                                                        .TOKEN_TRANSFER
+                                                ? widget.comment
+                                                : widget.openfield),
+                                            style: TextStyle(
+                                              color: StateContainer.of(context)
+                                                  .curTheme
+                                                  .primary60,
+                                              fontSize: 14.0,
+                                              fontWeight: FontWeight.w300,
+                                              fontFamily: 'Lato',
+                                            ),
+                                          )),
                                 ],
                               )
                             ])

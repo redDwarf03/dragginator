@@ -533,18 +533,6 @@ class AppLocalization {
     return Intl.message("Operation", desc: 'operation', name: 'operation');
   }
 
-  String get diacritic {
-    return Intl.message(
-        "Common accents and diacritical signs will be replacing with an equivalent character",
-        desc: 'diacritic',
-        name: 'diacritic');
-  }
-
-  String get optionalParameters {
-    return Intl.message("Optional Parameters",
-        desc: 'optionalParameters', name: 'optionalParameters');
-  }
-
   String get invalidAddress {
     return Intl.message("Address entered was invalid",
         desc: 'send_invalid_address', name: 'invalidAddress');

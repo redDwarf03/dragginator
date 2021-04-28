@@ -3,6 +3,7 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:dragginator/ui/home/breeding_list.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -26,7 +27,6 @@ import 'package:dragginator/localization.dart';
 import 'package:dragginator/service_locator.dart';
 import 'package:dragginator/ui/home_page.dart';
 import 'package:dragginator/ui/lock_screen.dart';
-import 'package:dragginator/ui/intro/intro_welcome.dart';
 import 'package:dragginator/ui/intro/intro_backup_seed.dart';
 import 'package:dragginator/ui/intro/intro_backup_confirm.dart';
 import 'package:dragginator/ui/intro/intro_import_seed.dart';
@@ -97,7 +97,7 @@ class _AppState extends State<App> {
             : StateContainer.of(context).curLanguage.getLocale(),
         supportedLocales: [
           const Locale('en', 'US'), // English
-         ],
+        ],
         initialRoute: '/',
         onGenerateRoute: (RouteSettings settings) {
           switch (settings.name) {
@@ -108,19 +108,12 @@ class _AppState extends State<App> {
               );
             case '/home':
               return NoTransitionRoute(
-                builder: (_) =>
-                    AppHomePage(),
+                builder: (_) => AppHomePage(),
                 settings: settings,
               );
             case '/home_transition':
               return NoPopTransitionRoute(
-                builder: (_) =>
-                    AppHomePage(),
-                settings: settings,
-              );
-            case '/intro_welcome':
-              return NoTransitionRoute(
-                builder: (_) => IntroWelcomePage(),
+                builder: (_) => AppHomePage(),
                 settings: settings,
               );
             case '/intro_password_on_launch':
@@ -174,6 +167,16 @@ class _AppState extends State<App> {
                 builder: (_) => BeforeScanScreen(),
                 settings: settings,
               );
+            case '/breeding_list':
+              var map = Map<String, dynamic>.from(settings.arguments);
+              return NoTransitionRoute(
+                builder: (_) => BreedingList(
+                  map['address'],
+                  map['dragginatorInfosList'],
+                ),
+                settings: settings,
+              );
+
             default:
               return null;
           }
@@ -272,8 +275,9 @@ class SplashState extends State<Splash> with WidgetsBindingObserver {
           Navigator.of(context).pushReplacementNamed('/lock_screen');
         } else {
           await AppUtil().loginAccount(seed, context);
-          Navigator.of(context)
-              .pushReplacementNamed('/home');
+          StateContainer.of(context).requestUpdateHistory();
+          StateContainer.of(context).requestUpdateDragginatorList();
+          Navigator.of(context).pushReplacementNamed('/home');
         }
       } else {
         Navigator.of(context).pushReplacementNamed('/home');
@@ -361,7 +365,6 @@ class SplashState extends State<Splash> with WidgetsBindingObserver {
     });
     return new Scaffold(
       backgroundColor: StateContainer.of(context).curTheme.background,
-
     );
   }
 }

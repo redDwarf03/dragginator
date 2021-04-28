@@ -14,7 +14,6 @@ import 'package:dragginator/network/model/response/balance_get_response.dart';
 import 'package:dragginator/service/app_service.dart';
 import 'package:dragginator/service/http_service.dart';
 import 'package:dragginator/util/app_ffi/encrypt/crypter.dart';
-import 'package:uni_links/uni_links.dart';
 import 'package:dragginator/themes.dart';
 import 'package:dragginator/service_locator.dart';
 import 'package:dragginator/model/available_currency.dart';
@@ -90,8 +89,6 @@ class StateContainerState extends State<StateContainer> {
   Account recentLast;
   Account recentSecondLast;
 
-  // Initial deep link
-  String initialDeepLink;
   // Deep link changes
   StreamSubscription _deepLinkSub;
 
@@ -114,12 +111,6 @@ class StateContainerState extends State<StateContainer> {
     sl.get<SharedPrefsUtil>().getLanguage().then((language) {
       setState(() {
         curLanguage = language;
-      });
-    });
-    // Get initial deep link
-    getInitialLink().then((initialLink) {
-      setState(() {
-        initialDeepLink = initialLink;
       });
     });
   }
@@ -218,12 +209,6 @@ class StateContainerState extends State<StateContainer> {
         updateRecentlyUsedAccounts();
       }
     });
-    // Deep link has been updated
-    _deepLinkSub = getLinksStream().listen((String link) {
-      setState(() {
-        initialDeepLink = link;
-      });
-    });
   }
 
   @override
@@ -258,7 +243,8 @@ class StateContainerState extends State<StateContainer> {
 
     setState(() {
       wallet = AppWallet(address: address, loading: true);
-      requestUpdate();
+      requestUpdateDragginatorList();
+      requestUpdateHistory();
     });
   }
 
@@ -328,8 +314,38 @@ class StateContainerState extends State<StateContainer> {
     });
   }
 
-  Future<void> requestUpdate() async {
+  Future<void> requestUpdateDragginatorList() async {
     //print("requestUpdate");
+    if (selectedAccount != null &&
+        selectedAccount.address != null &&
+        Address(selectedAccount.address).isValid()) {
+      try {
+        List<DragginatorListFromAddressResponse>
+            dragginatorListFromAddressResponseList = await sl
+                .get<DragginatorService>()
+                .getEggsAndDragonsListFromAddress(selectedAccount.address);
+
+        List<List> dragginatorInfosList = new List.filled(
+            dragginatorListFromAddressResponseList.length, null);
+        for (int i = 0;
+            i < dragginatorListFromAddressResponseList.length;
+            i++) {
+          dragginatorInfosList[i] = new List.filled(2, null);
+          dragginatorInfosList[i][0] =
+              dragginatorListFromAddressResponseList[i];
+          dragginatorInfosList[i][1] = await sl
+              .get<DragginatorService>()
+              .getInfosFromDna(dragginatorListFromAddressResponseList[i].dna);
+        }
+        setState(() {
+          wallet.dragginatorList.clear();
+          wallet.dragginatorList.addAll(dragginatorInfosList);
+        });
+      } catch (e) {}
+    }
+  }
+
+  Future<void> requestUpdateHistory() async {
     if (wallet != null &&
         wallet.address != null &&
         Address(wallet.address).isValid()) {
@@ -344,11 +360,6 @@ class StateContainerState extends State<StateContainer> {
 
         //sl.get<AppService>().getAlias(wallet.address);
 
-        List<DragginatorListFromAddressResponse> dragginatorListFromAddressResponseList = await sl
-        .get<DragginatorService>()
-        .getEggsAndDragonsListFromAddress(selectedAccount.address);
-
-
         AddressTxsResponse addressTxsResponse = new AddressTxsResponse();
         addressTxsResponse.tokens = await sl
             .get<HttpService>()
@@ -358,9 +369,6 @@ class StateContainerState extends State<StateContainer> {
           wallet.tokens.add(
               new BisToken(tokenName: "", tokensQuantity: 0, tokenMessage: ""));
           wallet.tokens.addAll(addressTxsResponse.tokens);
-
-          wallet.dragginatorList.clear();
-          wallet.dragginatorList.addAll(dragginatorListFromAddressResponseList);
         });
       } catch (e) {
         // TODO handle account history error

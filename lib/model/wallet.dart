@@ -7,25 +7,31 @@ import 'package:dragginator/util/numberutil.dart';
 /// Main wallet object that's passed around the app via state
 class AppWallet {
   bool _loading; // Whether or not app is initially loading
-  bool _historyLoading; // Whether or not we have received initial account history response
+  bool
+      _historyLoading; // Whether or not we have received initial account history response
   String _address;
   double _accountBalance;
   List<AddressTxsResponseResult> _history;
   List<BisToken> _tokens;
-  List<DragginatorListFromAddressResponse>
-      _dragginatorList;
+  List<List> _dragginatorList;
 
-  AppWallet({String address, double accountBalance, 
-                String representative, 
-                List<AddressTxsResponseResult> history, bool loading, bool historyLoading, List<BisToken> tokens, List<DragginatorListFromAddressResponse>
-      dragginatorList}) {
+  AppWallet(
+      {String address,
+      double accountBalance,
+      String representative,
+      List<AddressTxsResponseResult> history,
+      bool loading,
+      bool historyLoading,
+      List<BisToken> tokens,
+      List<DragginatorListFromAddressResponse> dragginatorList}) {
     _address = address;
     _accountBalance = accountBalance ?? 0;
     _history = history ?? new List<AddressTxsResponseResult>();
     _tokens = tokens ?? new List<BisToken>();
     _loading = loading ?? true;
-    _historyLoading = historyLoading  ?? true;
-    _dragginatorList = dragginatorList ?? new List<DragginatorListFromAddressResponse>();
+    _historyLoading = historyLoading ?? true;
+    _dragginatorList =
+        dragginatorList ?? new List<List>();
   }
 
   String get address => _address;
@@ -81,10 +87,9 @@ class AppWallet {
     _historyLoading = value;
   }
 
-  List<DragginatorListFromAddressResponse> get dragginatorList => _dragginatorList;
+  List<List> get dragginatorList => _dragginatorList;
 
-  set dragginatorList(List<DragginatorListFromAddressResponse> value) {
+  set dragginatorList(List<List> value) {
     _dragginatorList = value;
   }
-
 }

@@ -22,7 +22,7 @@ class _IntroBackupSafetyState extends State<IntroBackupSafetyPage> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       key: _scaffoldKey,
-      backgroundColor: StateContainer.of(context).curTheme.backgroundDark,
+      backgroundColor: StateContainer.of(context).curTheme.backgroundDarkest,
       body: LayoutBuilder(
         builder: (context, constraints) => SafeArea(
           minimum: EdgeInsets.only(

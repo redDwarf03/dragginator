@@ -17,7 +17,6 @@ import 'package:fluttericon/font_awesome_icons.dart';
 
 import 'package:intl/intl.dart';
 import 'package:logger/logger.dart';
-import 'package:dragginator/model/bis_url.dart';
 import 'package:dragginator/network/model/response/address_txs_response.dart';
 import 'package:dragginator/appstate_container.dart';
 import 'package:dragginator/dimens.dart';
@@ -31,17 +30,14 @@ import 'package:dragginator/styles.dart';
 import 'package:dragginator/app_icons.dart';
 import 'package:dragginator/ui/contacts/add_contact.dart';
 import 'package:dragginator/ui/send/send_sheet.dart';
-import 'package:dragginator/ui/send/send_confirm_sheet.dart';
 import 'package:dragginator/ui/receive/receive_sheet.dart';
 import 'package:dragginator/ui/widgets/buttons.dart';
 import 'package:dragginator/ui/widgets/sheet_util.dart';
 import 'package:dragginator/ui/widgets/list_slidable.dart';
-import 'package:dragginator/ui/util/routes.dart';
 import 'package:dragginator/ui/widgets/reactive_refresh.dart';
 import 'package:dragginator/util/sharedprefsutil.dart';
 import 'package:dragginator/util/hapticutil.dart';
 import 'package:dragginator/util/caseconverter.dart';
-import 'package:dragginator/bus/events.dart';
 
 class MyHistory extends StatefulWidget {
   final String address;
@@ -77,7 +73,6 @@ class _MyHistoryStateState extends State<MyHistory>
   List<Contact> _contacts = List();
 
   bool _isRefreshing = false;
-
   bool _lockDisabled = false; // whether we should avoid locking the app
 
   // Main card height
@@ -115,14 +110,12 @@ class _MyHistoryStateState extends State<MyHistory>
   void initState() {
     super.initState();
 
-    _registerBus();
     WidgetsBinding.instance.addObserver(this);
 
     // Main Card Size
     mainCardHeight = 120;
     settingsIconMarginTop = 7;
 
-    _addSampleContact();
     _updateContacts();
     // Setup placeholder animation and start
     _animationDisposed = false;
@@ -160,16 +153,6 @@ class _MyHistoryStateState extends State<MyHistory>
     setState(() {});
   }
 
-  void _startAnimation() {
-    if (_animationDisposed) {
-      _animationDisposed = false;
-      _placeholderCardAnimationController
-          .addListener(_animationControllerListener);
-      _opacityAnimation.addStatusListener(_animationStatusListener);
-      _placeholderCardAnimationController.forward();
-    }
-  }
-
   void _disposeAnimation() {
     if (!_animationDisposed) {
       _animationDisposed = true;
@@ -179,31 +162,6 @@ class _MyHistoryStateState extends State<MyHistory>
       _placeholderCardAnimationController.stop();
     }
   }
-
-  /// Add donations contact if it hasnt already been added
-  Future<void> _addSampleContact() async {
-    bool contactAdded = await sl.get<SharedPrefsUtil>().getFirstContactAdded();
-    if (!contactAdded) {
-      bool addressExists = await sl
-          .get<DBHelper>()
-          .contactExistsWithAddress(AppLocalization.of(context).donationsUrl);
-      if (addressExists) {
-        return;
-      }
-      bool nameExists = await sl
-          .get<DBHelper>()
-          .contactExistsWithName(AppLocalization.of(context).donationsName);
-      if (nameExists) {
-        return;
-      }
-      await sl.get<SharedPrefsUtil>().setFirstContactAdded(true);
-      Contact c = Contact(
-          name: AppLocalization.of(context).donationsName,
-          address: AppLocalization.of(context).donationsUrl);
-      await sl.get<DBHelper>().saveContact(c);
-    }
-  }
-
   void _updateContacts() {
     sl.get<DBHelper>().getContacts().then((contacts) {
       setState(() {
@@ -212,106 +170,12 @@ class _MyHistoryStateState extends State<MyHistory>
     });
   }
 
-  StreamSubscription<HistoryHomeEvent> _historySub;
-  StreamSubscription<ContactModifiedEvent> _contactModifiedSub;
-  StreamSubscription<DisableLockTimeoutEvent> _disableLockSub;
-  StreamSubscription<AccountChangedEvent> _switchAccountSub;
-
-  void _registerBus() {
-    _historySub = EventTaxiImpl.singleton()
-        .registerTo<HistoryHomeEvent>()
-        .listen((event) {
-      setState(() {
-        _isRefreshing = false;
-      });
-      if (StateContainer.of(context).initialDeepLink != null) {
-        handleDeepLink(StateContainer.of(context).initialDeepLink);
-        StateContainer.of(context).initialDeepLink = null;
-      }
-    });
-    _contactModifiedSub = EventTaxiImpl.singleton()
-        .registerTo<ContactModifiedEvent>()
-        .listen((event) {
-      _updateContacts();
-    });
-    // Hackish event to block auto-lock functionality
-    _disableLockSub = EventTaxiImpl.singleton()
-        .registerTo<DisableLockTimeoutEvent>()
-        .listen((event) {
-      if (event.disable) {
-        cancelLockEvent();
-      }
-      _lockDisabled = event.disable;
-    });
-    // User changed account
-    _switchAccountSub = EventTaxiImpl.singleton()
-        .registerTo<AccountChangedEvent>()
-        .listen((event) {
-      setState(() {
-        StateContainer.of(context).wallet.loading = true;
-        StateContainer.of(context).wallet.historyLoading = true;
-
-        _startAnimation();
-        StateContainer.of(context).updateWallet(account: event.account);
-
-        StateContainer.of(context).wallet.loading = false;
-        StateContainer.of(context).wallet.historyLoading = false;
-      });
-      if (event.delayPop) {
-        Future.delayed(Duration(milliseconds: 300), () {
-          Navigator.of(context).popUntil(RouteUtils.withNameLike("/home"));
-        });
-      } else if (!event.noPop) {
-        Navigator.of(context).popUntil(RouteUtils.withNameLike("/home"));
-      }
-    });
-  }
 
   @override
   void dispose() {
-    _destroyBus();
     WidgetsBinding.instance.removeObserver(this);
     _placeholderCardAnimationController.dispose();
     super.dispose();
-  }
-
-  void _destroyBus() {
-    if (_historySub != null) {
-      _historySub.cancel();
-    }
-    if (_contactModifiedSub != null) {
-      _contactModifiedSub.cancel();
-    }
-    if (_disableLockSub != null) {
-      _disableLockSub.cancel();
-    }
-    if (_switchAccountSub != null) {
-      _switchAccountSub.cancel();
-    }
-  }
-
-  @override
-  void didChangeAppLifecycleState(AppLifecycleState state) {
-    // Handle websocket connection when app is in background
-    // terminate it to be eco-friendly
-    switch (state) {
-      case AppLifecycleState.paused:
-        setAppLockEvent();
-        super.didChangeAppLifecycleState(state);
-        break;
-      case AppLifecycleState.resumed:
-        cancelLockEvent();
-        if (!StateContainer.of(context).wallet.loading &&
-            StateContainer.of(context).initialDeepLink != null) {
-          handleDeepLink(StateContainer.of(context).initialDeepLink);
-          StateContainer.of(context).initialDeepLink = null;
-        }
-        super.didChangeAppLifecycleState(state);
-        break;
-      default:
-        super.didChangeAppLifecycleState(state);
-        break;
-    }
   }
 
   // To lock and unlock the app
@@ -378,39 +242,7 @@ class _MyHistoryStateState extends State<MyHistory>
 
   // Return widget for list
   Widget _getListWidget(BuildContext context) {
-    if (StateContainer.of(context).wallet == null ||
-        StateContainer.of(context).wallet.historyLoading) {
-      // Loading Animation
-      return ReactiveRefreshIndicator(
-          backgroundColor: StateContainer.of(context).curTheme.backgroundDark,
-          onRefresh: _refresh,
-          isRefreshing: _isRefreshing,
-          child: ListView(
-            padding: EdgeInsetsDirectional.fromSTEB(0, 5.0, 0, 15.0),
-            children: <Widget>[
-              _buildLoadingTransactionCard(
-                  "Sent", "10244000", "123456789121234", context),
-              _buildLoadingTransactionCard(
-                  "Received", "100,00000", "@reddwarf1234", context),
-              _buildLoadingTransactionCard(
-                  "Sent", "14500000", "12345678912345671234", context),
-              _buildLoadingTransactionCard(
-                  "Sent", "12,51200", "123456789121234", context),
-              _buildLoadingTransactionCard(
-                  "Received", "1,45300", "123456789121234", context),
-              _buildLoadingTransactionCard(
-                  "Sent", "100,00000", "12345678912345671234", context),
-              _buildLoadingTransactionCard(
-                  "Received", "24,00000", "12345678912345671234", context),
-              _buildLoadingTransactionCard(
-                  "Sent", "1,00000", "123456789121234", context),
-              _buildLoadingTransactionCard(
-                  "Sent", "1,00000", "123456789121234", context),
-              _buildLoadingTransactionCard(
-                  "Sent", "1,00000", "123456789121234", context),
-            ],
-          ));
-    } else if (StateContainer.of(context).wallet.history.length == 0) {
+   if (StateContainer.of(context).wallet.history.length == 0) {
       _disposeAnimation();
       return ReactiveRefreshIndicator(
         backgroundColor: StateContainer.of(context).curTheme.backgroundDark,
@@ -457,7 +289,7 @@ class _MyHistoryStateState extends State<MyHistory>
       _isRefreshing = true;
     });
     sl.get<HapticUtil>().success();
-    StateContainer.of(context).requestUpdate();
+    StateContainer.of(context).requestUpdateHistory();
 
     // Hide refresh indicator after 3 seconds if no server response
     Future.delayed(new Duration(seconds: 3), () {
@@ -466,25 +298,6 @@ class _MyHistoryStateState extends State<MyHistory>
       });
     });
   }
-
-  Future<void> handleDeepLink(String link) async {
-    BisUrl bisUrl = await new BisUrl().getInfo(Uri.decodeFull(link));
-
-    // Remove any other screens from stack
-    Navigator.of(context).popUntil(RouteUtils.withNameLike('/home'));
-
-    // Go to send confirm with amount
-    Sheets.showAppHeightNineSheet(
-        context: context,
-        widget: SendConfirmSheet(
-            amountRaw: bisUrl.amount,
-            operation: bisUrl.operation,
-            openfield: bisUrl.openfield,
-            comment: bisUrl.comment,
-            destination: bisUrl.address,
-            contactName: bisUrl.contactName));
-  }
-
 
   @override
   Widget build(BuildContext context) {

@@ -14,7 +14,6 @@ import 'package:dragginator/ui/widgets/security.dart';
 import 'package:dragginator/util/app_ffi/apputil.dart';
 import 'package:dragginator/model/vault.dart';
 import 'package:dragginator/util/app_ffi/keys/seeds.dart';
-import 'package:dragginator/util/sharedprefsutil.dart';
 
 class IntroPasswordOnLaunch extends StatefulWidget {
   final String seed;
@@ -31,7 +30,7 @@ class _IntroPasswordOnLaunchState extends State<IntroPasswordOnLaunch> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       key: _scaffoldKey,
-      backgroundColor: StateContainer.of(context).curTheme.backgroundDark,
+      backgroundColor: StateContainer.of(context).curTheme.backgroundDarkest,
       body: LayoutBuilder(
         builder: (context, constraints) => SafeArea(
           minimum: EdgeInsets.only(
@@ -79,7 +78,8 @@ class _IntroPasswordOnLaunchState extends State<IntroPasswordOnLaunch> {
                       ),
                       alignment: AlignmentDirectional(-1, 0),
                       child: AutoSizeText(
-                        AppLocalization.of(context).requireAPasswordToOpenHeader,
+                        AppLocalization.of(context)
+                            .requireAPasswordToOpenHeader,
                         maxLines: 3,
                         stepGranularity: 0.5,
                         style: AppStyles.textStyleHeaderColored(context),
@@ -92,7 +92,8 @@ class _IntroPasswordOnLaunchState extends State<IntroPasswordOnLaunch> {
                           end: smallScreen(context) ? 30 : 40,
                           top: 16.0),
                       child: AutoSizeText(
-                        AppLocalization.of(context).createPasswordFirstParagraph,
+                        AppLocalization.of(context)
+                            .createPasswordFirstParagraph,
                         style: AppStyles.textStyleParagraph(context),
                         maxLines: 5,
                         stepGranularity: 0.5,
@@ -104,7 +105,8 @@ class _IntroPasswordOnLaunchState extends State<IntroPasswordOnLaunch> {
                           end: smallScreen(context) ? 30 : 40,
                           top: 8),
                       child: AutoSizeText(
-                        AppLocalization.of(context).createPasswordSecondParagraph,
+                        AppLocalization.of(context)
+                            .createPasswordSecondParagraph,
                         style: AppStyles.textStyleParagraphPrimary(context),
                         maxLines: 4,
                         stepGranularity: 0.5,
@@ -120,29 +122,40 @@ class _IntroPasswordOnLaunchState extends State<IntroPasswordOnLaunch> {
                   Row(
                     children: <Widget>[
                       // Skip Button
-                      AppButton.buildAppButton(context, AppButtonType.PRIMARY,
-                          AppLocalization.of(context).noSkipButton, Dimens.BUTTON_TOP_DIMENS, onPressed: () async {
+                      AppButton.buildAppButton(
+                          context,
+                          AppButtonType.PRIMARY,
+                          AppLocalization.of(context).noSkipButton,
+                          Dimens.BUTTON_TOP_DIMENS, onPressed: () async {
                         if (widget.seed != null) {
-                            await sl.get<Vault>().setSeed(widget.seed);
-                            await sl.get<DBHelper>().dropAccounts();
-                            await AppUtil().loginAccount(widget.seed, context);
-                            StateContainer.of(context).requestUpdate();
-                            String pin = await Navigator.of(context).push(
-                                MaterialPageRoute(builder:
-                                    (BuildContext context) {
-                              return PinScreen(
-                                  PinOverlayType.NEW_PIN,
-                                  );
-                            }));
-                            if (pin != null && pin.length > 5) {
-                              _pinEnteredCallback(pin);
-                            }
+                          await sl.get<Vault>().setSeed(widget.seed);
+                          await sl.get<DBHelper>().dropAccounts();
+                          await AppUtil().loginAccount(widget.seed, context);
+                          StateContainer.of(context).requestUpdateHistory();
+                          StateContainer.of(context)
+                              .requestUpdateDragginatorList();
+                          String pin = await Navigator.of(context).push(
+                              MaterialPageRoute(
+                                  builder: (BuildContext context) {
+                            return PinScreen(
+                              PinOverlayType.NEW_PIN,
+                            );
+                          }));
+                          if (pin != null && pin.length > 5) {
+                            _pinEnteredCallback(pin);
+                          }
                         } else {
-                          sl.get<Vault>().setSeed(AppSeeds.generateSeed()).then((result) {
+                          sl
+                              .get<Vault>()
+                              .setSeed(AppSeeds.generateSeed())
+                              .then((result) {
                             // Update wallet
                             StateContainer.of(context).getSeed().then((seed) {
                               AppUtil().loginAccount(seed, context).then((_) {
-                                StateContainer.of(context).requestUpdate();
+                                StateContainer.of(context)
+                                    .requestUpdateHistory();
+                                StateContainer.of(context)
+                                    .requestUpdateDragginatorList();
                                 Navigator.of(context)
                                     .pushNamed('/intro_backup_safety');
                               });
@@ -160,8 +173,8 @@ class _IntroPasswordOnLaunchState extends State<IntroPasswordOnLaunch> {
                           AppButtonType.PRIMARY_OUTLINE,
                           AppLocalization.of(context).yesButton,
                           Dimens.BUTTON_BOTTOM_DIMENS, onPressed: () {
-                        Navigator.of(context)
-                                .pushNamed('/intro_password', arguments: widget.seed);
+                        Navigator.of(context).pushNamed('/intro_password',
+                            arguments: widget.seed);
                       }),
                     ],
                   ),

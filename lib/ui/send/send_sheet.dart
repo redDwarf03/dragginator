@@ -13,7 +13,6 @@ import 'package:dragginator/appstate_container.dart';
 import 'package:dragginator/dimens.dart';
 import 'package:dragginator/localization.dart';
 import 'package:dragginator/model/available_currency.dart';
-import 'package:dragginator/model/bis_url.dart';
 import 'package:dragginator/network/model/response/address_txs_response.dart';
 import 'package:dragginator/service/app_service.dart';
 import 'package:dragginator/service_locator.dart';
@@ -595,155 +594,6 @@ class _SendSheetState extends State<SendSheet> {
                                         ),
                                       ),
                                     ),
-                                    SizedBox(height: 10),
-                                    Container(
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        children: [
-                                          Column(
-                                            children: [
-                                              Text(
-                                                AppLocalization.of(context)
-                                                    .pasteBisUrl,
-                                                style: TextStyle(
-                                                  fontSize: 16.0,
-                                                  fontWeight: FontWeight.w300,
-                                                  fontFamily: 'Lato',
-                                                  color:
-                                                      StateContainer.of(context)
-                                                          .curTheme
-                                                          .text60,
-                                                ),
-                                              ),
-                                              Text(
-                                                AppLocalization.of(context)
-                                                    .pasteBisUrlPrefix,
-                                                style: TextStyle(
-                                                  fontSize: 12.0,
-                                                  fontWeight: FontWeight.w300,
-                                                  fontFamily: 'Lato',
-                                                  color:
-                                                      StateContainer.of(context)
-                                                          .curTheme
-                                                          .text60,
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                          FlatButton(
-                                            padding: EdgeInsets.all(14.0),
-                                            highlightColor:
-                                                StateContainer.of(context)
-                                                    .curTheme
-                                                    .primary15,
-                                            splashColor:
-                                                StateContainer.of(context)
-                                                    .curTheme
-                                                    .primary30,
-                                            onPressed: () {
-                                              if (!_pasteButtonVisible) {
-                                                return;
-                                              }
-                                              Clipboard.getData("text/plain")
-                                                  .then((ClipboardData
-                                                      data) async {
-                                                if (data == null ||
-                                                    data.text == null ||
-                                                    data.text.contains(
-                                                            "bis://") ==
-                                                        false) {
-                                                  UIUtil.showSnackbar(
-                                                      AppLocalization.of(
-                                                              context)
-                                                          .pasteBisUrlError,
-                                                      context);
-
-                                                  return;
-                                                }
-                                                BisUrl bisUrl =
-                                                    await new BisUrl()
-                                                        .getInfo(data.text);
-                                                setState(() {
-                                                  _addressValidationText = "";
-                                                  _amountValidationText = "";
-                                                  _tokenValidationText = "";
-                                                  _tokenQuantityValidationText =
-                                                      "";
-                                                  _openfieldValidationText = "";
-                                                  _operationValidationText = "";
-                                                  _sendAddressController.text =
-                                                      bisUrl.address;
-                                                  _sendAmountController.text =
-                                                      bisUrl.amount;
-                                                  _sendCommentController.text =
-                                                      bisUrl.comment;
-                                                  _sendOpenfieldController
-                                                      .text = bisUrl.openfield;
-                                                  _sendOperationController
-                                                      .text = bisUrl.operation;
-                                                  isTokenToSendSwitched =
-                                                      bisUrl.isTokenToSend;
-                                                  _sendTokenQuantityController
-                                                          .text =
-                                                      bisUrl.tokenToSendQty
-                                                          .toString();
-                                                  _selectedTokenName =
-                                                      bisUrl.tokenName;
-
-                                                  validRequest =
-                                                      _validateRequest();
-                                                });
-                                              });
-                                            },
-                                            child: Icon(AppIcons.paste,
-                                                size: 20,
-                                                color:
-                                                    StateContainer.of(context)
-                                                        .curTheme
-                                                        .icon),
-                                            shape: RoundedRectangleBorder(
-                                                borderRadius:
-                                                    BorderRadius.circular(
-                                                        200.0)),
-                                          )
-                                        ],
-                                      ),
-                                    ),
-                                    SizedBox(height: 10),
-                                    Container(
-                                      margin:
-                                          EdgeInsets.symmetric(horizontal: 30),
-                                      child: Text(
-                                        CaseChange.toUpperCase(
-                                            AppLocalization.of(context)
-                                                .optionalParameters,
-                                            context),
-                                        style: TextStyle(
-                                          color: StateContainer.of(context)
-                                              .curTheme
-                                              .text60,
-                                          fontSize: 16.0,
-                                          fontWeight: FontWeight.w700,
-                                          fontFamily: 'Lato',
-                                        ),
-                                      ),
-                                    ),
-                                    Container(
-                                      margin:
-                                          EdgeInsets.symmetric(horizontal: 30),
-                                      child: Text(
-                                        AppLocalization.of(context).diacritic,
-                                        style: TextStyle(
-                                          color: StateContainer.of(context)
-                                              .curTheme
-                                              .primary60,
-                                          fontSize: 12.0,
-                                          fontWeight: FontWeight.w300,
-                                          fontFamily: 'Lato',
-                                        ),
-                                      ),
-                                    ),
                                     widget.sendATokenActive
                                         ? Container(
                                             child: Row(
@@ -975,30 +825,6 @@ class _SendSheetState extends State<SendSheet> {
                         } else if (QRScanErrs.ERROR_LIST.contains(scanResult)) {
                           return;
                         } else {
-                          if (scanResult.contains("bis://")) {
-                            BisUrl bisUrl =
-                                await new BisUrl().getInfo(scanResult);
-                            setState(() {
-                              _addressValidationText = "";
-                              _amountValidationText = "";
-                              _tokenValidationText = "";
-                              _tokenQuantityValidationText = "";
-                              _openfieldValidationText = "";
-                              _operationValidationText = "";
-                              _sendAddressController.text = bisUrl.address;
-                              _sendAmountController.text = bisUrl.amount;
-                              _sendCommentController.text = bisUrl.comment;
-                              _sendOpenfieldController.text = bisUrl.openfield;
-                              _sendOperationController.text = bisUrl.operation;
-                              isTokenToSendSwitched = bisUrl.isTokenToSend;
-                              _sendTokenQuantityController.text =
-                                  bisUrl.tokenToSendQty.toString();
-                              _selectedTokenName = bisUrl.tokenName;
-
-                              validRequest = _validateRequest();
-                            });
-                            return;
-                          }
 
                           // Is a URI
                           Address address = Address(scanResult);

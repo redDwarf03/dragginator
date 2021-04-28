@@ -1,7 +1,6 @@
 // @dart=2.9
 
 import 'package:circular_profile_avatar/circular_profile_avatar.dart';
-import 'package:dragginator/network/model/response/dragginator_list_from_address_response.dart';
 import 'package:dragginator/ui/dragginator/my_dragginator_merging.dart';
 import 'package:dragginator/ui/send/send_confirm_sheet.dart';
 import 'package:fluttericon/font_awesome5_icons.dart';
@@ -27,16 +26,14 @@ import 'package:flip_card/flip_card.dart';
 
 class BreedingList extends StatefulWidget {
   final String address;
-  final List<DragginatorListFromAddressResponse> dragginatorList;
+  final List<List> dragginatorInfosList;
 
-  BreedingList(this.address, this.dragginatorList) : super();
+  BreedingList(this.address, this.dragginatorInfosList) : super();
 
-  _BreedingListStateState createState() => _BreedingListStateState();
+  _BreedingListState createState() => _BreedingListState();
 }
 
-class _BreedingListStateState extends State<BreedingList> {
-  bool loaded;
-  List<List> dragginatorInfosList;
+class _BreedingListState extends State<BreedingList> {
   PageController _controller;
 
   double numberOfFeatures = 8;
@@ -56,45 +53,16 @@ class _BreedingListStateState extends State<BreedingList> {
     "health"
   ];
 
-  get action => null;
-
   @override
   void initState() {
-    loaded = false;
-
-    _controller = PageController();
-    loadEggsAndDragonsList();
-
     super.initState();
+    _controller = PageController();
   }
 
   @override
   void dispose() {
     _controller.dispose();
     super.dispose();
-  }
-
-  void loadEggsAndDragonsList() async {
-    features = features.sublist(0, numberOfFeatures.floor());
-    data = data
-        .map((graph) => graph.sublist(0, numberOfFeatures.floor()))
-        .toList();
-
-    dragginatorInfosList =
-        new List.filled( widget.dragginatorList.length, null);
-    for (int i = 0; i < widget.dragginatorList.length; i++) {
-      dragginatorInfosList[i] = new List.filled(2, null);
-      dragginatorInfosList[i][0] = widget.dragginatorList[i];
-      dragginatorInfosList[i][1] = await sl
-          .get<DragginatorService>()
-          .getInfosFromDna(widget.dragginatorList[i].dna);
-    }
-
-    setState(() {
-      if (mounted) {
-        loaded = true;
-      }
-    });
   }
 
   @override
@@ -104,8 +72,6 @@ class _BreedingListStateState extends State<BreedingList> {
             EdgeInsets.only(bottom: MediaQuery.of(context).size.height * 0.035),
         child: Column(
           children: <Widget>[
-            // A row for the address text and close button
-
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -131,21 +97,18 @@ class _BreedingListStateState extends State<BreedingList> {
                             Expanded(
                               child: Stack(
                                 children: <Widget>[
-                                  loaded == true
-                                      ? PageView.builder(
-                                          physics:
-                                              const AlwaysScrollableScrollPhysics(),
-                                          controller: _controller,
-                                          itemCount:
-                                              dragginatorInfosList.length,
-                                          itemBuilder: (context, index) {
-                                            // Build
-                                            return buildSingle(context,
-                                                dragginatorInfosList[index]);
-                                          },
-                                        )
-                                      : Center(
-                                          child: CircularProgressIndicator()),
+                                  PageView.builder(
+                                    physics:
+                                        const AlwaysScrollableScrollPhysics(),
+                                    controller: _controller,
+                                    itemCount:
+                                        widget.dragginatorInfosList.length,
+                                    itemBuilder: (context, index) {
+                                      // Build
+                                      return buildSingle(context,
+                                          widget.dragginatorInfosList[index]);
+                                    },
+                                  )
                                 ],
                               ),
                             ),
@@ -155,9 +118,8 @@ class _BreedingListStateState extends State<BreedingList> {
                 ]),
               ),
             ),
-
-            widget.dragginatorList != null &&
-                    widget.dragginatorList.length > 0
+            widget.dragginatorInfosList != null &&
+                    widget.dragginatorInfosList.length > 0
                 ? ScrollingPageIndicator(
                     dotColor: StateContainer.of(context).curTheme.text,
                     dotSelectedColor:
@@ -166,15 +128,15 @@ class _BreedingListStateState extends State<BreedingList> {
                     dotSelectedSize: 8,
                     dotSpacing: 12,
                     controller: _controller,
-                    itemCount: widget.dragginatorList.length,
+                    itemCount: widget.dragginatorInfosList.length,
                     orientation: Axis.horizontal,
                   )
                 : SizedBox(),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                widget.dragginatorList != null &&
-                        widget.dragginatorList.length > 0
+                widget.dragginatorInfosList != null &&
+                        widget.dragginatorInfosList.length > 0
                     ? Container(
                         margin: EdgeInsets.symmetric(horizontal: 6.0),
                         decoration: BoxDecoration(
@@ -187,7 +149,8 @@ class _BreedingListStateState extends State<BreedingList> {
                                   widget: MyDragginatorMerging(
                                       StateContainer.of(context)
                                           .selectedAccount
-                                          .address));
+                                          .address,
+                                      widget.dragginatorInfosList));
                             },
                             padding: EdgeInsets.all(0.0),
                             shape: CircleBorder(),

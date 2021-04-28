@@ -43,7 +43,7 @@ class _IntroImportSeedState extends State<IntroImportSeedPage> {
     return Scaffold(
         resizeToAvoidBottomInset: false,
         key: _scaffoldKey,
-        backgroundColor: StateContainer.of(context).curTheme.backgroundDark,
+        backgroundColor: StateContainer.of(context).curTheme.backgroundDarkest,
         body: TapOutsideUnfocus(
             child: LayoutBuilder(
           builder: (context, constraints) => SafeArea(

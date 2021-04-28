@@ -236,7 +236,8 @@ class _AppPasswordLockScreenState extends State<AppPasswordLockScreen> {
       await AppUtil()
           .loginAccount(await StateContainer.of(context).getSeed(), context);
     }
-    StateContainer.of(context).requestUpdate();
+    StateContainer.of(context).requestUpdateDragginatorList();
+    StateContainer.of(context).requestUpdateHistory();
     Navigator.of(context).pushNamedAndRemoveUntil(
         '/home_transition', (Route<dynamic> route) => false,
        );
