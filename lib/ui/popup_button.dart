@@ -74,7 +74,6 @@ class _AppPopupButtonState extends State<AppPopupButton> {
               context: context,
               widget: SendSheet(
                   sendATokenActive: true,
-                  localCurrency: StateContainer.of(context).curCurrency,
                   contact: contact,
                   address:
                       contact != null ? contact.address : address.address));
@@ -203,9 +202,8 @@ class _AppPopupButtonState extends State<AppPopupButton> {
                   Sheets.showAppHeightNineSheet(
                       context: context,
                       widget: SendSheet(
-                          sendATokenActive: true,
-                          localCurrency:
-                              StateContainer.of(context).curCurrency));
+                        sendATokenActive: true,
+                      ));
                 }
               },
               highlightColor: StateContainer.of(context).wallet != null &&

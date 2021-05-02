@@ -2,6 +2,7 @@
 
 import 'dart:async';
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:dragginator/avatar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:event_taxi/event_taxi.dart';
@@ -385,20 +386,22 @@ class _AppAccountsWidgetState extends State<AppAccountsWidget> {
                                 Container(
                                   width: 64.0,
                                   height: 64.0,
-                                  child: CircleAvatar(
-                                    backgroundColor: StateContainer.of(context)
-                                        .curTheme
-                                        .text05,
-                                    backgroundImage: NetworkImage(
-                                      account.dragginatorDna == null ||
-                                              account.dragginatorDna == ""
-                                          ? UIUtil.getRobohashURL(
-                                              account.address)
-                                          : UIUtil.getDragginatorURL(
-                                              account.dragginatorDna,
-                                              "draggon"),
+                                  child: Opacity(
+                                    opacity: 1.0,
+                                    child: CircleAvatar(
+                                      backgroundColor: Avatar()
+                                          .getBackgroundColor(account.index),
+                                      backgroundImage:
+                                          account.dragginatorDna == null ||
+                                                  account.dragginatorDna == ""
+                                              ? AssetImage(
+                                                  'assets/avatar_default.png')
+                                              : NetworkImage(
+                                                  UIUtil.getDragginatorURL(
+                                                      account.dragginatorDna,
+                                                      account.dragginatorStatus)),
+                                      radius: 50.0,
                                     ),
-                                    radius: 50.0,
                                   ),
                                 ),
                                 // Account name and address
@@ -503,7 +506,7 @@ class _AppAccountsWidgetState extends State<AppAccountsWidget> {
 
   List<Widget> _getSlideActionsForAccount(
       BuildContext context, Account account, StateSetter setState) {
-    List<Widget> _actions = List();
+    List<Widget> _actions = new List<Widget>.empty(growable: true);
     _actions.add(SlideAction(
         child: Container(
           margin: EdgeInsetsDirectional.only(start: 2, top: 1, bottom: 1),

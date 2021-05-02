@@ -68,7 +68,7 @@ abstract class BaseTheme {
   AppIconEnum appIcon;
 }
 
-class BismuthTheme extends BaseTheme {
+class DragginatorTheme extends BaseTheme {
   static const teal = Color(0xFF8C379F);
 
   static const orange = Color(0xFF873999);
@@ -147,6 +147,7 @@ class BismuthTheme extends BaseTheme {
 
   OverlayTheme qrScanTheme = OverlayTheme.IDENA;
   AppIconEnum appIcon = AppIconEnum.IDENA;
+
 }
 
 enum AppIconEnum { IDENA }

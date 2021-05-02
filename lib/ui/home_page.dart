@@ -2,7 +2,7 @@
 
 import 'dart:async';
 import 'package:dragginator/bus/navigation_event.dart';
-import 'package:dragginator/ui/background.dart';
+import 'package:dragginator/ui/navigate/background.dart';
 import 'package:dragginator/ui/navigate/nav_container.dart';
 import 'package:flare_flutter/base/animation/actor_animation.dart';
 import 'package:flare_flutter/flare.dart';
@@ -13,10 +13,7 @@ import 'package:logger/logger.dart';
 import 'package:dragginator/appstate_container.dart';
 import 'package:dragginator/localization.dart';
 import 'package:dragginator/service_locator.dart';
-import 'package:dragginator/model/db/contact.dart';
-import 'package:dragginator/model/db/appdb.dart';
 import 'package:dragginator/ui/widgets/dialog.dart';
-import 'package:dragginator/ui/util/routes.dart';
 import 'package:dragginator/util/sharedprefsutil.dart';
 import 'package:dragginator/util/caseconverter.dart';
 import 'package:package_info/package_info.dart';
@@ -36,7 +33,7 @@ class _AppHomePageState extends State<AppHomePage>
         FlareController {
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
   final Logger log = sl.get<Logger>();
-  
+
   // Controller for placeholder card animations
   AnimationController _placeholderCardAnimationController;
   Animation<double> _opacityAnimation;
@@ -102,8 +99,6 @@ class _AppHomePageState extends State<AppHomePage>
     mainCardHeight = 120;
     settingsIconMarginTop = 7;
 
-    _addSampleContact();
-
     // Setup placeholder animation and start
     _animationDisposed = false;
     _placeholderCardAnimationController = new AnimationController(
@@ -150,30 +145,6 @@ class _AppHomePageState extends State<AppHomePage>
     }
   }
 
-  /// Add donations contact if it hasnt already been added
-  Future<void> _addSampleContact() async {
-    bool contactAdded = await sl.get<SharedPrefsUtil>().getFirstContactAdded();
-    if (!contactAdded) {
-      bool addressExists = await sl
-          .get<DBHelper>()
-          .contactExistsWithAddress(AppLocalization.of(context).donationsUrl);
-      if (addressExists) {
-        return;
-      }
-      bool nameExists = await sl
-          .get<DBHelper>()
-          .contactExistsWithName(AppLocalization.of(context).donationsName);
-      if (nameExists) {
-        return;
-      }
-      await sl.get<SharedPrefsUtil>().setFirstContactAdded(true);
-      Contact c = Contact(
-          name: AppLocalization.of(context).donationsName,
-          address: AppLocalization.of(context).donationsUrl);
-      await sl.get<DBHelper>().saveContact(c);
-    }
-  }
-
   StreamSubscription<DisableLockTimeoutEvent> _disableLockSub;
   StreamSubscription<AccountChangedEvent> _switchAccountSub;
 
@@ -200,14 +171,19 @@ class _AppHomePageState extends State<AppHomePage>
 
         StateContainer.of(context).wallet.loading = false;
         StateContainer.of(context).wallet.historyLoading = false;
-      });
-      if (event.delayPop) {
+        if (event.delayPop) {
         Future.delayed(Duration(milliseconds: 300), () {
-          Navigator.of(context).popUntil(RouteUtils.withNameLike("/home"));
+          TabController _tabController = NavigationBus.tabController;
+          _tabController.animateTo(0);
+       
         });
       } else if (!event.noPop) {
-        Navigator.of(context).popUntil(RouteUtils.withNameLike("/home"));
+          TabController _tabController = NavigationBus.tabController;
+         _tabController.animateTo(0);
+       
       }
+      });
+      
     });
   }
 
@@ -302,8 +278,7 @@ class _AppHomePageState extends State<AppHomePage>
                 Background(
                   assetName: 'assets/dragginator_background.png',
                 ),
-                    
-                NavContainer(StateContainer.of(context).wallet) 
+                NavContainer(StateContainer.of(context).wallet)
               ],
             )));
   }
@@ -324,4 +299,3 @@ class _AppHomePageState extends State<AppHomePage>
     });
   }
 }
-

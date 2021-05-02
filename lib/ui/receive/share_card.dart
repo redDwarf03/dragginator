@@ -122,7 +122,7 @@ class _AppShareCardState extends State<AppShareCard> {
                         child: CircleAvatar(
                           backgroundColor: StateContainer.of(context).curTheme.text05,
                           backgroundImage: NetworkImage(
-                            UIUtil.getRobohashURL(StateContainer.of(context)
+                            UIUtil.getAvatarURL(StateContainer.of(context)
                                 .selectedAccount
                                 .address),
                           ),

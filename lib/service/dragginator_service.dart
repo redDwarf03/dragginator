@@ -1,5 +1,3 @@
-// @dart=2.9
-
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
@@ -15,7 +13,7 @@ class DragginatorService {
   final Logger log = sl.get<Logger>();
 
   Future<List> getEggsAndDragonsListFromAddress(String address) async {
-    List<DragginatorListFromAddressResponse>
+    List<DragginatorListFromAddressResponse>?
         dragginatorListFromAddressResponseList;
 
     HttpClient httpClient = new HttpClient();
@@ -37,11 +35,11 @@ class DragginatorService {
       httpClient.close();
     }
 
-    return dragginatorListFromAddressResponseList;
+    return dragginatorListFromAddressResponseList!;
   }
 
   Future<DragginatorInfosFromDnaResponse> getInfosFromDna(String dna) async {
-    DragginatorInfosFromDnaResponse dragginatorInfosFromDnaResponse;
+    DragginatorInfosFromDnaResponse? dragginatorInfosFromDnaResponse;
 
     HttpClient httpClient = new HttpClient();
     try {
@@ -62,12 +60,11 @@ class DragginatorService {
       httpClient.close();
     }
 
-    return dragginatorInfosFromDnaResponse;
+    return dragginatorInfosFromDnaResponse!;
   }
 
   Future<List<String>> getEggsCompatible(String dna) async {
-    List<String>
-        dragginatorMergeListCompatible;
+    List<String>? dragginatorMergeListCompatible;
 
     HttpClient httpClient = new HttpClient();
     try {
@@ -86,17 +83,17 @@ class DragginatorService {
       httpClient.close();
     }
 
-    return dragginatorMergeListCompatible;
+    return dragginatorMergeListCompatible!;
   }
 
-  Future<List<String>> getMergeListReasonsNotCompatible(String dna1, String dna2) async {
-    List<String>
-        dragginatorMergeListReasonsNotCompatible;
+  Future<List<String>> getMergeListReasonsNotCompatible(
+      String dna1, String dna2) async {
+    List<String>? dragginatorMergeListReasonsNotCompatible;
 
     HttpClient httpClient = new HttpClient();
     try {
-      HttpClientRequest request = await httpClient
-          .getUrl(Uri.parse("https://dragginator.com/api/merge/"+dna1+"/"+dna2+"/"));
+      HttpClientRequest request = await httpClient.getUrl(Uri.parse(
+          "https://dragginator.com/api/merge/" + dna1 + "/" + dna2 + "/"));
       request.headers.set('content-type', 'application/json');
       HttpClientResponse response = await request.close();
       if (response.statusCode == 200) {
@@ -110,19 +107,15 @@ class DragginatorService {
       httpClient.close();
     }
 
-    return dragginatorMergeListReasonsNotCompatible;
+    return dragginatorMergeListReasonsNotCompatible!;
   }
 
-  bool isEggOwner(List<BisToken> tokens) {
-    if (tokens == null) {
-      return false;
-    } else {
-      for (int i = 0; i < tokens.length; i++) {
-        if (tokens[i].tokenName == "egg" && tokens[i].tokensQuantity > 0) {
-          return true;
-        }
+  bool? isEggOwner(List<BisToken> tokens) {
+    for (int i = 0; i < tokens.length; i++) {
+      if (tokens[i].tokenName == "egg" && tokens[i].tokensQuantity! > 0) {
+        return true;
       }
-      return false;
     }
+    return false;
   }
 }

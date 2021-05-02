@@ -10,7 +10,7 @@ import 'package:dragginator/model/db/contact.dart';
 import 'package:dragginator/util/app_ffi/apputil.dart';
 
 class DBHelper {
-  static const int DB_VERSION = 2;
+  static const int DB_VERSION = 1;
   static const String CONTACTS_SQL = """CREATE TABLE Contacts( 
         id INTEGER PRIMARY KEY AUTOINCREMENT, 
         name TEXT, 
@@ -24,7 +24,8 @@ class DBHelper {
         private_key TEXT,
         address TEXT,
         balance TEXT,
-        dragginatorDna TEXT)""";
+        dragginatorDna TEXT,
+        dragginatorStatus TEXT)""";
   static Database _db;
 
   Future<Database> get db async {
@@ -54,7 +55,7 @@ class DBHelper {
     var dbClient = await db;
     List<Map> list =
         await dbClient.rawQuery('SELECT * FROM Contacts ORDER BY name');
-    List<Contact> contacts = new List();
+    List<Contact> contacts = new List<Contact>.empty(growable: true);
     for (int i = 0; i < list.length; i++) {
       contacts.add(new Contact(
         id: list[i]['id'],
@@ -69,7 +70,7 @@ class DBHelper {
     var dbClient = await db;
     List<Map> list = await dbClient.rawQuery(
         'SELECT * FROM Contacts WHERE name LIKE \'%$pattern%\' ORDER BY LOWER(name)');
-    List<Contact> contacts = new List();
+    List<Contact> contacts = new List<Contact>.empty(growable: true); 
     for (int i = 0; i < list.length; i++) {
       contacts.add(new Contact(
         id: list[i]['id'],
@@ -152,7 +153,7 @@ class DBHelper {
     var dbClient = await db;
     List<Map> list =
         await dbClient.rawQuery('SELECT * FROM Accounts ORDER BY acct_index');
-    List<Account> accounts = new List();
+    List<Account> accounts = new List<Account>.empty(growable: true); 
     for (int i = 0; i < list.length; i++) {
       accounts.add(Account(
           id: list[i]['id'],
@@ -161,7 +162,8 @@ class DBHelper {
           lastAccess: list[i]['last_accessed'],
           selected: list[i]['selected'] == 1 ? true : false,
           balance: list[i]['balance'],
-          dragginatorDna: list[i]['dragginatorDna']));
+          dragginatorDna: list[i]['dragginatorDna'],
+          dragginatorStatus: list[i]['dragginatorStatus']));
     }
     accounts.forEach((a) {
       a.address = AppUtil().seedToAddress(seed, a.index);
@@ -175,7 +177,7 @@ class DBHelper {
     List<Map> list = await dbClient.rawQuery(
         'SELECT * FROM Accounts WHERE selected != 1 ORDER BY last_accessed DESC, acct_index ASC LIMIT ?',
         [limit]);
-    List<Account> accounts = new List();
+    List<Account> accounts = new List<Account>.empty(growable: true); 
     for (int i = 0; i < list.length; i++) {
       accounts.add(Account(
           id: list[i]['id'],
@@ -184,7 +186,8 @@ class DBHelper {
           lastAccess: list[i]['last_accessed'],
           selected: list[i]['selected'] == 1 ? true : false,
           balance: list[i]['balance'],
-          dragginatorDna: list[i]['dragginatorDna']));
+          dragginatorDna: list[i]['dragginatorDna'],
+          dragginatorStatus: list[i]['dragginatorStatus']));
     }
     accounts.forEach((a) async {
       a.address = AppUtil().seedToAddress(seed, a.index);
@@ -216,9 +219,10 @@ class DBHelper {
           balance: "0",
           selected: false,
           address: AppUtil().seedToAddress(seed, nextIndex),
-          dragginatorDna: "");
+          dragginatorDna: "",
+          dragginatorStatus: "");
       await txn.rawInsert(
-          'INSERT INTO Accounts (name, acct_index, last_accessed, selected, address, balance, dragginatorDna) values(?, ?, ?, ?, ?, ?, ?)',
+          'INSERT INTO Accounts (name, acct_index, last_accessed, selected, address, balance, dragginatorDna, dragginatorStatus) values(?, ?, ?, ?, ?, ?, ?, ?)',
           [
             account.name,
             account.index,
@@ -226,7 +230,8 @@ class DBHelper {
             account.selected ? 1 : 0,
             account.address,
             account.balance,
-            account.dragginatorDna
+            account.dragginatorDna,
+            account.dragginatorStatus
           ]);
     });
     return account;
@@ -241,14 +246,15 @@ class DBHelper {
   Future<int> saveAccount(Account account) async {
     var dbClient = await db;
     return await dbClient.rawInsert(
-        'INSERT INTO Accounts (name, acct_index, last_accessed, selected, balance, dragginatorDna) values(?, ?, ?, ?, ?, ?)',
+        'INSERT INTO Accounts (name, acct_index, last_accessed, selected, balance, dragginatorDna, dragginatorStatus) values(?, ?, ?, ?, ?, ?, ?)',
         [
           account.name,
           account.index,
           account.lastAccess,
           account.selected ? 1 : 0,
           account.balance,
-          account.dragginatorDna
+          account.dragginatorDna,
+          account.dragginatorStatus
         ]);
   }
 
@@ -259,11 +265,11 @@ class DBHelper {
         [name, account.index]);
   }
 
-  Future<int> changeAccountDragginatorDna(Account account, String dna) async {
+  Future<int> changeAccountDragginatorDna(Account account, String dna, String status) async {
     var dbClient = await db;
     return await dbClient.rawUpdate(
-        'UPDATE Accounts SET dragginatorDna = ? WHERE acct_index = ?',
-        [dna, account.index]);
+        'UPDATE Accounts SET dragginatorDna = ?, dragginatorStatus = ? WHERE acct_index = ?',
+        [dna, status, account.index]);
   }
 
   Future<void> changeAccount(Account account) async {
@@ -301,7 +307,9 @@ class DBHelper {
         lastAccess: list[0]['last_accessed'],
         balance: list[0]['balance'],
         address: AppUtil().seedToAddress(seed, list[0]['acct_index']),
-        dragginatorDna: list[0]['dragginatorDna']);
+        dragginatorDna: list[0]['dragginatorDna'],
+        dragginatorStatus: list[0]['dragginatorStatus']);
+
     return account;
   }
 
@@ -322,7 +330,8 @@ class DBHelper {
         lastAccess: list[0]['last_accessed'],
         balance: list[0]['balance'],
         address: address,
-        dragginatorDna: list[0]['dragginatorDna']);
+        dragginatorDna: list[0]['dragginatorDna'],
+        dragginatorStatus: list[0]['dragginatorStatus']);
     return account;
   }
 

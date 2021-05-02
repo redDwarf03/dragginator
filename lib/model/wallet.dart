@@ -26,12 +26,12 @@ class AppWallet {
       List<DragginatorListFromAddressResponse> dragginatorList}) {
     _address = address;
     _accountBalance = accountBalance ?? 0;
-    _history = history ?? new List<AddressTxsResponseResult>();
-    _tokens = tokens ?? new List<BisToken>();
+    _history = history ?? new List<AddressTxsResponseResult>.empty(growable: true); 
+    _tokens = tokens ?? new List<BisToken>.empty(growable: true); 
     _loading = loading ?? true;
     _historyLoading = historyLoading ?? true;
     _dragginatorList =
-        dragginatorList ?? new List<List>();
+        dragginatorList ?? new List<List>.empty(growable: true); 
   }
 
   String get address => _address;

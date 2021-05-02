@@ -327,10 +327,7 @@ class _MyDragginatorMergingStateState extends State<MyDragginatorMerging> {
                                                     openfield: dna1selected +
                                                         ":" +
                                                         dna2selected,
-                                                    localCurrency:
-                                                        StateContainer.of(
-                                                                context)
-                                                            .curCurrency,
+                                                  
                                                   ));
                                             }),
                                     ],

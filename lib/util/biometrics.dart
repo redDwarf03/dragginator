@@ -1,9 +1,5 @@
-// @dart=2.9
-
 import 'package:flutter/material.dart';
 import 'package:local_auth/local_auth.dart';
-import 'package:dragginator/service_locator.dart';
-import 'package:logger/logger.dart';
 
 class BiometricUtil {
   ///

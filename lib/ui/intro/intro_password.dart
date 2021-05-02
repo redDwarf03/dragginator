@@ -19,7 +19,6 @@ import 'package:dragginator/util/app_ffi/encrypt/crypter.dart';
 import 'package:dragginator/util/app_ffi/apputil.dart';
 import 'package:dragginator/model/vault.dart';
 import 'package:dragginator/util/app_ffi/keys/seeds.dart';
-import 'package:dragginator/util/sharedprefsutil.dart';
 
 class IntroPassword extends StatefulWidget {
   final String seed;

@@ -11,7 +11,6 @@ import 'package:flare_flutter/flare_actor.dart';
 import 'package:flare_flutter/flare_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:event_taxi/event_taxi.dart';
 import 'package:fluttericon/font_awesome5_icons.dart';
 import 'package:fluttericon/font_awesome_icons.dart';
 
@@ -70,7 +69,7 @@ class _MyHistoryStateState extends State<MyHistory>
   final Map<String, GlobalKey<AnimatedListState>> _listKeyMap = Map();
 
   // List of contacts (Store it so we only have to query the DB once for transaction cards)
-  List<Contact> _contacts = List();
+  List<Contact> _contacts = new List<Contact>.empty(growable: true);
 
   bool _isRefreshing = false;
   bool _lockDisabled = false; // whether we should avoid locking the app
@@ -109,7 +108,7 @@ class _MyHistoryStateState extends State<MyHistory>
   @override
   void initState() {
     super.initState();
-
+    
     WidgetsBinding.instance.addObserver(this);
 
     // Main Card Size
@@ -454,7 +453,6 @@ class _MyHistoryStateState extends State<MyHistory>
                 context: context,
                 widget: SendSheet(
                   sendATokenActive: true,
-                  localCurrency: StateContainer.of(context).curCurrency,
                   contact: contact,
                   address: item.from,
                   quickSendAmount: item.amount,

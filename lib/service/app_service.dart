@@ -172,7 +172,7 @@ class AppService {
     addressTxsResponse.tokens =
         await sl.get<HttpService>().getTokensBalance(address);
 
-    addressTxsResponse.result = new List<AddressTxsResponseResult>();
+    addressTxsResponse.result = new List<AddressTxsResponseResult>.empty(growable: true); 
 
     try {
       ServerWalletLegacyResponse serverWalletLegacyResponse =
@@ -234,7 +234,7 @@ class AppService {
                     List blockChainTxs =
                         addlistlimResponseFromJson(blockchainTxListString);
 
-                    List txs = new List();
+                    List txs = new List.empty(growable: true); 
                     txs.addAll(mempoolTxs);
                     txs.addAll(blockChainTxs);
 

@@ -3,6 +3,7 @@
 import 'dart:async';
 import 'package:dragginator/network/model/response/dragginator_list_from_address_response.dart';
 import 'package:dragginator/service/dragginator_service.dart';
+import 'package:dragginator/util/device_util.dart';
 import 'package:hex/hex.dart';
 import 'package:logger/logger.dart';
 import 'package:dragginator/model/wallet.dart';
@@ -73,15 +74,10 @@ class StateContainer extends StatefulWidget {
 class StateContainerState extends State<StateContainer> {
   final Logger log = sl.get<Logger>();
 
-  // Minimum receive = 0.000001
-  String receiveThreshold = BigInt.from(10).pow(24).toString();
-
   AppWallet wallet;
-  String currencyLocale;
   Locale deviceLocale = Locale('en', 'US');
-  AvailableCurrency curCurrency = AvailableCurrency(AvailableCurrencyEnum.USD);
   LanguageSetting curLanguage = LanguageSetting(AvailableLanguage.DEFAULT);
-  BaseTheme curTheme = BismuthTheme();
+  BaseTheme curTheme = DragginatorTheme();
   // Currently selected account
   Account selectedAccount =
       Account(id: 1, name: "AB", index: 0, lastAccess: 0, selected: true);
@@ -95,18 +91,15 @@ class StateContainerState extends State<StateContainer> {
   // When wallet is encrypted
   String encryptedSecret;
 
+  String deviceIdentifier;
+
   @override
   void initState() {
     super.initState();
     // Register RxBus
     _registerBus();
-    // Set currency locale here for the UI to access
-    sl.get<SharedPrefsUtil>().getCurrency(deviceLocale).then((currency) {
-      setState(() {
-        currencyLocale = currency.getLocale().toString();
-        curCurrency = currency;
-      });
-    });
+    _getIdentifier();
+
     // Get default language setting
     sl.get<SharedPrefsUtil>().getLanguage().then((language) {
       setState(() {
@@ -119,6 +112,10 @@ class StateContainerState extends State<StateContainer> {
   StreamSubscription<BalanceGetEvent> _balanceGetEventSub;
   StreamSubscription<AccountModifiedEvent> _accountModifiedSub;
   StreamSubscription<TransactionsListEvent> _transactionsListEventSub;
+
+  void _getIdentifier() async {
+    deviceIdentifier = await DeviceUtil.getIdentifier();
+  }
 
   // Register RX event listeners
   void _registerBus() {
@@ -133,7 +130,8 @@ class StateContainerState extends State<StateContainer> {
         .listen((event) {
       //print("listen TransactionsListEvent");
       AddressTxsResponse addressTxsResponse = new AddressTxsResponse();
-      addressTxsResponse.result = new List<AddressTxsResponseResult>();
+      addressTxsResponse.result =
+          new List<AddressTxsResponseResult>.empty(growable: true);
       for (int i = event.response.length - 1; i >= 0; i--) {
         AddressTxsResponseResult addressTxResponseResult =
             new AddressTxsResponseResult();
@@ -294,13 +292,6 @@ class StateContainerState extends State<StateContainer> {
 
   /// Handle address response
   void handleAddressResponse(BalanceGetResponse response) {
-    // Set currency locale here for the UI to access
-    sl.get<SharedPrefsUtil>().getCurrency(deviceLocale).then((currency) {
-      setState(() {
-        currencyLocale = currency.getLocale().toString();
-        curCurrency = currency;
-      });
-    });
     setState(() {
       if (wallet != null) {
         if (response == null) {

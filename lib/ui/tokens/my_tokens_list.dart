@@ -2,7 +2,6 @@
 
 import 'package:dragginator/network/model/response/address_txs_response.dart';
 import 'package:flutter/material.dart';
-import 'package:fluttericon/font_awesome5_icons.dart';
 import 'package:fluttericon/font_awesome_icons.dart';
 import 'package:intl/intl.dart';
 import 'package:logger/logger.dart';
@@ -27,13 +26,11 @@ class MyTokensList extends StatefulWidget {
 class _MyTokensListState extends State<MyTokensList> {
   final Logger log = sl.get<Logger>();
 
-  List<BisToken> _myBisTokenList = new List<BisToken>();
-  List<BisToken> _myBisTokenListForDisplay = new List<BisToken>();
+  List<BisToken> _myBisTokenList = new List<BisToken>.empty(growable: true);
+  List<BisToken> _myBisTokenListForDisplay =  new List<BisToken>.empty(growable: true);
 
   @override
   void initState() {
-    //
-
     setState(() {
       _myBisTokenList.addAll(widget.listBisToken);
       _myBisTokenList.removeWhere((element) => element.tokenName == "");

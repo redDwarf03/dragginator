@@ -33,7 +33,6 @@ import 'package:dragginator/util/caseconverter.dart';
 import 'package:dragginator/util/user_data_util.dart';
 
 class SendSheet extends StatefulWidget {
-  final AvailableCurrency localCurrency;
   final Contact contact;
   final String address;
   final String operation;
@@ -44,7 +43,7 @@ class SendSheet extends StatefulWidget {
   final bool sendATokenActive;
 
   SendSheet(
-      {@required this.localCurrency,
+      {
       this.contact,
       this.address,
       this.operation,
@@ -88,8 +87,6 @@ class _SendSheetState extends State<SendSheet> {
   String _tokenQuantityValidationText = "";
   String _tokenValidationText = "";
   String _addressValidationText = "";
-  String _openfieldValidationText = "";
-  String _operationValidationText = "";
   String _selectedTokenName = "";
   String quickSendAmount;
   List<Contact> _contacts;
@@ -1388,12 +1385,6 @@ class _SendSheetState extends State<SendSheet> {
         fontFamily: 'Lato',
       ),
       inputFormatters: [LengthLimitingTextInputFormatter(100000)],
-      onChanged: (text) {
-        // Always reset the error message to be less annoying
-        setState(() {
-          _openfieldValidationText = "";
-        });
-      },
       textInputAction: TextInputAction.next,
       maxLines: null,
       autocorrect: false,
@@ -1509,12 +1500,6 @@ class _SendSheetState extends State<SendSheet> {
         fontFamily: 'Lato',
       ),
       inputFormatters: [LengthLimitingTextInputFormatter(32)],
-      onChanged: (text) {
-        // Always reset the error message to be less annoying
-        setState(() {
-          _operationValidationText = "";
-        });
-      },
       textInputAction: TextInputAction.next,
       maxLines: null,
       autocorrect: false,

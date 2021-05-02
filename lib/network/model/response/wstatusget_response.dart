@@ -2,9 +2,6 @@
 // To parse this JSON data, do
 //
 //     final wStatusGetResponse = wStatusGetResponseFromJson(jsonString);
-
-// @dart=2.9
-
 import 'dart:convert';
 
 WStatusGetResponse wStatusGetResponseFromJson(String str) => WStatusGetResponse.fromJson(json.decode(str));
@@ -21,12 +18,12 @@ class WStatusGetResponse {
         this.co,
     });
 
-    String version;
-    int clients;
-    int maxClients;
-    int of;
-    int fd;
-    int co;
+    String? version;
+    int? clients;
+    int? maxClients;
+    int? of;
+    int? fd;
+    int? co;
 
     factory WStatusGetResponse.fromJson(Map<String, dynamic> json) => WStatusGetResponse(
         version: json['version'],

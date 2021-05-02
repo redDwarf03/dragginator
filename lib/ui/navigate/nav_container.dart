@@ -16,8 +16,9 @@ import 'package:fluttericon/linearicons_free_icons.dart';
 import 'package:fluttericon/typicons_icons.dart';
 
 class NavContainer extends StatefulWidget {
-  NavContainer(this.appWallet, {Key key}) : super( key: key);
+  NavContainer(this.appWallet, {Key key, this.initialIndex}) : super(key: key);
 
+  final int initialIndex;
   final AppWallet appWallet;
 
   @override
@@ -26,7 +27,7 @@ class NavContainer extends StatefulWidget {
 
 class _NavContainerState extends State<NavContainer>
     with SingleTickerProviderStateMixin {
-  TabController _controller;
+  TabController _tabController;
 
   List<Icon> children;
   Animation _animation;
@@ -48,23 +49,29 @@ class _NavContainerState extends State<NavContainer>
           index: _index,
           child: Container(
               constraints: BoxConstraints.expand(),
-              child: name.icon == LineariconsFree.earth
-                  ? FirstPage(StateContainer.of(context)
-                              .wallet != null && StateContainer.of(context).wallet.dragginatorList != null ? StateContainer.of(context)
-                              .wallet
-                              .dragginatorList : null)
-                  : name.icon == Typicons.menu_outline
-                      ? SettingsSheet()
-                      : name.icon == FontAwesome5.dragon
-                          ? BreedingList(StateContainer.of(context)
-                              .selectedAccount
-                              .address,
+              child: StateContainer.of(context).wallet == null
+                  ? FirstPage(null)
+                  : name.icon == LineariconsFree.earth
+                      ? FirstPage(StateContainer.of(context).wallet != null &&
                               StateContainer.of(context)
-                              .wallet
-                              .dragginatorList)
-                          : FirstPage(StateContainer.of(context)
-                              .wallet
-                              .dragginatorList)),
+                                      .wallet
+                                      .dragginatorList !=
+                                  null
+                          ? StateContainer.of(context).wallet.dragginatorList
+                          : null)
+                      : name.icon == Typicons.menu_outline
+                          ? SettingsSheet()
+                          : name.icon == FontAwesome5.dragon
+                              ? BreedingList(
+                                  StateContainer.of(context)
+                                      .selectedAccount
+                                      .address,
+                                  StateContainer.of(context)
+                                      .wallet
+                                      .dragginatorList)
+                              : FirstPage(StateContainer.of(context)
+                                  .wallet
+                                  .dragginatorList)),
           animation: _animation);
 
       _index++;
@@ -78,33 +85,21 @@ class _NavContainerState extends State<NavContainer>
   void initState() {
     super.initState();
 
-    try {
-      widget.appWallet != null &&
-              widget.appWallet.address != null
-          ? children = [
-              Icon(LineariconsFree.earth),
-              Icon(FontAwesome5.dragon),
-              Icon(Typicons.menu_outline)
-            ]
-          : children = [
-              Icon(LineariconsFree.earth),
-            ];
-    } catch (e) {
-      children = [
-        Icon(LineariconsFree.earth),
-      ];
-      print(e);
-    }
+    children = [
+      Icon(LineariconsFree.earth),
+      //Icon(FontAwesome5.dragon),
+      Icon(Typicons.menu_outline)
+    ];
 
-    _controller = new TabController(vsync: this, length: children.length);
-    _animation = _controller.animation;
-    NavigationBus.registerTabController(_controller);
+    _tabController = new TabController(vsync: this, length: children.length, initialIndex: widget.initialIndex??0);
+    _animation = _tabController.animation;
+    NavigationBus.registerTabController(_tabController);
   }
 
   @override
   void dispose() {
     super.dispose();
-    _controller.dispose();
+    _tabController.dispose();
   }
 
   @override
@@ -115,8 +110,9 @@ class _NavContainerState extends State<NavContainer>
             ? EdgeInsets.only(bottom: 48)
             : EdgeInsets.only(bottom: 80),
         constraints: BoxConstraints.expand(),
-        child: TabBarView(
-          controller: _controller,
+        child: StateContainer.of(context).wallet == null || StateContainer.of(context).wallet.address == null
+                  ? FirstPage(null) : TabBarView(
+          controller: _tabController,
           children: _routes,
         ),
       ),
@@ -131,7 +127,7 @@ class _NavContainerState extends State<NavContainer>
                     ? TabBar(
                         indicatorPadding: EdgeInsets.all(1),
                         labelPadding: EdgeInsets.zero,
-                        controller: _controller,
+                        controller: _tabController,
                         indicatorWeight: 4,
                         tabs: _tabs)
                     : Container(
@@ -148,7 +144,7 @@ class _NavContainerState extends State<NavContainer>
                             labelPadding: EdgeInsets.only(bottom: 6, top: 4),
                             indicatorPadding:
                                 EdgeInsets.only(top: 6, bottom: 12),
-                            controller: _controller,
+                            controller: _tabController,
                             tabs: _tabs))
                 : SizedBox(),
           ]),

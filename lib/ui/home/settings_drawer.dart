@@ -1,6 +1,7 @@
 // @dart=2.9
 
 import 'dart:async';
+import 'package:dragginator/avatar.dart';
 import 'package:dragginator/ui/my_history.dart';
 import 'package:dragginator/ui/tokens/my_tokens_list.dart';
 import 'package:dragginator/ui/widgets/sync_info_view.dart';
@@ -31,7 +32,6 @@ import 'package:dragginator/bus/events.dart';
 import 'package:dragginator/model/authentication_method.dart';
 import 'package:dragginator/model/device_unlock_option.dart';
 import 'package:dragginator/model/device_lock_timeout.dart';
-import 'package:dragginator/model/available_language.dart';
 import 'package:dragginator/model/vault.dart';
 import 'package:dragginator/model/db/appdb.dart';
 import 'package:dragginator/ui/settings/backupseed_sheet.dart';
@@ -319,57 +319,8 @@ class _SettingsSheetState extends State<SettingsSheet>
     }
   }
 
-  List<Widget> _buildLanguageOptions() {
-    List<Widget> ret = new List();
-    AvailableLanguage.values.forEach((AvailableLanguage value) {
-      ret.add(SimpleDialogOption(
-        onPressed: () {
-          Navigator.pop(context, value);
-        },
-        child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 8.0),
-          child: Text(
-            LanguageSetting(value).getDisplayName(context),
-            style: AppStyles.textStyleDialogOptions(context),
-          ),
-        ),
-      ));
-    });
-    return ret;
-  }
-
-  Future<void> _languageDialog() async {
-    AvailableLanguage selection = await showAppDialog<AvailableLanguage>(
-        context: context,
-        builder: (BuildContext context) {
-          return AppSimpleDialog(
-            title: Padding(
-              padding: const EdgeInsets.only(bottom: 10.0),
-              child: Text(
-                AppLocalization.of(context).language,
-                style: AppStyles.textStyleDialogHeader(context),
-              ),
-            ),
-            children: _buildLanguageOptions(),
-          );
-        });
-    if (selection != null) {
-      sl
-          .get<SharedPrefsUtil>()
-          .setLanguage(LanguageSetting(selection))
-          .then((result) {
-        if (StateContainer.of(context).curLanguage.language != selection) {
-          setState(() {
-            StateContainer.of(context)
-                .updateLanguage(LanguageSetting(selection));
-          });
-        }
-      });
-    }
-  }
-
   List<Widget> _buildLockTimeoutOptions() {
-    List<Widget> ret = new List();
+    List<Widget> ret = new List<Widget>.empty(growable: true);
     LockTimeoutOption.values.forEach((LockTimeoutOption value) {
       ret.add(SimpleDialogOption(
         onPressed: () {
@@ -531,31 +482,40 @@ class _SettingsSheetState extends State<SettingsSheet>
                                       width: 0),
                                 ),
                                 alignment: AlignmentDirectional(-1, 0),
-                                child: CircleAvatar(
-                                  backgroundColor: StateContainer.of(context)
-                                      .curTheme
-                                      .text05,
-                                  backgroundImage: NetworkImage(
-                                    StateContainer.of(context)
+                                child: Opacity(
+                                    opacity: 1.0,
+                                    child: Material(
+                                      elevation: 20,
+                                      shadowColor: Colors.black,
+                                      shape: CircleBorder(),
+                                      child: CircleAvatar(
+                                        backgroundColor: Avatar()
+                                            .getBackgroundColor(
+                                                StateContainer.of(context)
                                                     .selectedAccount
-                                                    .dragginatorDna ==
-                                                null ||
-                                            StateContainer.of(context)
-                                                    .selectedAccount
-                                                    .dragginatorDna ==
-                                                ""
-                                        ? UIUtil.getRobohashURL(
-                                            StateContainer.of(context)
-                                                .selectedAccount
-                                                .address)
-                                        : UIUtil.getDragginatorURL(
-                                            StateContainer.of(context)
-                                                .selectedAccount
-                                                .dragginatorDna,
-                                            "draggon"),
-                                  ),
-                                  radius: 50.0,
-                                ),
+                                                    .index),
+                                        backgroundImage: StateContainer.of(
+                                                            context)
+                                                        .selectedAccount
+                                                        .dragginatorDna ==
+                                                    null ||
+                                                StateContainer.of(context)
+                                                        .selectedAccount
+                                                        .dragginatorDna ==
+                                                    ""
+                                            ? AssetImage(
+                                                'assets/avatar_default.png')
+                                            : NetworkImage(
+                                                UIUtil.getDragginatorURL(
+                                                    StateContainer.of(context)
+                                                        .selectedAccount
+                                                        .dragginatorDna,
+                                                    StateContainer.of(context)
+                                                        .selectedAccount
+                                                        .dragginatorStatus)),
+                                        radius: 50.0,
+                                      ),
+                                    )),
                               ),
                             ),
                             Center(
@@ -601,18 +561,44 @@ class _SettingsSheetState extends State<SettingsSheet>
                                         child: Container(
                                           height: 52,
                                           width: 52,
-                                          child: CircleAvatar(
-                                            backgroundColor:
-                                                StateContainer.of(context)
-                                                    .curTheme
-                                                    .text05,
-                                            backgroundImage: NetworkImage(
-                                              UIUtil.getRobohashURL(
-                                                  StateContainer.of(context)
-                                                      .recentLast
-                                                      .address),
+                                          child: Opacity(
+                                            opacity: 0.7,
+                                            child: Material(
+                                              elevation: 20,
+                                              shadowColor: Colors.black,
+                                              shape: CircleBorder(),
+                                              child: CircleAvatar(
+                                                backgroundColor: Avatar()
+                                                    .getBackgroundColor(
+                                                        StateContainer.of(
+                                                                context)
+                                                            .recentLast
+                                                            .index),
+                                                backgroundImage: StateContainer
+                                                                    .of(context)
+                                                                .recentLast
+                                                                .dragginatorDna ==
+                                                            null ||
+                                                        StateContainer.of(
+                                                                    context)
+                                                                .recentLast
+                                                                .dragginatorDna ==
+                                                            ""
+                                                    ? AssetImage(
+                                                        'assets/avatar_default.png')
+                                                    : NetworkImage(UIUtil
+                                                        .getDragginatorURL(
+                                                            StateContainer.of(
+                                                                    context)
+                                                                .recentLast
+                                                                .dragginatorDna,
+                                                            StateContainer.of(
+                                                                    context)
+                                                                .recentLast
+                                                                .dragginatorStatus)),
+                                                radius: 50.0,
+                                              ),
                                             ),
-                                            radius: 50.0,
                                           ),
                                         ),
                                       ),
@@ -637,6 +623,7 @@ class _SettingsSheetState extends State<SettingsSheet>
                                                                 .recentLast,
                                                         delayPop: true));
                                               });
+                                              setState(() {});
                                             },
                                             shape: RoundedRectangleBorder(
                                                 borderRadius:
@@ -664,34 +651,60 @@ class _SettingsSheetState extends State<SettingsSheet>
                                 )
                               : SizedBox(),
                           // Third Account
+                          SizedBox(width: 10),
                           StateContainer.of(context).recentSecondLast != null
                               ? Container(
                                   child: Stack(
                                     children: <Widget>[
                                       Center(
                                         child: Container(
-                                          height: 52,
-                                          width: 52,
-                                          child: CircleAvatar(
-                                            backgroundColor:
-                                                StateContainer.of(context)
-                                                    .curTheme
-                                                    .text05,
-                                            backgroundImage: NetworkImage(
-                                              UIUtil.getRobohashURL(
-                                                StateContainer.of(context)
-                                                    .recentSecondLast
-                                                    .address,
+                                          height: 40,
+                                          width: 40,
+                                          child: Opacity(
+                                            opacity: 0.7,
+                                            child: Material(
+                                              elevation: 20,
+                                              shadowColor: Colors.black,
+                                              shape: CircleBorder(),
+                                              child: CircleAvatar(
+                                                backgroundColor: Avatar()
+                                                    .getBackgroundColor(
+                                                        StateContainer.of(
+                                                                context)
+                                                            .recentSecondLast
+                                                            .index),
+                                                backgroundImage: StateContainer
+                                                                    .of(context)
+                                                                .recentSecondLast
+                                                                .dragginatorDna ==
+                                                            null ||
+                                                        StateContainer.of(
+                                                                    context)
+                                                                .recentSecondLast
+                                                                .dragginatorDna ==
+                                                            ""
+                                                    ? AssetImage(
+                                                        'assets/avatar_default.png')
+                                                    : NetworkImage(UIUtil
+                                                        .getDragginatorURL(
+                                                            StateContainer.of(
+                                                                    context)
+                                                                .recentSecondLast
+                                                                .dragginatorDna,
+                                                            StateContainer.of(
+                                                                    context)
+                                                                .recentSecondLast
+                                                                .dragginatorStatus)),
+                                                radius: 40.0,
                                               ),
                                             ),
-                                            radius: 50.0,
                                           ),
                                         ),
                                       ),
                                       Center(
                                         child: Container(
-                                          width: 52,
-                                          height: 52,
+                                          width: 40,
+                                          height: 40,
                                           color: Colors.transparent,
                                           child: FlatButton(
                                             onPressed: () {
@@ -708,6 +721,7 @@ class _SettingsSheetState extends State<SettingsSheet>
                                                             .recentSecondLast,
                                                         delayPop: true));
                                               });
+                                              setState(() {});
                                             },
                                             shape: RoundedRectangleBorder(
                                                 borderRadius:

@@ -41,7 +41,7 @@ class _ContactsListState extends State<ContactsList> {
     super.initState();
     _registerBus();
     // Initial contacts list
-    _contacts = List();
+    _contacts = new List<Contact>.empty(growable: true);
     getApplicationDocumentsDirectory().then((directory) {
       documentsDirectory = directory.path;
       setState(() {
@@ -275,7 +275,7 @@ class _ContactsListState extends State<ContactsList> {
                   child: CircleAvatar(
                     backgroundColor: StateContainer.of(context).curTheme.text05,
                     backgroundImage:
-                        NetworkImage(UIUtil.getRobohashURL(contact.address)),
+                        NetworkImage(UIUtil.getAvatarURL(contact.address)),
                     radius: 50.0,
                   ),
                 ),

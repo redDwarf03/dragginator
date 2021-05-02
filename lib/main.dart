@@ -2,8 +2,6 @@
 
 import 'dart:async';
 import 'dart:io';
-
-import 'package:dragginator/ui/home/breeding_list.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -167,16 +165,6 @@ class _AppState extends State<App> {
                 builder: (_) => BeforeScanScreen(),
                 settings: settings,
               );
-            case '/breeding_list':
-              var map = Map<String, dynamic>.from(settings.arguments);
-              return NoTransitionRoute(
-                builder: (_) => BreedingList(
-                  map['address'],
-                  map['dragginatorInfosList'],
-                ),
-                settings: settings,
-              );
-
             default:
               return null;
           }
@@ -357,12 +345,6 @@ class SplashState extends State<Splash> with WidgetsBindingObserver {
   Widget build(BuildContext context) {
     // This seems to be the earliest place we can retrieve the device Locale
     setLanguage();
-    sl
-        .get<SharedPrefsUtil>()
-        .getCurrency(StateContainer.of(context).deviceLocale)
-        .then((currency) {
-      StateContainer.of(context).curCurrency = currency;
-    });
     return new Scaffold(
       backgroundColor: StateContainer.of(context).curTheme.background,
     );

@@ -17,7 +17,7 @@ class HttpService {
 
   Future<ServerWalletLegacyResponse> getBestServerWalletLegacyResponse() async {
     List<ServerWalletLegacyResponse> serverWalletLegacyResponseList =
-        new List<ServerWalletLegacyResponse>();
+        new List<ServerWalletLegacyResponse>.empty(growable: true);
     ServerWalletLegacyResponse serverWalletLegacyResponse =
         new ServerWalletLegacyResponse();
 
@@ -85,7 +85,7 @@ class HttpService {
       HttpClientResponse response = await request.close();
       if (response.statusCode == 200) {
         String reply = await response.transform(utf8.decoder).join();
-        var tokensBalanceGetResponse = tokensBalanceGetResponseFromJson(reply);
+        tokensBalanceGetResponseFromJson(reply);
         return true;
       } else {
         return false;
@@ -96,7 +96,7 @@ class HttpService {
   }
 
   Future<List<BisToken>> getTokensBalance(String address) async {
-    List<BisToken> bisTokenList = new List<BisToken>();
+    List<BisToken> bisTokenList = new List<BisToken>.empty(growable: true);
 
     HttpClient httpClient = new HttpClient();
     try {
@@ -121,7 +121,7 @@ class HttpService {
   }
 
   Future<List<TokenRef>> getTokensReflist() async {
-    List<TokenRef> tokensRefList = new List<TokenRef>();
+    List<TokenRef> tokensRefList = new List<TokenRef>.empty(growable: true);
 
     HttpClient httpClient = new HttpClient();
     try {

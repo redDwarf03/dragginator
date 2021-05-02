@@ -50,74 +50,60 @@ class ContactDetailsSheet {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
-                        contact.address ==
-                                AppLocalization.of(context).donationsUrl
-                            ? SizedBox()
-                            :
-                            // Trashcan Button
-                            Container(
-                                width: 50,
-                                height: 50,
-                                margin: EdgeInsetsDirectional.only(
-                                    top: 10.0, start: 10.0),
-                                child: FlatButton(
-                                  highlightColor: StateContainer.of(context)
-                                      .curTheme
-                                      .text15,
-                                  splashColor: StateContainer.of(context)
-                                      .curTheme
-                                      .text15,
-                                  onPressed: () {
-                                    AppDialogs.showConfirmDialog(
-                                        context,
+                        // Trashcan Button
+                        Container(
+                          width: 50,
+                          height: 50,
+                          margin: EdgeInsetsDirectional.only(
+                              top: 10.0, start: 10.0),
+                          child: FlatButton(
+                            highlightColor:
+                                StateContainer.of(context).curTheme.text15,
+                            splashColor:
+                                StateContainer.of(context).curTheme.text15,
+                            onPressed: () {
+                              AppDialogs.showConfirmDialog(
+                                  context,
+                                  AppLocalization.of(context).removeContact,
+                                  AppLocalization.of(context)
+                                      .removeContactConfirmation
+                                      .replaceAll('%1', contact.name),
+                                  CaseChange.toUpperCase(
+                                      AppLocalization.of(context).yes, context),
+                                  () {
+                                sl
+                                    .get<DBHelper>()
+                                    .deleteContact(contact)
+                                    .then((deleted) {
+                                  if (deleted) {
+                                    EventTaxiImpl.singleton().fire(
+                                        ContactRemovedEvent(contact: contact));
+                                    EventTaxiImpl.singleton().fire(
+                                        ContactModifiedEvent(contact: contact));
+                                    UIUtil.showSnackbar(
                                         AppLocalization.of(context)
-                                            .removeContact,
-                                        AppLocalization.of(context)
-                                            .removeContactConfirmation
-                                            .replaceAll('%1', contact.name),
-                                        CaseChange.toUpperCase(
-                                            AppLocalization.of(context).yes,
-                                            context), () {
-                                      sl
-                                          .get<DBHelper>()
-                                          .deleteContact(contact)
-                                          .then((deleted) {
-                                        if (deleted) {
-                                          EventTaxiImpl.singleton().fire(
-                                              ContactRemovedEvent(
-                                                  contact: contact));
-                                          EventTaxiImpl.singleton().fire(
-                                              ContactModifiedEvent(
-                                                  contact: contact));
-                                          UIUtil.showSnackbar(
-                                              AppLocalization.of(context)
-                                                  .contactRemoved
-                                                  .replaceAll(
-                                                      "%1", contact.name),
-                                              context);
-                                          Navigator.of(context).pop();
-                                        } else {
-                                          // TODO - error for failing to delete contact
-                                        }
-                                      });
-                                    },
-                                        cancelText: CaseChange.toUpperCase(
-                                            AppLocalization.of(context).no,
-                                            context));
-                                  },
-                                  child: Icon(AppIcons.trashcan,
-                                      size: 24,
-                                      color: StateContainer.of(context)
-                                          .curTheme
-                                          .text),
-                                  padding: EdgeInsets.all(13.0),
-                                  shape: RoundedRectangleBorder(
-                                      borderRadius:
-                                          BorderRadius.circular(100.0)),
-                                  materialTapTargetSize:
-                                      MaterialTapTargetSize.padded,
-                                ),
-                              ),
+                                            .contactRemoved
+                                            .replaceAll("%1", contact.name),
+                                        context);
+                                    Navigator.of(context).pop();
+                                  } else {
+                                    // TODO - error for failing to delete contact
+                                  }
+                                });
+                              },
+                                  cancelText: CaseChange.toUpperCase(
+                                      AppLocalization.of(context).no, context));
+                            },
+                            child: Icon(AppIcons.trashcan,
+                                size: 24,
+                                color:
+                                    StateContainer.of(context).curTheme.text),
+                            padding: EdgeInsets.all(13.0),
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(100.0)),
+                            materialTapTargetSize: MaterialTapTargetSize.padded,
+                          ),
+                        ),
                         // The header of the sheet
                         Container(
                           margin: EdgeInsets.only(top: 25.0),
@@ -183,7 +169,7 @@ class ContactDetailsSheet {
                                 backgroundColor:
                                     StateContainer.of(context).curTheme.text05,
                                 backgroundImage: NetworkImage(
-                                  UIUtil.getRobohashURL(contact.address),
+                                  UIUtil.getAvatarURL(contact.address),
                                 ),
                                 radius: 50.0,
                               ),
@@ -303,9 +289,6 @@ class ContactDetailsSheet {
                                     context: context,
                                     widget: SendSheet(
                                         sendATokenActive: true,
-                                        localCurrency:
-                                            StateContainer.of(context)
-                                                .curCurrency,
                                         contact: contact));
                               }),
                             ],

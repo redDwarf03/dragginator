@@ -1,6 +1,5 @@
 // @dart=2.9
 
-import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:dragginator/util/numberutil.dart';

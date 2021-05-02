@@ -1277,10 +1277,6 @@ class AppLocalization {
     return 'https://hypernodes.bismuth.live/?page_id=2565';
   }
 
-  String get donationsUrl {
-    return 'Bis1GbkkAETTh8Q1k5KuHtV2pU2rmBhzUDTHo';
-  }
-
   String get dragginatorAddress {
     return '9ba0f8ca03439a8b4222b256a5f56f4f563f6d83755f525992fa5daf';
   }

@@ -2,10 +2,13 @@ import 'dart:async';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:circular_profile_avatar/circular_profile_avatar.dart';
 import 'package:dragginator/dimens.dart';
-import 'package:dragginator/ui/home/breeding_list.dart';
-import 'package:dragginator/ui/util/routes.dart';
+import 'package:dragginator/service/dragginator_service.dart';
+import 'package:dragginator/ui/dragginator/my_dragginator_detail.dart';
+import 'package:dragginator/ui/dragginator/my_dragginator_merging.dart';
+import 'package:dragginator/ui/send/send_confirm_sheet.dart';
 import 'package:dragginator/ui/util/ui_util.dart';
 import 'package:dragginator/ui/widgets/buttons.dart';
+import 'package:dragginator/ui/widgets/sheet_util.dart';
 import 'package:flare_flutter/base/animation/actor_animation.dart';
 import 'package:flare_flutter/flare.dart';
 import 'package:flare_flutter/flare_controller.dart';
@@ -17,7 +20,8 @@ import 'package:dragginator/styles.dart';
 import 'package:dragginator/ui/widgets/reactive_refresh.dart';
 import 'package:dragginator/util/sharedprefsutil.dart';
 import 'package:dragginator/util/hapticutil.dart';
-import 'package:flutter_cube/flutter_cube.dart';
+import 'package:fluttericon/font_awesome5_icons.dart';
+import 'package:fluttericon/typicons_icons.dart';
 
 class FirstPage extends StatefulWidget {
   final List<List> dragginatorList;
@@ -32,9 +36,6 @@ class _FirstPageStateState extends State<FirstPage>
         WidgetsBindingObserver,
         SingleTickerProviderStateMixin,
         FlareController {
-  late Scene _scene;
-  Object? _egg;
-
   // Controller for placeholder card animations
   AnimationController? _placeholderCardAnimationController;
   Animation<double>? _opacityAnimation;
@@ -99,11 +100,6 @@ class _FirstPageStateState extends State<FirstPage>
     );
     _opacityAnimation!.addStatusListener(_animationStatusListener);
     _placeholderCardAnimationController!.forward();
-
-    if (_egg != null) {
-      _egg!.updateTransform();
-      _scene.update();
-    }
   }
 
   void _animationStatusListener(AnimationStatus status) {
@@ -172,11 +168,13 @@ class _FirstPageStateState extends State<FirstPage>
               child: Stack(children: <Widget>[
             InkWell(
               onTap: () {
-                Navigator.of(context).pushNamed('/breeding_list', arguments: {
-                  'address': StateContainer.of(context).selectedAccount.address,
-                  'dragginatorInfosList':
-                      StateContainer.of(context).wallet.dragginatorList
-                });
+                Sheets.showAppHeightNineSheet(
+                    context: context,
+                    widget: MyDragginatorDetail(
+                        StateContainer.of(context).selectedAccount.address,
+                        StateContainer.of(context)
+                            .wallet
+                            .dragginatorList[index]));
               },
               child: CircularProfileAvatar(
                 UIUtil.getDragginatorURL(widget.dragginatorList[index][1].dna,
@@ -238,10 +236,6 @@ class _FirstPageStateState extends State<FirstPage>
                           ],
                         ),
                       ),
-                      new Container(
-                        height: 200,
-                        child: Cube(onSceneCreated: _onSceneCreated),
-                      ),
                       Expanded(
                         child: Stack(
                           alignment: Alignment.bottomCenter,
@@ -263,6 +257,146 @@ class _FirstPageStateState extends State<FirstPage>
                           ],
                         ),
                       ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          widget.dragginatorList.length > 0
+                              ? Container(
+                                  margin: EdgeInsets.symmetric(horizontal: 6.0),
+                                  decoration: BoxDecoration(
+                                    shape: BoxShape.circle,
+                                  ),
+                                  child: FlatButton(
+                                      onPressed: () {
+                                        Sheets.showAppHeightNineSheet(
+                                            context: context,
+                                            widget: MyDragginatorMerging(
+                                                StateContainer.of(context)
+                                                    .selectedAccount
+                                                    .address,
+                                                widget.dragginatorList));
+                                      },
+                                      padding: EdgeInsets.all(0.0),
+                                      shape: CircleBorder(),
+                                      splashColor: StateContainer.of(context)
+                                          .curTheme
+                                          .text30,
+                                      highlightColor: StateContainer.of(context)
+                                          .curTheme
+                                          .text15,
+                                      child: Column(
+                                        children: [
+                                          Icon(Typicons.flow_merge,
+                                              size: 26,
+                                              color: StateContainer.of(context)
+                                                  .curTheme
+                                                  .icon),
+                                          Text(
+                                            AppLocalization.of(context)
+                                                .dragginatorMergingHeader,
+                                            style: AppStyles.textStyleTiny(
+                                                context),
+                                          )
+                                        ],
+                                      )),
+                                )
+                              : SizedBox(width: 0),
+                          sl.get<DragginatorService>().isEggOwner(
+                                      StateContainer.of(context)
+                                          .wallet
+                                          .tokens) ==
+                                  false
+                              ? SizedBox(width: 0)
+                              : Container(
+                                  margin: EdgeInsets.symmetric(horizontal: 6.0),
+                                  decoration: BoxDecoration(
+                                    shape: BoxShape.circle,
+                                  ),
+                                  child: FlatButton(
+                                      onPressed: () {
+                                        Sheets.showAppHeightNineSheet(
+                                            context: context,
+                                            widget: SendConfirmSheet(
+                                                title: AppLocalization.of(
+                                                        context)
+                                                    .dragginatorGetEggWithEggHeader,
+                                                amountRaw: "0",
+                                                operation: "token:transfer",
+                                                openfield: "egg:1",
+                                                comment: "",
+                                                destination:
+                                                    AppLocalization.of(context)
+                                                        .dragginatorAddress,
+                                                contactName: ""));
+                                      },
+                                      padding: EdgeInsets.all(0.0),
+                                      shape: CircleBorder(),
+                                      splashColor: StateContainer.of(context)
+                                          .curTheme
+                                          .text30,
+                                      highlightColor: StateContainer.of(context)
+                                          .curTheme
+                                          .text15,
+                                      child: Column(
+                                        children: [
+                                          Icon(FontAwesome5.egg,
+                                              size: 26,
+                                              color: StateContainer.of(context)
+                                                  .curTheme
+                                                  .icon),
+                                          Text(
+                                            AppLocalization.of(context)
+                                                .dragginatorGetEggWithEggHeader,
+                                            style: AppStyles.textStyleTiny(
+                                                context),
+                                          )
+                                        ],
+                                      )),
+                                ),
+                          Container(
+                            margin: EdgeInsets.symmetric(horizontal: 6.0),
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                            ),
+                            child: FlatButton(
+                                onPressed: () {
+                                  Sheets.showAppHeightNineSheet(
+                                      context: context,
+                                      widget: SendConfirmSheet(
+                                          title: AppLocalization.of(context)
+                                              .dragginatorGetEggWithBisHeader,
+                                          amountRaw: "3",
+                                          operation: "",
+                                          openfield: "",
+                                          comment: "",
+                                          destination:
+                                              AppLocalization.of(context)
+                                                  .dragginatorAddress,
+                                          contactName: ""));
+                                },
+                                padding: EdgeInsets.all(0.0),
+                                shape: CircleBorder(),
+                                splashColor:
+                                    StateContainer.of(context).curTheme.text30,
+                                highlightColor:
+                                    StateContainer.of(context).curTheme.text15,
+                                child: Column(
+                                  children: [
+                                    Icon(FontAwesome5.money_bill_wave,
+                                        size: 26,
+                                        color: StateContainer.of(context)
+                                            .curTheme
+                                            .icon),
+                                    Text(
+                                      AppLocalization.of(context)
+                                          .dragginatorGetEggWithBisHeader,
+                                      style: AppStyles.textStyleTiny(context),
+                                    )
+                                  ],
+                                )),
+                          ),
+                        ],
+                      )
                     ],
                   )
                 : getIntro(context)));
@@ -322,16 +456,5 @@ class _FirstPageStateState extends State<FirstPage>
             ],
           ),
         ]);
-  }
-
-  void _onSceneCreated(Scene scene) {
-    _scene = scene;
-    _egg = Object(
-        name: 'egg',
-        scale: Vector3(10.0, 10.0, 10.0),
-        backfaceCulling: true,
-        fileName: 'assets/egg/test.obj');
-    _scene.world.add(_egg!);
-    _scene.updateTexture();
   }
 }

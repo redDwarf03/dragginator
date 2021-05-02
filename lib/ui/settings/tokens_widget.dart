@@ -1,9 +1,7 @@
 // @dart=2.9
 
 import 'package:flutter/material.dart';
-import 'package:fluttericon/font_awesome5_icons.dart';
 import 'package:fluttericon/font_awesome_icons.dart';
-import 'package:fluttericon/maki_icons.dart';
 import 'package:intl/intl.dart';
 import 'package:logger/logger.dart';
 import 'package:dragginator/model/token_ref.dart';
@@ -26,8 +24,8 @@ class TokensList extends StatefulWidget {
 class _TokensListState extends State<TokensList> {
   final Logger log = sl.get<Logger>();
 
-  List<TokenRef> _tokenRefs = new List<TokenRef>();
-  List<TokenRef> _tokenRefsForDisplay = new List<TokenRef>();
+  List<TokenRef> _tokenRefs = new List<TokenRef>.empty(growable: true);
+  List<TokenRef> _tokenRefsForDisplay = new List<TokenRef>.empty(growable: true);
 
   @override
   void initState() {

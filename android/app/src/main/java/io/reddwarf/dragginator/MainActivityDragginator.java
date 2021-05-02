@@ -8,7 +8,7 @@ import io.flutter.plugin.common.MethodChannel;
 import io.flutter.plugins.GeneratedPluginRegistrant;
 import io.flutter.view.FlutterMain;
 
-public class MainActivityMyDragginator extends FlutterFragmentActivity {
+public class MainActivityDragginator extends FlutterFragmentActivity {
     private static final String CHANNEL = "fappchannel";
 
     @Override

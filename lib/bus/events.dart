@@ -1,5 +1,3 @@
-// @dart=2.9
-
 export 'balance_get_event.dart';
 export 'history_home_event.dart';
 export 'disable_lock_timeout_event.dart';

@@ -665,8 +665,6 @@ class _BreedingListState extends State<BreedingList> {
                                 quickSendAmount: "0",
                                 operation: "dragg:transfer",
                                 openfield: dragginatorInfosFromDnaResponse.dna,
-                                localCurrency:
-                                    StateContainer.of(context).curCurrency,
                               ));
                         }),
                       ],
@@ -719,8 +717,6 @@ class _BreedingListState extends State<BreedingList> {
                                 quickSendAmount: "0",
                                 operation: "dragg:sell",
                                 openfield: dragginatorInfosFromDnaResponse.dna,
-                                localCurrency:
-                                    StateContainer.of(context).curCurrency,
                               ));
                         }),
                       ],
@@ -767,8 +763,6 @@ class _BreedingListState extends State<BreedingList> {
                                 quickSendAmount: "0",
                                 operation: "dragg:unsell",
                                 openfield: dragginatorInfosFromDnaResponse.dna,
-                                localCurrency:
-                                    StateContainer.of(context).curCurrency,
                               ));
                         }),
                       ],
@@ -819,8 +813,6 @@ class _BreedingListState extends State<BreedingList> {
                                     operation: "dragg:hunt",
                                     openfield:
                                         dragginatorInfosFromDnaResponse.dna,
-                                    localCurrency:
-                                        StateContainer.of(context).curCurrency,
                                   ));
                             }),
                           ],
@@ -872,8 +864,6 @@ class _BreedingListState extends State<BreedingList> {
                                     operation: "dragg:hatch",
                                     openfield:
                                         dragginatorInfosFromDnaResponse.dna,
-                                    localCurrency:
-                                        StateContainer.of(context).curCurrency,
                                   ));
                             }),
                           ],

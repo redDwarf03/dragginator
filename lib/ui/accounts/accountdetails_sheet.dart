@@ -2,6 +2,7 @@
 
 import 'dart:async';
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:dragginator/service/dragginator_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:keyboard_avoider/keyboard_avoider.dart';
@@ -45,7 +46,7 @@ class AccountDetailsSheet {
     this.deleted = false;
   }
 
-  Future<bool> _onWillPop() async {
+  Future<bool> _onWillPop(BuildContext context) async {
     // Update name if changed and valid
     if (originalName != _nameController.text &&
         _nameController.text.trim().length > 0 &&
@@ -54,13 +55,35 @@ class AccountDetailsSheet {
       account.name = _nameController.text;
       EventTaxiImpl.singleton().fire(AccountModifiedEvent(account: account));
     }
-    // Update avatar dna if changed and valid
-    if (originalName != _dragginatorAvatarDnaController.text &&
-        
-        !deleted) {
-      sl.get<DBHelper>().changeAccountDragginatorDna(account, _dragginatorAvatarDnaController.text);
-      account.dragginatorDna = _dragginatorAvatarDnaController.text;
-      EventTaxiImpl.singleton().fire(AccountModifiedEvent(account: account));
+   // Update avatar dna if changed and valid
+    if (originalName != _dragginatorAvatarDnaController.text && !deleted) {
+      if (_dragginatorAvatarDnaController.text.trim() != "") {
+        await sl
+            .get<DragginatorService>()
+            .getInfosFromDna(_dragginatorAvatarDnaController.text)
+            .then((value) {
+          if (value != null && value.status != "") {
+            sl.get<DBHelper>().changeAccountDragginatorDna(
+                account, _dragginatorAvatarDnaController.text, value.status);
+            account.dragginatorDna = _dragginatorAvatarDnaController.text;
+            account.dragginatorStatus = value.status;
+            EventTaxiImpl.singleton()
+                .fire(AccountModifiedEvent(account: account));
+          } else {
+            UIUtil.showSnackbar(
+                "The dna '" +
+                    _dragginatorAvatarDnaController.text +
+                    "' doesn't exist.",
+                context);
+            return false;
+          }
+        });
+      } else {
+        sl.get<DBHelper>().changeAccountDragginatorDna(account, "", "");
+        account.dragginatorDna = "";
+        account.dragginatorStatus = "";
+        EventTaxiImpl.singleton().fire(AccountModifiedEvent(account: account));
+      }
     }
     return true;
   }
@@ -73,12 +96,12 @@ class AccountDetailsSheet {
     _dragginatorAvatarDnaFocusNode = FocusNode();
     AppSheets.showAppHeightNineSheet(
         context: context,
-        onDisposed: _onWillPop,
+        onDisposed: () => _onWillPop(context),
         builder: (BuildContext context) {
           return StatefulBuilder(
               builder: (BuildContext context, StateSetter setState) {
             return WillPopScope(
-                onWillPop: _onWillPop,
+                onWillPop: () => _onWillPop(context),
                 child: TapOutsideUnfocus(
                     child: SafeArea(
                         minimum: EdgeInsets.only(

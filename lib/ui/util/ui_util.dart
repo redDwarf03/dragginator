@@ -493,11 +493,11 @@ class UIUtil {
       return false;
   }
 
-  static String getRobohashURL(String address) {
+  static String getAvatarURL(String address) {
     if (address == null) {
-      return "https://robohash.org/bismuth?set=set4";
+      return "https://dragginator.com/logo.png";
     } else {
-      return "https://robohash.org/$address?set=set4";
+      return "https://dragginator.com/logo.png";
     }
   }
 
