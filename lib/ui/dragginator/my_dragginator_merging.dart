@@ -2,6 +2,7 @@
 
 import 'package:dragginator/dimens.dart';
 import 'package:dragginator/localization.dart';
+import 'package:dragginator/ui/send/send_confirm_sheet.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:dragginator/service/dragginator_service.dart';
@@ -137,7 +138,7 @@ class _MyDragginatorMergingStateState extends State<MyDragginatorMerging> {
                               child: Stack(
                                 children: <Widget>[
                                   GridView.count(
-                                    crossAxisCount: 2,
+                                    crossAxisCount: 3,
                                     children: List.generate(
                                         widget.dragginatorInfosList.length,
                                         (index) {
@@ -179,6 +180,7 @@ class _MyDragginatorMergingStateState extends State<MyDragginatorMerging> {
                                                     ? 4
                                                     : 0),
                                           ),
+                                          
                                           alignment:
                                               AlignmentDirectional(-4, 0),
                                           child: Hero(
@@ -310,25 +312,21 @@ class _MyDragginatorMergingStateState extends State<MyDragginatorMerging> {
                                               onPressed: () {
                                               Sheets.showAppHeightNineSheet(
                                                   context: context,
-                                                  widget: SendSheet(
-                                                    sendATokenActive: false,
-                                                    title: AppLocalization.of(
-                                                            context)
-                                                        .dragginatorMerging2Eggs,
-                                                    actionButtonTitle:
-                                                        AppLocalization.of(
-                                                                context)
-                                                            .dragginatorMerging2Eggs,
-                                                    quickSendAmount: "0.5",
-                                                    address: AppLocalization.of(
-                                                            context)
-                                                        .dragginatorAddress,
-                                                    operation: "dragg:merge",
-                                                    openfield: dna1selected +
-                                                        ":" +
-                                                        dna2selected,
-                                                  
-                                                  ));
+                                                  widget: SendConfirmSheet(
+                                                      title: AppLocalization.of(
+                                                              context)
+                                                          .dragginatorMerging2Eggs,
+                                                      amountRaw: "0.5",
+                                                      operation: "dragg:merge",
+                                                      openfield: dna1selected +
+                                                          ":" +
+                                                          dna2selected,
+                                                      comment: "",
+                                                      destination:
+                                                          AppLocalization.of(
+                                                                  context)
+                                                              .dragginatorAddress,
+                                                      contactName: ""));
                                             }),
                                     ],
                                   ),

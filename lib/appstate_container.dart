@@ -17,7 +17,6 @@ import 'package:dragginator/service/http_service.dart';
 import 'package:dragginator/util/app_ffi/encrypt/crypter.dart';
 import 'package:dragginator/themes.dart';
 import 'package:dragginator/service_locator.dart';
-import 'package:dragginator/model/available_currency.dart';
 import 'package:dragginator/model/available_language.dart';
 import 'package:dragginator/model/address.dart';
 import 'package:dragginator/model/vault.dart';

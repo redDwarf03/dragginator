@@ -73,7 +73,7 @@ class AppStyles {
         fontFamily: "Lato",
         fontSize: AppFontSizes._large,
         fontWeight: FontWeight.w700,
-        color: StateContainer.of(context).curTheme.background);
+        color: StateContainer.of(context).curTheme.text);
   }
 
   // Green primary button

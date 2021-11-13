@@ -15,7 +15,7 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 # In iOS, build-name is used as CFBundleShortVersionString while build-number used as CFBundleVersion.
 # Read more about iOS versioning at
 # https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
-version: 1.0.3+3
+version: 1.0.7+7
 
 environment:
   sdk: '>=2.12.0 <3.0.0'
@@ -183,7 +183,11 @@ dependencies:
     git:
       url: https://github.com/redDwarf03/flutter_cube.git
       ref: master
-
+  
+  flutter_gl: ^0.0.6
+  three_dart: ^0.0.1
+  three_dart_jsm: ^0.0.1
+  
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -247,7 +251,11 @@ flutter:
     - assets/pulltosend_animation.flr
     - assets/sheethandle_animation.flr
     - assets/dragginator_background.png    
+    - assets/dragginator_background_opacity70.png
     - assets/avatar_default.png
+    - assets/dragginator_logo.png
+    - assets/dragginator_logo_tiny.png
+    - assets/dragginator_logo_start.png
 
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in

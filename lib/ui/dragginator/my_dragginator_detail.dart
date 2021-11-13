@@ -1,7 +1,8 @@
 // @dart=2.9
-
+import 'package:dragginator/ui/dragginator/webgl_loader_obj.dart';
+import 'package:three_dart/three_dart.dart' as three;
 import 'package:circular_profile_avatar/circular_profile_avatar.dart';
-import 'package:flutter_cube/flutter_cube.dart';
+//import 'package:flutter_cube/flutter_cube.dart';
 import 'package:fluttericon/font_awesome5_icons.dart';
 import 'package:fluttericon/font_awesome_icons.dart';
 import 'package:dragginator/dimens.dart';
@@ -459,6 +460,9 @@ class _MyDragginatorDetailState extends State<MyDragginatorDetail> {
                                 height: 200,
                                 child: Cube(onSceneCreated: _onSceneCreated),
                               ),*/
+                              Container(
+                                child:  webgl_loader_obj(),
+                              ),
                               Center(
                                 child: FlipCard(
                                   flipOnTouch: true,
@@ -644,7 +648,7 @@ class _MyDragginatorDetailState extends State<MyDragginatorDetail> {
                       ],
                     ),
                   ])),
-              dragginatorInfosFromDnaResponse.status.toLowerCase() == "egg"
+              dragginatorInfosFromDnaResponse.isAgeOkToRegisterTheHunt()
                   ? Container(
                       margin: new EdgeInsetsDirectional.only(
                           start: 12.0, end: 12.0),
@@ -751,7 +755,7 @@ class _MyDragginatorDetailState extends State<MyDragginatorDetail> {
         ));
   }
 
-  void _onSceneCreated(Scene scene) {
+ /* void _onSceneCreated(Scene scene) {
     scene.camera.position.z = 10;
     scene.camera.zoom = 10;
     scene.light.position.setFrom(Vector3(0, 0, 0));
@@ -759,7 +763,7 @@ class _MyDragginatorDetailState extends State<MyDragginatorDetail> {
 
     _egg = Object(
         scale: Vector3(1.0, 1.0, 1.0),
-        backfaceCulling: true,
+        backfaceCulling: false,
         position: Vector3(0, 0, 0),
         fileName: "test.obj",
         isAsset: false,
@@ -770,8 +774,7 @@ class _MyDragginatorDetailState extends State<MyDragginatorDetail> {
       _egg.rotation.z = 90;
       _egg.mesh.material.shininess = _shininess;
       _egg.updateTransform();
-      scene.updateTexture();
       scene.world.add(_egg);
     }
-  }
+  }*/
 }

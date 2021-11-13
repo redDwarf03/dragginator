@@ -107,7 +107,7 @@ class _NavContainerState extends State<NavContainer>
     return Stack(children: <Widget>[
       Container(
         padding: Platform.isAndroid
-            ? EdgeInsets.only(bottom: 48)
+            ? EdgeInsets.only(bottom: 70)
             : EdgeInsets.only(bottom: 80),
         constraints: BoxConstraints.expand(),
         child: StateContainer.of(context).wallet == null || StateContainer.of(context).wallet.address == null

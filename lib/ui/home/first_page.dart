@@ -219,22 +219,7 @@ class _FirstPageStateState extends State<FirstPage>
                 ? Column(
                     children: <Widget>[
                       Container(
-                        margin: EdgeInsets.only(bottom: 10.0, top: 5),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: <Widget>[
-                            Row(
-                              children: <Widget>[
-                                // Header Text
-                                Text(
-                                  AppLocalization.of(context).dragginatorHeader,
-                                  style: AppStyles.textStyleSettingsHeader(
-                                      context),
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
+                        child: Image.asset("assets/dragginator_logo_tiny.png"),
                       ),
                       Expanded(
                         child: Stack(
@@ -365,7 +350,7 @@ class _FirstPageStateState extends State<FirstPage>
                                       widget: SendConfirmSheet(
                                           title: AppLocalization.of(context)
                                               .dragginatorGetEggWithBisHeader,
-                                          amountRaw: "3",
+                                          amountRaw: "5",
                                           operation: "",
                                           openfield: "",
                                           comment: "",
@@ -406,14 +391,8 @@ class _FirstPageStateState extends State<FirstPage>
     return Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text(
-                AppLocalization.of(context).dragginatorHeader,
-                style: AppStyles.textStyleSettingsHeader(context),
-              ),
-            ],
+          Container(
+            child: Image.asset("assets/dragginator_logo_tiny.png"),
           ),
           Container(
             margin: EdgeInsets.symmetric(
@@ -430,7 +409,7 @@ class _FirstPageStateState extends State<FirstPage>
             children: <Widget>[
               Row(
                 children: <Widget>[
-                  // New Wallet Button
+                  // New Button
                   AppButton.buildAppButton(
                       context,
                       AppButtonType.PRIMARY,

@@ -231,7 +231,7 @@ class _BreedingListState extends State<BreedingList> {
                             widget: SendConfirmSheet(
                                 title: AppLocalization.of(context)
                                     .dragginatorGetEggWithBisHeader,
-                                amountRaw: "3",
+                                amountRaw: "5",
                                 operation: "",
                                 openfield: "",
                                 comment: "",

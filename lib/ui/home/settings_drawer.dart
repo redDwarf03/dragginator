@@ -880,10 +880,16 @@ class _SettingsSheetState extends State<SettingsSheet>
                               color:
                                   StateContainer.of(context).curTheme.text60)),
                     ),
+                    StateContainer.of(context).wallet.tokens != null &&
+                    StateContainer.of(context).wallet.tokens.length > 0 &&
+                    StateContainer.of(context).wallet.tokens[0].tokenName != "" ?
                     Divider(
                       height: 2,
                       color: StateContainer.of(context).curTheme.text15,
-                    ),
+                    ) : SizedBox(),
+                    StateContainer.of(context).wallet.tokens != null &&
+                    StateContainer.of(context).wallet.tokens.length > 0 && 
+                    StateContainer.of(context).wallet.tokens[0].tokenName != "" ?
                     AppSettings.buildSettingsListItemSingleLine(
                         context,
                         AppLocalization.of(context).myTokensListHeader,
@@ -892,7 +898,7 @@ class _SettingsSheetState extends State<SettingsSheet>
                         _myTokensListOpen = true;
                       });
                       _myTokensListController.forward();
-                    }),
+                    }) : SizedBox(),
                     Divider(
                       height: 2,
                       color: StateContainer.of(context).curTheme.text15,
@@ -906,10 +912,14 @@ class _SettingsSheetState extends State<SettingsSheet>
                       });
                       _tokensListController.forward();
                     }),
+                    StateContainer.of(context).wallet.history != null && 
+                    StateContainer.of(context).wallet.history.length > 0 ?
                     Divider(
                       height: 2,
                       color: StateContainer.of(context).curTheme.text15,
-                    ),
+                    ) : SizedBox(),
+                    StateContainer.of(context).wallet.history != null && 
+                    StateContainer.of(context).wallet.history.length > 0 ?
                     AppSettings.buildSettingsListItemSingleLine(
                         context,
                         AppLocalization.of(context).historyHeader,
@@ -918,7 +928,7 @@ class _SettingsSheetState extends State<SettingsSheet>
                         _myHistoryOpen = true;
                       });
                       _myHistoryController.forward();
-                    }),
+                    }) : SizedBox(),
                     Divider(
                       height: 2,
                       color: StateContainer.of(context).curTheme.text15,
@@ -1052,7 +1062,8 @@ class _SettingsSheetState extends State<SettingsSheet>
                         context,
                         AppLocalization.of(context).logout,
                         FontAwesome.logout, onPressed: () {
-                      AppDialogs.showConfirmDialog(
+                          Navigator.of(context).pushReplacementNamed('/start_game');
+                      /*AppDialogs.showConfirmDialog(
                           context,
                           CaseChange.toUpperCase(
                               AppLocalization.of(context).warning, context),
@@ -1079,7 +1090,7 @@ class _SettingsSheetState extends State<SettingsSheet>
                             });
                           });
                         });
-                      });
+                      });*/
                     }),
                     Divider(
                       height: 2,

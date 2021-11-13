@@ -166,7 +166,7 @@ class _SendCompleteSheetState extends State<SendCompleteSheet> {
                     children: <Widget>[
                       AppButton.buildAppButton(
                           context,
-                          AppButtonType.SUCCESS_OUTLINE,
+                          AppButtonType.PRIMARY,
                           CaseChange.toUpperCase(
                               AppLocalization.of(context).close, context),
                           Dimens.BUTTON_BOTTOM_DIMENS, onPressed: () {

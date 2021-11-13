@@ -2,6 +2,7 @@
 
 import 'dart:async';
 import 'dart:io';
+import 'package:dragginator/ui/home/start_game.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -102,6 +103,11 @@ class _AppState extends State<App> {
             case '/':
               return NoTransitionRoute(
                 builder: (_) => Splash(),
+                settings: settings,
+              );
+            case '/start_game':
+              return NoTransitionRoute(
+                builder: (_) => StartGame(),
                 settings: settings,
               );
             case '/home':
@@ -265,10 +271,10 @@ class SplashState extends State<Splash> with WidgetsBindingObserver {
           await AppUtil().loginAccount(seed, context);
           StateContainer.of(context).requestUpdateHistory();
           StateContainer.of(context).requestUpdateDragginatorList();
-          Navigator.of(context).pushReplacementNamed('/home');
+          Navigator.of(context).pushReplacementNamed('/start_game');
         }
       } else {
-        Navigator.of(context).pushReplacementNamed('/home');
+        Navigator.of(context).pushReplacementNamed('/start_game');
       }
     } catch (e) {
       /// Fallback secure storage

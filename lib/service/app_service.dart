@@ -59,7 +59,7 @@ class AppService {
                 message.length == 10 + int.tryParse(message.substring(0, 10))) {
               message = message.substring(
                   10, 10 + int.tryParse(message.substring(0, 10)));
-              WStatusGetResponse wStatusGetResponse =
+                  WStatusGetResponse wStatusGetResponse =
                   wStatusGetResponseFromJson(message);
               if (wStatusGetResponse == null) {
                 EventTaxiImpl.singleton().fire(ConnStatusEvent(

@@ -236,7 +236,7 @@ class AppLocalization {
   }
 
   String get dragginatorGetEggWithBisHeader {
-    return Intl.message('Get an egg for 3 BIS',
+    return Intl.message('Get an egg for 5 BIS',
         desc: '', name: 'dragginatorGetEggWithBisHeader');
   }
 
@@ -282,6 +282,15 @@ class AppLocalization {
   String get dragginatorRevert {
     return Intl.message('Revert', desc: '', name: 'dragginatorRevert');
   }
+
+  String get startGame {
+    return Intl.message('Hunt !', desc: '', name: 'startGame');
+  }
+
+  String get poweredBy {
+    return Intl.message('Powered by', desc: '', name: 'poweredBy');
+  }
+
 
   ///  -- END DRAGGINATOR
 
@@ -438,12 +447,12 @@ class AppLocalization {
   }
 
   String get newWallet {
-    return Intl.message("New Account",
+    return Intl.message("New hunter",
         desc: '', name: 'newWallet');
   }
 
   String get importWallet {
-    return Intl.message("Import Account",
+    return Intl.message("Load my profile",
         desc: '', name: 'importWallet');
   }
 
