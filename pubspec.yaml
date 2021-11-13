@@ -256,7 +256,9 @@ flutter:
     - assets/dragginator_logo.png
     - assets/dragginator_logo_tiny.png
     - assets/dragginator_logo_start.png
-
+    - assets/models/obj/male02/male02.obj
+    - assets/textures/uv_grid_opengl.jpg
+    
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
   # the material Icons class.

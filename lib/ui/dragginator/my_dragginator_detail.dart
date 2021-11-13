@@ -461,6 +461,7 @@ class _MyDragginatorDetailState extends State<MyDragginatorDetail> {
                                 child: Cube(onSceneCreated: _onSceneCreated),
                               ),*/
                               Container(
+                                height: 200,
                                 child:  webgl_loader_obj(),
                               ),
                               Center(

@@ -107,6 +107,7 @@ class _MyAppState extends State<webgl_loader_obj> {
     return Column(
       children: [
         Container(
+          height: 300,
           child: Stack(
             children: [
               Container(
@@ -213,7 +214,7 @@ class _MyAppState extends State<webgl_loader_obj> {
 
     var loader = THREE_JSM.OBJLoader(null);
     object =
-        await loader.loadAsync('assets/models/obj/male02.obj', null);
+        await loader.loadAsync('assets/models/obj/male02/male02.obj', null);
 
     object.traverse((child) {
       if (child.isMesh) {
