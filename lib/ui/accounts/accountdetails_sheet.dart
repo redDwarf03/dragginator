@@ -55,7 +55,7 @@ class AccountDetailsSheet {
       account.name = _nameController.text;
       EventTaxiImpl.singleton().fire(AccountModifiedEvent(account: account));
     }
-   // Update avatar dna if changed and valid
+    // Update avatar dna if changed and valid
     if (originalName != _dragginatorAvatarDnaController.text && !deleted) {
       if (_dragginatorAvatarDnaController.text.trim() != "") {
         await sl
@@ -91,7 +91,8 @@ class AccountDetailsSheet {
   mainBottomSheet(BuildContext context) {
     _addressCopied = false;
     _nameController = TextEditingController(text: account.name);
-    _dragginatorAvatarDnaController = TextEditingController(text: account.dragginatorDna);
+    _dragginatorAvatarDnaController =
+        TextEditingController(text: account.dragginatorDna);
     _nameFocusNode = FocusNode();
     _dragginatorAvatarDnaFocusNode = FocusNode();
     AppSheets.showAppHeightNineSheet(
@@ -210,6 +211,19 @@ class AccountDetailsSheet {
                             // Address Text
                             Container(
                               margin: EdgeInsets.only(top: 10.0),
+                              child: Text(
+                                'Player DNA',
+                                style: TextStyle(
+                                  color: StateContainer.of(context)
+                                      .curTheme
+                                      .primary60,
+                                  fontSize: 14.0,
+                                  fontWeight: FontWeight.w700,
+                                  fontFamily: 'Lato',
+                                ),
+                              ),
+                            ),
+                            Container(
                               child: account.address != null
                                   ? UIUtil.threeLineAddressText(
                                       context, account.address,
@@ -224,6 +238,7 @@ class AccountDetailsSheet {
                                               .PRIMARY60)
                                       : SizedBox(),
                             ),
+
                             // Balance Text
                             (account.balance != null || account.selected)
                                 ? Container(
@@ -245,15 +260,9 @@ class AccountDetailsSheet {
                                             ),
                                           ),
                                           TextSpan(
-                                            text:
-                                                NumberUtil.getRawAsUsableString(
-                                                    account.balance == null
-                                                        ? StateContainer.of(
-                                                                context)
-                                                            .wallet
-                                                            .accountBalance
-                                                            .toString()
-                                                        : account.balance),
+                                            text: StateContainer.of(context)
+                                                .wallet
+                                                .getAccountBalanceDisplay(),
                                             style: TextStyle(
                                               color: StateContainer.of(context)
                                                   .curTheme

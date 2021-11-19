@@ -92,6 +92,8 @@ class StateContainerState extends State<StateContainer> {
 
   String deviceIdentifier;
 
+  int eggPrice = 0;
+  
   @override
   void initState() {
     super.initState();

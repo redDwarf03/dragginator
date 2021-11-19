@@ -144,7 +144,8 @@ class _FirstPageStateState extends State<FirstPage>
       lockStreamListener = delayed.asStream().listen((_) {
         try {
           StateContainer.of(context).resetEncryptedSecret();
-        } catch (e) {} finally {
+        } catch (e) {
+        } finally {
           Navigator.of(context)
               .pushNamedAndRemoveUntil('/', (Route<dynamic> route) => false);
         }
@@ -349,7 +350,12 @@ class _FirstPageStateState extends State<FirstPage>
                                       context: context,
                                       widget: SendConfirmSheet(
                                           title: AppLocalization.of(context)
-                                              .dragginatorGetEggWithBisHeader,
+                                              .dragginatorGetEggWithBisHeader
+                                              .replaceAll(
+                                                  '%1',
+                                                  StateContainer.of(context)
+                                                      .eggPrice
+                                                      .toString()),
                                           amountRaw: "5",
                                           operation: "",
                                           openfield: "",
@@ -374,7 +380,12 @@ class _FirstPageStateState extends State<FirstPage>
                                             .icon),
                                     Text(
                                       AppLocalization.of(context)
-                                          .dragginatorGetEggWithBisHeader,
+                                          .dragginatorGetEggWithBisHeader
+                                          .replaceAll(
+                                              '%1',
+                                              StateContainer.of(context)
+                                                  .eggPrice
+                                                  .toString()),
                                       style: AppStyles.textStyleTiny(context),
                                     )
                                   ],

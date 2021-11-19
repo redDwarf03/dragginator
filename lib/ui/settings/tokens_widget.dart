@@ -235,7 +235,7 @@ class _TokensListState extends State<TokensList> {
                           fontFamily: 'Lato',
                         ),
                       ),
-                      Text(
+                      /*Text(
                         AppLocalization.of(context).tokensListCreatedThe +
                             DateFormat.yMd(Localizations.localeOf(context)
                                     .languageCode)
@@ -248,8 +248,8 @@ class _TokensListState extends State<TokensList> {
                           fontWeight: FontWeight.w300,
                           fontFamily: 'Lato',
                         ),
-                      ),
-                      Text(
+                      ),*/
+                      /*Text(
                         AppLocalization.of(context).tokensListCreatedBy +
                             Address(tokenRef.creator).getShorterString(),
                         style: TextStyle(
@@ -258,7 +258,7 @@ class _TokensListState extends State<TokensList> {
                           fontWeight: FontWeight.w300,
                           fontFamily: 'Lato',
                         ),
-                      ),
+                      ),*/
                     ],
                   ),
                 ),

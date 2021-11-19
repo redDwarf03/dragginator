@@ -100,7 +100,7 @@ class _IntroBackupSeedState extends State<IntroBackupSeedPage> {
                                       size: 24)),
                             ),
                             // Switch between Secret Phrase and Seed
-                            Container(
+                            /*Container(
                               margin: EdgeInsetsDirectional.only(
                                   end: smallScreen(context) ? 15 : 20),
                               height: 50,
@@ -129,7 +129,7 @@ class _IntroBackupSeedState extends State<IntroBackupSeedPage> {
                                           .curTheme
                                           .text,
                                       size: 24)),
-                            ),
+                            ),*/
                           ],
                         ),
                         // The header

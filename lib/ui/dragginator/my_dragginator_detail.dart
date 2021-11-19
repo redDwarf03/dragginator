@@ -460,10 +460,10 @@ class _MyDragginatorDetailState extends State<MyDragginatorDetail> {
                                 height: 200,
                                 child: Cube(onSceneCreated: _onSceneCreated),
                               ),*/
-                              Container(
+                              /*Container(
                                 height: 200,
                                 child:  webgl_loader_obj(),
-                              ),
+                              ),*/
                               Center(
                                 child: FlipCard(
                                   flipOnTouch: true,

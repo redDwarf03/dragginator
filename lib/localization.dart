@@ -236,7 +236,7 @@ class AppLocalization {
   }
 
   String get dragginatorGetEggWithBisHeader {
-    return Intl.message('Get an egg for 5 BIS',
+    return Intl.message('Get an egg for %1 BIS',
         desc: '', name: 'dragginatorGetEggWithBisHeader');
   }
 
@@ -301,12 +301,12 @@ class AppLocalization {
   }
 
   String get enterWalletServer {
-    return Intl.message('Enter a custom BIS server',
+    return Intl.message('Enter a custom game server (Bismuth)',
         desc: '', name: 'enterWalletServer');
   }
 
   String get enterWalletServerSwitch {
-    return Intl.message('Use a custom BIS server',
+    return Intl.message('Use a custom game server (Bismuth)',
         desc: '', name: 'enterWalletServerSwitch');
   }
 
@@ -748,7 +748,7 @@ class AppLocalization {
   }
 
   String get myTokensListHeader {
-    return Intl.message("My Token List",
+    return Intl.message("My Object Catalog",
         desc: 'my_tokens_list_header', name: 'myTokensListHeader');
   }
 
@@ -758,7 +758,7 @@ class AppLocalization {
   }
 
   String get tokensListHeader {
-    return Intl.message("Token List",
+    return Intl.message("Object Catalog",
         desc: 'settings_tokens_list_header', name: 'tokensListHeader');
   }
 

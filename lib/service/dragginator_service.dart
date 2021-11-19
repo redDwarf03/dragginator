@@ -1,7 +1,12 @@
+// @dart=2.9
+
+// Dart imports:
 import 'dart:async';
-import 'dart:convert';
-import 'dart:io';
+
+// Package imports:
+import 'package:http/http.dart' as http;
 import 'package:logger/logger.dart';
+
 import 'package:dragginator/network/model/response/address_txs_response.dart';
 import 'package:dragginator/network/model/response/dragginator_infos_from_dna_response.dart';
 import 'package:dragginator/network/model/response/dragginator_list_from_address_response.dart';
@@ -9,113 +14,135 @@ import 'package:dragginator/network/model/response/dragginator_merge_list_compat
 import 'package:dragginator/network/model/response/dragginator_merge_list_reasons_not_compatible_response.dart';
 import 'package:dragginator/service_locator.dart';
 
+
 class DragginatorService {
   final Logger log = sl.get<Logger>();
 
   Future<List> getEggsAndDragonsListFromAddress(String address) async {
-    List<DragginatorListFromAddressResponse>?
+    List<DragginatorListFromAddressResponse>
         dragginatorListFromAddressResponseList;
 
-    HttpClient httpClient = new HttpClient();
     try {
-      HttpClientRequest request = await httpClient.getUrl(Uri.parse(
-          "https://dragginator.com/api/info.php?address=" +
+      final http.Response response = await http.get(
+          Uri.parse("https://dragginator.com/api/info.php?address=" +
               address +
-              "&type=list"));
-      request.headers.set('content-type', 'application/json');
-      HttpClientResponse response = await request.close();
+              "&type=list"),
+          headers: {
+            'content-type': 'application/json',
+            'access-Control-Allow-Origin': '*'
+          });
+
       if (response.statusCode == 200) {
-        String reply = await response.transform(utf8.decoder).join();
+        String reply = response.body;
         dragginatorListFromAddressResponseList =
             dragginatorListFromAddressResponseFromJson(reply);
       }
     } catch (e) {
       print(e);
-    } finally {
-      httpClient.close();
     }
 
-    return dragginatorListFromAddressResponseList!;
+    return dragginatorListFromAddressResponseList;
   }
 
   Future<DragginatorInfosFromDnaResponse> getInfosFromDna(String dna) async {
-    DragginatorInfosFromDnaResponse? dragginatorInfosFromDnaResponse;
+    DragginatorInfosFromDnaResponse dragginatorInfosFromDnaResponse;
 
-    HttpClient httpClient = new HttpClient();
     try {
-      HttpClientRequest request = await httpClient.getUrl(Uri.parse(
-          "https://dragginator.com/api/info.php?egg=" +
+      final http.Response response = await http.get(
+          Uri.parse("https://dragginator.com/api/info.php?egg=" +
               dna +
-              "&type=egg_info"));
-      request.headers.set('content-type', 'application/json');
-      HttpClientResponse response = await request.close();
+              "&type=egg_info"),
+          headers: {
+            'content-type': 'application/json',
+            'access-Control-Allow-Origin': '*'
+          });
       if (response.statusCode == 200) {
-        String reply = await response.transform(utf8.decoder).join();
+        String reply = response.body;
         dragginatorInfosFromDnaResponse =
             dragginatorInfosFromDnaResponseFromJson(reply);
       }
-    } catch (e) {
-      print(e);
-    } finally {
-      httpClient.close();
-    }
+    } catch (e) {}
 
-    return dragginatorInfosFromDnaResponse!;
+    return dragginatorInfosFromDnaResponse;
   }
 
   Future<List<String>> getEggsCompatible(String dna) async {
-    List<String>? dragginatorMergeListCompatible;
+    List<String> dragginatorMergeListCompatible;
 
-    HttpClient httpClient = new HttpClient();
     try {
-      HttpClientRequest request = await httpClient
-          .getUrl(Uri.parse("https://dragginator.com/api/merge/" + dna + "/"));
-      request.headers.set('content-type', 'application/json');
-      HttpClientResponse response = await request.close();
+      final http.Response response = await http.get(
+          Uri.parse("https://dragginator.com/api/merge/" + dna + "/"),
+          headers: {
+            'content-type': 'application/json',
+            'access-Control-Allow-Origin': '*'
+          });
+
       if (response.statusCode == 200) {
-        String reply = await response.transform(utf8.decoder).join();
+        String reply = response.body;
         dragginatorMergeListCompatible =
             dragginatorMergeListCompatibleResponseFromJson(reply);
       }
     } catch (e) {
       print(e);
-    } finally {
-      httpClient.close();
     }
 
-    return dragginatorMergeListCompatible!;
+    return dragginatorMergeListCompatible;
   }
 
   Future<List<String>> getMergeListReasonsNotCompatible(
       String dna1, String dna2) async {
-    List<String>? dragginatorMergeListReasonsNotCompatible;
+    List<String> dragginatorMergeListReasonsNotCompatible;
 
-    HttpClient httpClient = new HttpClient();
     try {
-      HttpClientRequest request = await httpClient.getUrl(Uri.parse(
-          "https://dragginator.com/api/merge/" + dna1 + "/" + dna2 + "/"));
-      request.headers.set('content-type', 'application/json');
-      HttpClientResponse response = await request.close();
+      final http.Response response = await http.get(
+          Uri.parse(
+              "https://dragginator.com/api/merge/" + dna1 + "/" + dna2 + "/"),
+          headers: {
+            'content-type': 'application/json',
+            'access-Control-Allow-Origin': '*'
+          });
+
       if (response.statusCode == 200) {
-        String reply = await response.transform(utf8.decoder).join();
+        String reply = response.body;
         dragginatorMergeListReasonsNotCompatible =
             dragginatorMergeListReasonsNotCompatibleResponseFromJson(reply);
       }
     } catch (e) {
       print(e);
-    } finally {
-      httpClient.close();
     }
 
-    return dragginatorMergeListReasonsNotCompatible!;
+    return dragginatorMergeListReasonsNotCompatible;
   }
 
-  bool? isEggOwner(List<BisToken> tokens) {
-    for (int i = 0; i < tokens.length; i++) {
-      if (tokens[i].tokenName == "egg" && tokens[i].tokensQuantity! > 0) {
-        return true;
+  bool isEggOwner(List<BisToken> tokens) {
+    if (tokens == null) {
+      return false;
+    } else {
+      for (int i = 0; i < tokens.length; i++) {
+        if (tokens[i].tokenName == "egg" && tokens[i].tokensQuantity > 0) {
+          return true;
+        }
       }
+      return false;
     }
-    return false;
+  }
+
+ Future<int> getEggPrice() async {
+    int price = 0;
+    try {
+      final http.Response response = await http.get(
+          Uri.parse("https://dragginator.com/api/info.php?type=price"),
+          headers: {
+            'content-type': 'application/json',
+            'access-Control-Allow-Origin': '*'
+          });
+
+      if (response.statusCode == 200) {
+        String reply = response.body;
+        price = int.tryParse(
+            reply.replaceAll('[', '').replaceAll(']', '').split(',')[0]);
+      }
+    } catch (e) {}
+    return price;
   }
 }

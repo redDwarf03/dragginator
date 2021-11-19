@@ -93,12 +93,7 @@ class _MyAppState extends State<webgl_loader_obj> {
             return SingleChildScrollView(child: _build(context));
           },
         ),
-        floatingActionButton: FloatingActionButton(
-          child: Text("render"),
-          onPressed: () {
-            render();
-          },
-        ),
+        
       ),
     );
   }
@@ -204,8 +199,8 @@ class _MyAppState extends State<webgl_loader_obj> {
     // texture
 
     var textureLoader = new THREE.TextureLoader(null);
-    texture = await textureLoader.loadAsync(
-        'assets/textures/uv_grid_opengl.jpg', null);
+    texture = await textureLoader.load(
+        'https://dragginator.com/test/obj/texture_map.png', () {}, () {}, () {});
 
     texture.magFilter = THREE.LinearFilter;
     texture.minFilter = THREE.LinearMipmapLinearFilter;
@@ -214,7 +209,7 @@ class _MyAppState extends State<webgl_loader_obj> {
 
     var loader = THREE_JSM.OBJLoader(null);
     object =
-        await loader.loadAsync('assets/models/obj/male02/male02.obj', null);
+        await loader.load('https://dragginator.com/test/obj/test.obj', () {}, () {}, () {});
 
     object.traverse((child) {
       if (child.isMesh) {

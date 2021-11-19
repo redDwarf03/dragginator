@@ -2,6 +2,7 @@
 
 import 'dart:async';
 import 'package:dragginator/bus/navigation_event.dart';
+import 'package:dragginator/service/dragginator_service.dart';
 import 'package:dragginator/ui/navigate/background.dart';
 import 'package:dragginator/ui/navigate/nav_container.dart';
 import 'package:flare_flutter/base/animation/actor_animation.dart';
@@ -40,6 +41,8 @@ class _AppHomePageState extends State<AppHomePage>
   bool _animationDisposed;
 
   bool _displayReleaseNote;
+
+  int _eggPrice = 0;
 
   bool _lockDisabled = false; // whether we should avoid locking the app
 
@@ -85,13 +88,18 @@ class _AppHomePageState extends State<AppHomePage>
     });
   }
 
+  _getEggPrice() async {
+    _eggPrice = await sl.get<DragginatorService>().getEggPrice();
+    StateContainer.of(context).eggPrice = _eggPrice;
+  }
+
   @override
   void initState() {
     super.initState();
 
     _displayReleaseNote = false;
     _checkVersionApp();
-
+    _getEggPrice();
     _registerBus();
     WidgetsBinding.instance.addObserver(this);
 

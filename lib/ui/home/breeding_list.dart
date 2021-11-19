@@ -230,7 +230,8 @@ class _BreedingListState extends State<BreedingList> {
                             context: context,
                             widget: SendConfirmSheet(
                                 title: AppLocalization.of(context)
-                                    .dragginatorGetEggWithBisHeader,
+                            .dragginatorGetEggWithBisHeader
+                            .replaceAll('%1', StateContainer.of(context).eggPrice.toString()),
                                 amountRaw: "5",
                                 operation: "",
                                 openfield: "",

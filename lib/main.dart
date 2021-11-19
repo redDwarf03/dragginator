@@ -342,7 +342,7 @@ class SplashState extends State<Splash> with WidgetsBindingObserver {
     });
     sl.get<SharedPrefsUtil>().getLanguage().then((setting) {
       setState(() {
-        StateContainer.of(context).updateLanguage(setting);
+        StateContainer.of(context).curLanguage = setting;
       });
     });
   }
