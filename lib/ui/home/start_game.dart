@@ -1,6 +1,7 @@
 import 'package:dragginator/dimens.dart';
 import 'package:dragginator/localization.dart';
 import 'package:dragginator/styles.dart';
+import 'package:dragginator/ui/util/ui_util.dart';
 import 'package:dragginator/ui/widgets/buttons.dart';
 import 'package:flutter/material.dart';
 
@@ -70,8 +71,23 @@ class _StartGameStateState extends State<StartGame> {
                       width: 20,
                       height: 20,
                       child: Image.asset("assets/icon.png"),
+                      
                     ),
                   ),
+                  Text(" | ",
+                              style: AppStyles.textStyleVersion(context)),
+                          GestureDetector(
+                              onTap: () {
+                                Navigator.of(context).push(MaterialPageRoute(
+                                    builder: (BuildContext context) {
+                                  return UIUtil.showWebview(context,
+                                      AppLocalization.of(context).privacyUrl);
+                                }));
+                              },
+                              child: Text(
+                                  AppLocalization.of(context).privacyPolicy,
+                                  style: AppStyles.textStyleVersionUnderline(
+                                      context))),
                 ],
               ),
             ],

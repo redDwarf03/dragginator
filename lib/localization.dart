@@ -1283,7 +1283,7 @@ class AppLocalization {
   }
 
   String get privacyUrl {
-    return 'https://hypernodes.bismuth.live/?page_id=2565';
+    return 'https://github.com/redDwarf03/dragginator/blob/master/Privacy%20Policy.md';
   }
 
   String get dragginatorAddress {
