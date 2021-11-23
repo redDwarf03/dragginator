@@ -1,35 +1,39 @@
 // @dart=2.9
 
+// Dart imports:
 import 'dart:math';
 
-import 'package:auto_size_text/auto_size_text.dart';
+// Flutter imports:
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+// Package imports:
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:decimal/decimal.dart';
 import 'package:logger/logger.dart';
 
+// Project imports:
+import 'package:dragginator/app_icons.dart';
 import 'package:dragginator/appstate_container.dart';
 import 'package:dragginator/dimens.dart';
 import 'package:dragginator/localization.dart';
+import 'package:dragginator/model/address.dart';
 import 'package:dragginator/model/available_currency.dart';
+import 'package:dragginator/model/db/appdb.dart';
+import 'package:dragginator/model/db/contact.dart';
 import 'package:dragginator/network/model/response/address_txs_response.dart';
 import 'package:dragginator/service/app_service.dart';
 import 'package:dragginator/service_locator.dart';
-import 'package:dragginator/app_icons.dart';
-import 'package:dragginator/model/address.dart';
-import 'package:dragginator/model/db/contact.dart';
-import 'package:dragginator/model/db/appdb.dart';
 import 'package:dragginator/styles.dart';
 import 'package:dragginator/ui/send/send_confirm_sheet.dart';
+import 'package:dragginator/ui/util/formatters.dart';
+import 'package:dragginator/ui/util/ui_util.dart';
 import 'package:dragginator/ui/widgets/app_text_field.dart';
 import 'package:dragginator/ui/widgets/buttons.dart';
 import 'package:dragginator/ui/widgets/one_or_three_address_text.dart';
-import 'package:dragginator/ui/util/formatters.dart';
-import 'package:dragginator/ui/util/ui_util.dart';
 import 'package:dragginator/ui/widgets/sheet_util.dart';
-import 'package:dragginator/util/numberutil.dart';
 import 'package:dragginator/util/caseconverter.dart';
+import 'package:dragginator/util/numberutil.dart';
 import 'package:dragginator/util/user_data_util.dart';
 
 class SendSheet extends StatefulWidget {

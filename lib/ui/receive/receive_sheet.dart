@@ -1,17 +1,24 @@
 // @dart=2.9
 
+// Dart imports:
 import 'dart:async';
 import 'dart:typed_data';
-import 'package:dragginator/localization.dart';
+
+// Flutter imports:
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter/rendering.dart';
-import 'package:dragginator/dimens.dart';
-import 'package:dragginator/ui/widgets/buttons.dart';
-import 'package:dragginator/ui/util/ui_util.dart';
-import 'package:dragginator/ui/receive/share_card.dart';
-import 'package:dragginator/appstate_container.dart';
+import 'package:flutter/services.dart';
+
+// Package imports:
 import 'package:flutter_svg/flutter_svg.dart';
+
+// Project imports:
+import 'package:dragginator/appstate_container.dart';
+import 'package:dragginator/dimens.dart';
+import 'package:dragginator/localization.dart';
+import 'package:dragginator/ui/receive/share_card.dart';
+import 'package:dragginator/ui/util/ui_util.dart';
+import 'package:dragginator/ui/widgets/buttons.dart';
 
 class ReceiveSheet extends StatefulWidget {
   final Widget qrWidget;
@@ -186,15 +193,14 @@ class _ReceiveSheetStateState extends State<ReceiveSheet> {
                                             .selectedAccount
                                             .dragginatorDna ==
                                         ""
-                                ? UIUtil.getAvatarURL(
-                                    StateContainer.of(context)
-                                        .selectedAccount
-                                        .address)
+                                ? UIUtil.getAvatarURL(StateContainer.of(context)
+                                    .selectedAccount
+                                    .address)
                                 : UIUtil.getDragginatorURL(
                                     StateContainer.of(context)
                                         .selectedAccount
                                         .dragginatorDna,
-                                   StateContainer.of(context)
+                                    StateContainer.of(context)
                                         .selectedAccount
                                         .dragginatorStatus),
                           ),

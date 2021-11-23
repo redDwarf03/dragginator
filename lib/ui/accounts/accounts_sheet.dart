@@ -1,24 +1,31 @@
 // @dart=2.9
 
+// Dart imports:
 import 'dart:async';
-import 'package:auto_size_text/auto_size_text.dart';
-import 'package:dragginator/avatar.dart';
+
+// Flutter imports:
 import 'package:flutter/material.dart';
-import 'package:flutter_slidable/flutter_slidable.dart';
+
+// Package imports:
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:event_taxi/event_taxi.dart';
-import 'package:dragginator/bus/events.dart';
-import 'package:dragginator/localization.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
+
+// Project imports:
 import 'package:dragginator/appstate_container.dart';
+import 'package:dragginator/avatar.dart';
+import 'package:dragginator/bus/events.dart';
 import 'package:dragginator/dimens.dart';
-import 'package:dragginator/service_locator.dart';
-import 'package:dragginator/model/db/appdb.dart';
+import 'package:dragginator/localization.dart';
 import 'package:dragginator/model/db/account.dart';
+import 'package:dragginator/model/db/appdb.dart';
+import 'package:dragginator/service_locator.dart';
+import 'package:dragginator/styles.dart';
 import 'package:dragginator/ui/accounts/accountdetails_sheet.dart';
 import 'package:dragginator/ui/util/ui_util.dart';
-import 'package:dragginator/ui/widgets/sheets.dart';
 import 'package:dragginator/ui/widgets/buttons.dart';
 import 'package:dragginator/ui/widgets/dialog.dart';
-import 'package:dragginator/styles.dart';
+import 'package:dragginator/ui/widgets/sheets.dart';
 import 'package:dragginator/util/caseconverter.dart';
 import 'package:dragginator/util/numberutil.dart';
 
@@ -391,15 +398,15 @@ class _AppAccountsWidgetState extends State<AppAccountsWidget> {
                                     child: CircleAvatar(
                                       backgroundColor: Avatar()
                                           .getBackgroundColor(account.index),
-                                      backgroundImage:
-                                          account.dragginatorDna == null ||
-                                                  account.dragginatorDna == ""
-                                              ? AssetImage(
-                                                  'assets/avatar_default.png')
-                                              : NetworkImage(
-                                                  UIUtil.getDragginatorURL(
-                                                      account.dragginatorDna,
-                                                      account.dragginatorStatus)),
+                                      backgroundImage: account.dragginatorDna ==
+                                                  null ||
+                                              account.dragginatorDna == ""
+                                          ? AssetImage(
+                                              'assets/avatar_default.png')
+                                          : NetworkImage(
+                                              UIUtil.getDragginatorURL(
+                                                  account.dragginatorDna,
+                                                  account.dragginatorStatus)),
                                       radius: 50.0,
                                     ),
                                   ),

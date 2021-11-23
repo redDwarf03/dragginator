@@ -1,21 +1,28 @@
 // @dart=2.9
 
+// Dart imports:
 import 'dart:async';
-import 'package:auto_size_text/auto_size_text.dart';
-import 'package:dragginator/service/dragginator_service.dart';
+
+// Flutter imports:
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:keyboard_avoider/keyboard_avoider.dart';
-import 'package:dragginator/appstate_container.dart';
-import 'package:dragginator/service_locator.dart';
+
+// Package imports:
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:event_taxi/event_taxi.dart';
-import 'package:dragginator/dimens.dart';
+import 'package:keyboard_avoider/keyboard_avoider.dart';
+
+// Project imports:
 import 'package:dragginator/app_icons.dart';
-import 'package:dragginator/styles.dart';
-import 'package:dragginator/localization.dart';
+import 'package:dragginator/appstate_container.dart';
 import 'package:dragginator/bus/events.dart';
+import 'package:dragginator/dimens.dart';
+import 'package:dragginator/localization.dart';
 import 'package:dragginator/model/db/account.dart';
 import 'package:dragginator/model/db/appdb.dart';
+import 'package:dragginator/service/dragginator_service.dart';
+import 'package:dragginator/service_locator.dart';
+import 'package:dragginator/styles.dart';
 import 'package:dragginator/ui/util/ui_util.dart';
 import 'package:dragginator/ui/widgets/app_text_field.dart';
 import 'package:dragginator/ui/widgets/buttons.dart';

@@ -1,9 +1,14 @@
 // @dart=2.9
 
+// Dart imports:
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
+
+// Package imports:
 import 'package:logger/logger.dart';
+
+// Project imports:
 import 'package:dragginator/model/token_ref.dart';
 import 'package:dragginator/network/model/response/address_txs_response.dart';
 import 'package:dragginator/network/model/response/servers_wallet_legacy.dart';

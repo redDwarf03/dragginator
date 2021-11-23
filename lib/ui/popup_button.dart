@@ -1,7 +1,13 @@
 // @dart=2.9
 
-import 'package:auto_size_text/auto_size_text.dart';
+// Flutter imports:
 import 'package:flutter/material.dart';
+
+// Package imports:
+import 'package:auto_size_text/auto_size_text.dart';
+import 'package:flutter_vibrate/flutter_vibrate.dart';
+
+// Project imports:
 import 'package:dragginator/app_icons.dart';
 import 'package:dragginator/appstate_container.dart';
 import 'package:dragginator/localization.dart';
@@ -140,7 +146,7 @@ class _AppPopupButtonState extends State<AppPopupButton> {
                   if (dragUpdateDetails.localPosition.dy < -60) {
                     isScrolledUpEnough = true;
                     if (firstTime) {
-                      sl.get<HapticUtil>().success();
+                      sl.get<HapticUtil>().feedback(FeedbackType.success);
                     }
                     firstTime = false;
                     setState(() {

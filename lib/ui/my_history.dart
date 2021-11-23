@@ -1,41 +1,45 @@
 // @dart=2.9
 
+// Dart imports:
 import 'dart:async';
 
+// Flutter imports:
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+
+// Package imports:
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flare_flutter/base/animation/actor_animation.dart';
-
 import 'package:flare_flutter/flare.dart';
 import 'package:flare_flutter/flare_actor.dart';
 import 'package:flare_flutter/flare_controller.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
+import 'package:flutter_vibrate/flutter_vibrate.dart';
 import 'package:fluttericon/font_awesome5_icons.dart';
 import 'package:fluttericon/font_awesome_icons.dart';
-
 import 'package:intl/intl.dart';
 import 'package:logger/logger.dart';
-import 'package:dragginator/network/model/response/address_txs_response.dart';
+
+// Project imports:
+import 'package:dragginator/app_icons.dart';
 import 'package:dragginator/appstate_container.dart';
 import 'package:dragginator/dimens.dart';
 import 'package:dragginator/localization.dart';
-import 'package:dragginator/service_locator.dart';
-
-import 'package:dragginator/model/db/contact.dart';
 import 'package:dragginator/model/db/appdb.dart';
+import 'package:dragginator/model/db/contact.dart';
 import 'package:dragginator/network/model/block_types.dart';
+import 'package:dragginator/network/model/response/address_txs_response.dart';
+import 'package:dragginator/service_locator.dart';
 import 'package:dragginator/styles.dart';
-import 'package:dragginator/app_icons.dart';
 import 'package:dragginator/ui/contacts/add_contact.dart';
-import 'package:dragginator/ui/send/send_sheet.dart';
 import 'package:dragginator/ui/receive/receive_sheet.dart';
+import 'package:dragginator/ui/send/send_sheet.dart';
 import 'package:dragginator/ui/widgets/buttons.dart';
-import 'package:dragginator/ui/widgets/sheet_util.dart';
 import 'package:dragginator/ui/widgets/list_slidable.dart';
 import 'package:dragginator/ui/widgets/reactive_refresh.dart';
-import 'package:dragginator/util/sharedprefsutil.dart';
-import 'package:dragginator/util/hapticutil.dart';
+import 'package:dragginator/ui/widgets/sheet_util.dart';
 import 'package:dragginator/util/caseconverter.dart';
+import 'package:dragginator/util/hapticutil.dart';
+import 'package:dragginator/util/sharedprefsutil.dart';
 
 class MyHistory extends StatefulWidget {
   final String address;
@@ -247,9 +251,7 @@ class _MyHistoryStateState extends State<MyHistory>
         backgroundColor: StateContainer.of(context).curTheme.backgroundDark,
         child: ListView(
           padding: EdgeInsetsDirectional.fromSTEB(0, 5.0, 0, 15.0),
-          children: <Widget>[
-          
-          ],
+          children: <Widget>[],
         ),
         onRefresh: _refresh,
         isRefreshing: _isRefreshing,
@@ -275,7 +277,7 @@ class _MyHistoryStateState extends State<MyHistory>
     setState(() {
       _isRefreshing = true;
     });
-    sl.get<HapticUtil>().success();
+    sl.get<HapticUtil>().feedback(FeedbackType.success);
     StateContainer.of(context).requestUpdateHistory();
 
     // Hide refresh indicator after 3 seconds if no server response

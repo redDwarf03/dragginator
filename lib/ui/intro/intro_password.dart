@@ -1,23 +1,28 @@
 // @dart=2.9
 
-import 'package:auto_size_text/auto_size_text.dart';
+// Flutter imports:
 import 'package:flutter/material.dart';
+
+// Package imports:
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:hex/hex.dart';
 import 'package:keyboard_avoider/keyboard_avoider.dart';
+
+// Project imports:
+import 'package:dragginator/app_icons.dart';
 import 'package:dragginator/appstate_container.dart';
 import 'package:dragginator/dimens.dart';
-import 'package:dragginator/model/db/appdb.dart';
-import 'package:dragginator/styles.dart';
 import 'package:dragginator/localization.dart';
-import 'package:dragginator/app_icons.dart';
+import 'package:dragginator/model/db/appdb.dart';
+import 'package:dragginator/model/vault.dart';
 import 'package:dragginator/service_locator.dart';
+import 'package:dragginator/styles.dart';
 import 'package:dragginator/ui/widgets/app_text_field.dart';
 import 'package:dragginator/ui/widgets/buttons.dart';
 import 'package:dragginator/ui/widgets/security.dart';
 import 'package:dragginator/ui/widgets/tap_outside_unfocus.dart';
-import 'package:dragginator/util/app_ffi/encrypt/crypter.dart';
 import 'package:dragginator/util/app_ffi/apputil.dart';
-import 'package:dragginator/model/vault.dart';
+import 'package:dragginator/util/app_ffi/encrypt/crypter.dart';
 import 'package:dragginator/util/app_ffi/keys/seeds.dart';
 
 class IntroPassword extends StatefulWidget {

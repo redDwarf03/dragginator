@@ -1,6 +1,9 @@
 // @dart=2.9
 
+// Flutter imports:
 import 'package:flutter/material.dart';
+
+// Project imports:
 import 'package:dragginator/localization.dart';
 import 'package:dragginator/model/setting_item.dart';
 
@@ -34,9 +37,9 @@ class LockTimeoutSetting extends SettingSelectionItem {
   Duration getDuration() {
     switch (setting) {
       case LockTimeoutOption.ZERO:
-        return Duration(seconds:3);
+        return Duration(seconds: 3);
       case LockTimeoutOption.ONE:
-        return Duration(minutes:1);
+        return Duration(minutes: 1);
       case LockTimeoutOption.FIVE:
         return Duration(minutes: 5);
       case LockTimeoutOption.FIFTEEN:
@@ -44,9 +47,9 @@ class LockTimeoutSetting extends SettingSelectionItem {
       case LockTimeoutOption.THIRTY:
         return Duration(minutes: 30);
       case LockTimeoutOption.SIXTY:
-        return Duration(minutes:1);
+        return Duration(minutes: 1);
       default:
-        return Duration(minutes:1);
+        return Duration(minutes: 1);
     }
   }
 

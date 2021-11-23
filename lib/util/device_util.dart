@@ -1,7 +1,11 @@
+// Dart imports:
 import 'dart:io';
 
-import 'package:device_info/device_info.dart';
+// Flutter imports:
 import 'package:flutter/services.dart';
+
+// Package imports:
+import 'package:device_info_plus/device_info_plus.dart';
 
 class DeviceUtil {
   static Future<String>? getIdentifier() async {

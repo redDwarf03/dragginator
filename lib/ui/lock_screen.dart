@@ -1,22 +1,25 @@
 // @dart=2.9
 
+// Flutter imports:
 import 'package:flutter/material.dart';
+
+// Project imports:
 import 'package:dragginator/app_icons.dart';
-import 'package:dragginator/service_locator.dart';
+import 'package:dragginator/appstate_container.dart';
+import 'package:dragginator/dimens.dart';
+import 'package:dragginator/localization.dart';
 import 'package:dragginator/model/authentication_method.dart';
 import 'package:dragginator/model/vault.dart';
+import 'package:dragginator/service_locator.dart';
 import 'package:dragginator/styles.dart';
-import 'package:dragginator/ui/widgets/dialog.dart';
-import 'package:dragginator/util/biometrics.dart';
-import 'package:dragginator/util/app_ffi/apputil.dart';
-import 'package:dragginator/util/sharedprefsutil.dart';
-import 'package:dragginator/util/caseconverter.dart';
-import 'package:dragginator/ui/widgets/buttons.dart';
-import 'package:dragginator/ui/widgets/security.dart';
-import 'package:dragginator/appstate_container.dart';
-import 'package:dragginator/localization.dart';
-import 'package:dragginator/dimens.dart';
 import 'package:dragginator/ui/util/routes.dart';
+import 'package:dragginator/ui/widgets/buttons.dart';
+import 'package:dragginator/ui/widgets/dialog.dart';
+import 'package:dragginator/ui/widgets/security.dart';
+import 'package:dragginator/util/app_ffi/apputil.dart';
+import 'package:dragginator/util/biometrics.dart';
+import 'package:dragginator/util/caseconverter.dart';
+import 'package:dragginator/util/sharedprefsutil.dart';
 
 class AppLockScreen extends StatefulWidget {
   @override

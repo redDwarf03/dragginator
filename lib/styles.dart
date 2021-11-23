@@ -1,8 +1,13 @@
 // @dart=2.9
 
-import 'package:flutter/material.dart';
-import 'package:dragginator/appstate_container.dart';
+// Dart imports:
 import 'dart:ui' as ui;
+
+// Flutter imports:
+import 'package:flutter/material.dart';
+
+// Project imports:
+import 'package:dragginator/appstate_container.dart';
 
 class AppStyles {
   // Text style for paragraph text.
@@ -31,7 +36,6 @@ class AppStyles {
         color: StateContainer.of(context).curTheme.primary);
   }
 
-
   static TextStyle textStyleParagraphSmall(BuildContext context) {
     return TextStyle(
         fontFamily: "Lato",
@@ -39,7 +43,7 @@ class AppStyles {
         fontWeight: FontWeight.w300,
         color: StateContainer.of(context).curTheme.text);
   }
-  
+
   // Text style for thin paragraph text with primary color.
   static TextStyle textStyleParagraphThinPrimary(BuildContext context) {
     return TextStyle(

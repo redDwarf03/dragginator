@@ -1,7 +1,10 @@
 // @dart=2.9
 
-import 'package:dragginator/bus/navigation_event.dart';
+// Flutter imports:
 import 'package:flutter/material.dart';
+
+// Project imports:
+import 'package:dragginator/bus/navigation_event.dart';
 
 class Background extends StatefulWidget {
   const Background({Key key, @required String assetName})

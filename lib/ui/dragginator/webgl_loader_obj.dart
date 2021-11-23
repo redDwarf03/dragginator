@@ -1,15 +1,17 @@
+// Dart imports:
 import 'dart:async';
 
+// Flutter imports:
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-
 import 'package:flutter/widgets.dart';
+
+// Package imports:
 import 'package:flutter_gl/flutter_gl.dart';
 import 'package:three_dart/three_dart.dart' as THREE;
 import 'package:three_dart_jsm/three_dart_jsm.dart' as THREE_JSM;
 
 class webgl_loader_obj extends StatefulWidget {
-
   webgl_loader_obj({Key? key}) : super(key: key);
 
   _MyAppState createState() => _MyAppState();
@@ -93,7 +95,6 @@ class _MyAppState extends State<webgl_loader_obj> {
             return SingleChildScrollView(child: _build(context));
           },
         ),
-        
       ),
     );
   }
@@ -200,7 +201,10 @@ class _MyAppState extends State<webgl_loader_obj> {
 
     var textureLoader = new THREE.TextureLoader(null);
     texture = await textureLoader.load(
-        'https://dragginator.com/test/obj/texture_map.png', () {}, () {}, () {});
+        'https://dragginator.com/test/obj/texture_map.png',
+        () {},
+        () {},
+        () {});
 
     texture.magFilter = THREE.LinearFilter;
     texture.minFilter = THREE.LinearMipmapLinearFilter;
@@ -208,8 +212,8 @@ class _MyAppState extends State<webgl_loader_obj> {
     texture.needsUpdate = true;
 
     var loader = THREE_JSM.OBJLoader(null);
-    object =
-        await loader.load('https://dragginator.com/test/obj/test.obj', () {}, () {}, () {});
+    object = await loader.load(
+        'https://dragginator.com/test/obj/test.obj', () {}, () {}, () {});
 
     object.traverse((child) {
       if (child.isMesh) {

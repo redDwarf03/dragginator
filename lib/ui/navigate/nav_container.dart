@@ -1,7 +1,18 @@
 // @dart=2.9
 
+// Dart imports:
 import 'dart:io';
+
+// Flutter imports:
+import 'package:flutter/material.dart';
+
+// Package imports:
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:fluttericon/font_awesome5_icons.dart';
+import 'package:fluttericon/linearicons_free_icons.dart';
+import 'package:fluttericon/typicons_icons.dart';
+
+// Project imports:
 import 'package:dragginator/appstate_container.dart';
 import 'package:dragginator/bus/navigation_event.dart';
 import 'package:dragginator/model/wallet.dart';
@@ -10,10 +21,6 @@ import 'package:dragginator/ui/home/breeding_list.dart';
 import 'package:dragginator/ui/home/first_page.dart';
 import 'package:dragginator/ui/home/settings_drawer.dart';
 import 'package:dragginator/ui/navigate/nav_route_view.dart';
-import 'package:flutter/material.dart';
-import 'package:fluttericon/font_awesome5_icons.dart';
-import 'package:fluttericon/linearicons_free_icons.dart';
-import 'package:fluttericon/typicons_icons.dart';
 
 class NavContainer extends StatefulWidget {
   NavContainer(this.appWallet, {Key key, this.initialIndex}) : super(key: key);
@@ -91,7 +98,10 @@ class _NavContainerState extends State<NavContainer>
       Icon(Typicons.menu_outline)
     ];
 
-    _tabController = new TabController(vsync: this, length: children.length, initialIndex: widget.initialIndex??0);
+    _tabController = new TabController(
+        vsync: this,
+        length: children.length,
+        initialIndex: widget.initialIndex ?? 0);
     _animation = _tabController.animation;
     NavigationBus.registerTabController(_tabController);
   }
@@ -110,11 +120,13 @@ class _NavContainerState extends State<NavContainer>
             ? EdgeInsets.only(bottom: 70)
             : EdgeInsets.only(bottom: 80),
         constraints: BoxConstraints.expand(),
-        child: StateContainer.of(context).wallet == null || StateContainer.of(context).wallet.address == null
-                  ? FirstPage(null) : TabBarView(
-          controller: _tabController,
-          children: _routes,
-        ),
+        child: StateContainer.of(context).wallet == null ||
+                StateContainer.of(context).wallet.address == null
+            ? FirstPage(null)
+            : TabBarView(
+                controller: _tabController,
+                children: _routes,
+              ),
       ),
       Column(
           mainAxisAlignment: MainAxisAlignment.end,

@@ -1,20 +1,26 @@
 // @dart=2.9
 
+// Dart imports:
 import 'dart:async';
 
-import 'package:event_taxi/event_taxi.dart';
+// Flutter imports:
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+
+// Package imports:
+import 'package:event_taxi/event_taxi.dart';
 import 'package:fluttericon/font_awesome_icons.dart';
 import 'package:logger/logger.dart';
+
+// Project imports:
+import 'package:dragginator/appstate_container.dart';
 import 'package:dragginator/bus/events.dart';
+import 'package:dragginator/localization.dart';
 import 'package:dragginator/network/model/response/wstatusget_response.dart';
 import 'package:dragginator/service/app_service.dart';
 import 'package:dragginator/service/http_service.dart';
 import 'package:dragginator/service_locator.dart';
 import 'package:dragginator/styles.dart';
-import 'package:dragginator/appstate_container.dart';
-import 'package:dragginator/localization.dart';
 import 'package:dragginator/ui/widgets/app_text_field.dart';
 import 'package:dragginator/util/sharedprefsutil.dart';
 

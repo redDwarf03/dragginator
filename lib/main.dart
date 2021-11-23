@@ -1,40 +1,46 @@
 // @dart=2.9
 
+// Dart imports:
 import 'dart:async';
 import 'dart:io';
-import 'package:dragginator/model/db/appdb.dart';
-import 'package:dragginator/ui/home/start_game.dart';
-import 'package:flutter/foundation.dart';
-import 'package:flutter/scheduler.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:logger/logger.dart';
-import 'package:dragginator/model/available_language.dart';
-import 'package:dragginator/ui/before_scan_screen.dart';
-import 'package:dragginator/ui/intro/intro_backup_safety.dart';
-import 'package:dragginator/ui/intro/intro_password.dart';
-import 'package:dragginator/ui/intro/intro_password_on_launch.dart';
-import 'package:dragginator/ui/password_lock_screen.dart';
-import 'package:dragginator/ui/widgets/dialog.dart';
-import 'package:dragginator/util/caseconverter.dart';
-import 'package:dragginator/util/helpers.dart';
-import 'package:oktoast/oktoast.dart';
 
-import 'package:dragginator/styles.dart';
+// Flutter imports:
+import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
+import 'package:flutter/services.dart';
+
+// Package imports:
+import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:logger/logger.dart';
+import 'package:oktoast/oktoast.dart';
+import 'package:root_checker/root_checker.dart';
+
+// Project imports:
 import 'package:dragginator/appstate_container.dart';
 import 'package:dragginator/localization.dart';
-import 'package:dragginator/service_locator.dart';
-import 'package:dragginator/ui/home_page.dart';
-import 'package:dragginator/ui/lock_screen.dart';
-import 'package:dragginator/ui/intro/intro_backup_seed.dart';
-import 'package:dragginator/ui/intro/intro_backup_confirm.dart';
-import 'package:dragginator/ui/intro/intro_import_seed.dart';
-import 'package:dragginator/ui/util/routes.dart';
+import 'package:dragginator/model/available_language.dart';
+import 'package:dragginator/model/db/appdb.dart';
 import 'package:dragginator/model/vault.dart';
+import 'package:dragginator/service_locator.dart';
+import 'package:dragginator/styles.dart';
+import 'package:dragginator/ui/before_scan_screen.dart';
+import 'package:dragginator/ui/home/start_game.dart';
+import 'package:dragginator/ui/home_page.dart';
+import 'package:dragginator/ui/intro/intro_backup_confirm.dart';
+import 'package:dragginator/ui/intro/intro_backup_safety.dart';
+import 'package:dragginator/ui/intro/intro_backup_seed.dart';
+import 'package:dragginator/ui/intro/intro_import_seed.dart';
+import 'package:dragginator/ui/intro/intro_password.dart';
+import 'package:dragginator/ui/intro/intro_password_on_launch.dart';
+import 'package:dragginator/ui/lock_screen.dart';
+import 'package:dragginator/ui/password_lock_screen.dart';
+import 'package:dragginator/ui/util/routes.dart';
+import 'package:dragginator/ui/widgets/dialog.dart';
 import 'package:dragginator/util/app_ffi/apputil.dart';
+import 'package:dragginator/util/caseconverter.dart';
+import 'package:dragginator/util/helpers.dart';
 import 'package:dragginator/util/sharedprefsutil.dart';
-import 'package:root_checker/root_checker.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

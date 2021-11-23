@@ -1,15 +1,22 @@
 // @dart=2.9
 
-import 'dart:io';
+// Dart imports:
 import 'dart:async';
-import 'package:event_taxi/event_taxi.dart';
-import 'package:oktoast/oktoast.dart';
+import 'dart:io';
+
+// Flutter imports:
 import 'package:flutter/material.dart';
+
+// Package imports:
+import 'package:event_taxi/event_taxi.dart';
 import 'package:flutter_webview_plugin/flutter_webview_plugin.dart';
+import 'package:oktoast/oktoast.dart';
+
+// Project imports:
 import 'package:dragginator/appstate_container.dart';
-import 'package:dragginator/styles.dart';
-import 'package:dragginator/localization.dart';
 import 'package:dragginator/bus/events.dart';
+import 'package:dragginator/localization.dart';
+import 'package:dragginator/styles.dart';
 import 'package:dragginator/ui/util/exceptions.dart';
 
 enum ThreeLineAddressTextType { PRIMARY60, PRIMARY, SUCCESS, SUCCESS_FULL }
@@ -503,9 +510,9 @@ class UIUtil {
 
   static String getDragginatorURL(String dna, String status) {
     if (status == "egg") {
-      return "https://dragginator.com/data/eggs/"+dna+"/egg.png";
+      return "https://dragginator.com/data/eggs/" + dna + "/egg.png";
     } else {
-      return "https://dragginator.com/data/eggs/"+dna+"/draggon.png";
+      return "https://dragginator.com/data/eggs/" + dna + "/draggon.png";
     }
   }
 }

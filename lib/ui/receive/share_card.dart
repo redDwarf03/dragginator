@@ -1,11 +1,16 @@
 // @dart=2.9
 
-import 'package:auto_size_text/auto_size_text.dart';
+// Flutter imports:
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+
+// Package imports:
+import 'package:auto_size_text/auto_size_text.dart';
+import 'package:qr_flutter/qr_flutter.dart';
+
+// Project imports:
 import 'package:dragginator/appstate_container.dart';
 import 'package:dragginator/ui/util/ui_util.dart';
-import 'package:qr_flutter/qr_flutter.dart';
 
 class AppShareCard extends StatefulWidget {
   final GlobalKey key;
@@ -120,7 +125,8 @@ class _AppShareCardState extends State<AppShareCard> {
                         height: 25.44,
                         margin: EdgeInsetsDirectional.only(top: 1.44545),
                         child: CircleAvatar(
-                          backgroundColor: StateContainer.of(context).curTheme.text05,
+                          backgroundColor:
+                              StateContainer.of(context).curTheme.text05,
                           backgroundImage: NetworkImage(
                             UIUtil.getAvatarURL(StateContainer.of(context)
                                 .selectedAccount

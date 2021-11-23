@@ -1,11 +1,16 @@
 // @dart=2.9
 
-import 'package:auto_size_text/auto_size_text.dart';
+// Flutter imports:
 import 'package:flutter/material.dart';
-import 'package:dragginator/appstate_container.dart';
+
+// Package imports:
+import 'package:auto_size_text/auto_size_text.dart';
+
+// Project imports:
 import 'package:dragginator/app_icons.dart';
-import 'package:dragginator/styles.dart';
+import 'package:dragginator/appstate_container.dart';
 import 'package:dragginator/model/setting_item.dart';
+import 'package:dragginator/styles.dart';
 import 'package:dragginator/ui/util/ui_util.dart';
 
 class AppSettings {
@@ -80,7 +85,7 @@ class AppSettings {
     );
   }
 
-static Widget buildSettingsListItemSingleLineWithInfos(
+  static Widget buildSettingsListItemSingleLineWithInfos(
       BuildContext context, String heading, String info, IconData settingIcon,
       {Function onPressed}) {
     return FlatButton(
@@ -142,7 +147,7 @@ static Widget buildSettingsListItemSingleLineWithInfos(
       ),
     );
   }
-  
+
   //Settings item without any dropdown option but rather a direct functionality
   static Widget buildSettingsListItemSingleLine(
       BuildContext context, String heading, IconData settingIcon,
@@ -179,7 +184,9 @@ static Widget buildSettingsListItemSingleLineWithInfos(
                           ? 0
                           : settingIcon == AppIcons.backupseed
                               ? 1
-                              : settingIcon == AppIcons.transferfunds ? 2 : 3,
+                              : settingIcon == AppIcons.transferfunds
+                                  ? 2
+                                  : 3,
                   bottom: 3,
                   end: settingIcon == AppIcons.logout
                       ? 0
@@ -187,7 +194,9 @@ static Widget buildSettingsListItemSingleLineWithInfos(
                           ? 6
                           : settingIcon == AppIcons.backupseed
                               ? 5
-                              : settingIcon == AppIcons.transferfunds ? 4 : 3,
+                              : settingIcon == AppIcons.transferfunds
+                                  ? 4
+                                  : 3,
                 ),
               ),
             ),

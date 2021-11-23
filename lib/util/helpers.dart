@@ -1,7 +1,10 @@
 // @dart=2.9
 
-import 'dart:typed_data';
+// Dart imports:
 import 'dart:convert';
+import 'dart:typed_data';
+
+// Package imports:
 import 'package:hex/hex.dart';
 
 class AppHelpers {
@@ -20,7 +23,7 @@ class AppHelpers {
   static String byteToHex(Uint8List bytes) {
     return HEX.encode(bytes).toUpperCase();
   }
-  
+
   static BigInt byteToBigInt(Uint8List bigIntBytes) {
     return _decodeBigInt(bigIntBytes);
   }

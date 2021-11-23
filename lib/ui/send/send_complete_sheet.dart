@@ -1,12 +1,15 @@
 // @dart=2.9
 
+// Flutter imports:
 import 'package:flutter/material.dart';
+
+// Project imports:
+import 'package:dragginator/app_icons.dart';
 import 'package:dragginator/appstate_container.dart';
 import 'package:dragginator/dimens.dart';
-import 'package:dragginator/app_icons.dart';
 import 'package:dragginator/localization.dart';
-import 'package:dragginator/ui/widgets/buttons.dart';
 import 'package:dragginator/ui/util/ui_util.dart';
+import 'package:dragginator/ui/widgets/buttons.dart';
 import 'package:dragginator/util/caseconverter.dart';
 import 'package:dragginator/util/numberutil.dart';
 
@@ -112,7 +115,6 @@ class _SendCompleteSheetState extends State<SendCompleteSheet> {
                               fontFamily: 'Lato',
                             ),
                           ),
-                          
                         ],
                       ),
                     ),
@@ -125,7 +127,10 @@ class _SendCompleteSheetState extends State<SendCompleteSheet> {
                         // "SENT TO" text
                         Text(
                           CaseChange.toUpperCase(
-                              widget.title == null ? AppLocalization.of(context).sentTo : widget.title, context),
+                              widget.title == null
+                                  ? AppLocalization.of(context).sentTo
+                                  : widget.title,
+                              context),
                           style: TextStyle(
                             fontSize: 28.0,
                             fontWeight: FontWeight.w700,

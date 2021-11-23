@@ -1,13 +1,16 @@
 // @dart=2.9
 
+// Flutter imports:
 import 'package:flutter/services.dart';
 
+// Package imports:
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:dragginator/util/random_util.dart';
-
 import 'package:shared_preferences/shared_preferences.dart';
+
+// Project imports:
 import 'package:dragginator/service_locator.dart';
 import 'package:dragginator/util/encrypt.dart';
+import 'package:dragginator/util/random_util.dart';
 import 'package:dragginator/util/sharedprefsutil.dart';
 
 // Singleton for keystore access methods in android/iOS

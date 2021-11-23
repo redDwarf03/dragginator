@@ -1,9 +1,12 @@
+// Flutter imports:
+import 'package:flutter/material.dart';
+
+// Project imports:
 import 'package:dragginator/dimens.dart';
 import 'package:dragginator/localization.dart';
 import 'package:dragginator/styles.dart';
 import 'package:dragginator/ui/util/ui_util.dart';
 import 'package:dragginator/ui/widgets/buttons.dart';
-import 'package:flutter/material.dart';
 
 class StartGame extends StatefulWidget {
   StartGame() : super();

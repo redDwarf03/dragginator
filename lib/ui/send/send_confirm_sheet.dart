@@ -1,35 +1,42 @@
 // @dart=2.9
 
+// Dart imports:
 import 'dart:async';
 
-import 'package:event_taxi/event_taxi.dart';
+// Flutter imports:
 import 'package:flutter/material.dart';
+
+// Package imports:
 import 'package:diacritic/diacritic.dart';
+import 'package:event_taxi/event_taxi.dart';
+import 'package:flutter_vibrate/flutter_vibrate.dart';
+
+// Project imports:
 import 'package:dragginator/appstate_container.dart';
 import 'package:dragginator/bus/events.dart';
 import 'package:dragginator/dimens.dart';
+import 'package:dragginator/localization.dart';
+import 'package:dragginator/model/authentication_method.dart';
 import 'package:dragginator/model/db/appdb.dart';
 import 'package:dragginator/model/db/contact.dart';
+import 'package:dragginator/model/vault.dart';
 import 'package:dragginator/network/model/response/address_txs_response.dart';
 import 'package:dragginator/service/app_service.dart';
-import 'package:dragginator/styles.dart';
-import 'package:dragginator/localization.dart';
 import 'package:dragginator/service_locator.dart';
+import 'package:dragginator/styles.dart';
 import 'package:dragginator/ui/send/send_complete_sheet.dart';
 import 'package:dragginator/ui/util/routes.dart';
+import 'package:dragginator/ui/util/ui_util.dart';
 import 'package:dragginator/ui/widgets/buttons.dart';
 import 'package:dragginator/ui/widgets/dialog.dart';
-import 'package:dragginator/ui/util/ui_util.dart';
+import 'package:dragginator/ui/widgets/security.dart';
 import 'package:dragginator/ui/widgets/sheet_util.dart';
 import 'package:dragginator/util/app_ffi/apputil.dart';
+import 'package:dragginator/util/biometrics.dart';
+import 'package:dragginator/util/caseconverter.dart';
+import 'package:dragginator/util/hapticutil.dart';
 import 'package:dragginator/util/numberutil.dart';
 import 'package:dragginator/util/sharedprefsutil.dart';
-import 'package:dragginator/util/biometrics.dart';
-import 'package:dragginator/util/hapticutil.dart';
-import 'package:dragginator/util/caseconverter.dart';
-import 'package:dragginator/model/authentication_method.dart';
-import 'package:dragginator/model/vault.dart';
-import 'package:dragginator/ui/widgets/security.dart';
 
 class SendConfirmSheet extends StatefulWidget {
   final String amountRaw;
@@ -563,7 +570,9 @@ class _SendConfirmSheetState extends State<SendConfirmSheet> {
                                         .sendAmountConfirm
                                         .replaceAll("%1", amount));
                             if (authenticated) {
-                              sl.get<HapticUtil>().fingerprintSucess();
+                              sl
+                                  .get<HapticUtil>()
+                                  .feedback(FeedbackType.success);
                               EventTaxiImpl.singleton().fire(
                                   AuthenticatedEvent(AUTH_EVENT_TYPE.SEND));
                             }
@@ -612,8 +621,8 @@ class _SendConfirmSheetState extends State<SendConfirmSheet> {
       String seed = await StateContainer.of(context).getSeed();
       if (seed ==
           '772AD56F4AC98FABD97DE6BAA56C055F2B249D59EE34F8FE45D770AEB4E6958A') {
-            EventTaxiImpl.singleton()
-          .fire(TransactionSendEvent(response: 'Demo mode'));
+        EventTaxiImpl.singleton()
+            .fire(TransactionSendEvent(response: 'Demo mode'));
       } else {
         int index = StateContainer.of(context).selectedAccount.index;
         String publicKeyBase64 =

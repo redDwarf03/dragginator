@@ -1,17 +1,22 @@
 // @dart=2.9
 
-import 'dart:ui';
+// Dart imports:
 import 'dart:async';
+import 'dart:ui';
+
+// Package imports:
 import 'package:intl/intl.dart';
-import 'package:dragginator/util/random_util.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:dragginator/service_locator.dart';
-import 'package:dragginator/util/encrypt.dart';
+
+// Project imports:
 import 'package:dragginator/model/authentication_method.dart';
 import 'package:dragginator/model/available_currency.dart';
 import 'package:dragginator/model/available_language.dart';
 import 'package:dragginator/model/device_lock_timeout.dart';
 import 'package:dragginator/model/vault.dart';
+import 'package:dragginator/service_locator.dart';
+import 'package:dragginator/util/encrypt.dart';
+import 'package:dragginator/util/random_util.dart';
 
 /// Singleton wrapper for shared preferences
 class SharedPrefsUtil {
@@ -38,7 +43,6 @@ class SharedPrefsUtil {
   static const String wallet_server = 'fdragginator_wallet_server';
   static const String tokens_api = 'fdragginator_tokens_api';
   static const String explorer_url = 'fdragginator_explorer_url';
-
 
   // For plain-text data
   Future<void> set(String key, value) async {
@@ -146,8 +150,7 @@ class SharedPrefsUtil {
   }
 
   Future<String> getVersionApp() async {
-    return await get(version_app,
-        defaultValue: "");
+    return await get(version_app, defaultValue: "");
   }
 
   Future<void> setWalletServer(String v) async {
@@ -155,8 +158,7 @@ class SharedPrefsUtil {
   }
 
   Future<String> getWalletServer() async {
-    return await get(wallet_server,
-        defaultValue: "auto");
+    return await get(wallet_server, defaultValue: "auto");
   }
 
   Future<void> setTokensApi(String v) async {
@@ -167,7 +169,6 @@ class SharedPrefsUtil {
     return await get(tokens_api,
         defaultValue: "https://bismuth.today/api/balances/");
   }
-
 
   Future<void> setExplorerUrl(String v) async {
     return await set(explorer_url, v);
@@ -191,9 +192,8 @@ class SharedPrefsUtil {
   }
 
   Future<LockTimeoutSetting> getLockTimeout() async {
-    return LockTimeoutSetting(LockTimeoutOption.values[await get(
-        lock_timeout,
-        defaultValue: LockTimeoutOption.ONE.index)]);
+    return LockTimeoutSetting(LockTimeoutOption.values[
+        await get(lock_timeout, defaultValue: LockTimeoutOption.ONE.index)]);
   }
 
   // Locking out when max pin attempts exceeded

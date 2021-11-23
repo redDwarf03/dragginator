@@ -1,24 +1,31 @@
 // @dart=2.9
 
+// Dart imports:
 import 'dart:async';
-import 'package:dragginator/bus/navigation_event.dart';
-import 'package:dragginator/service/dragginator_service.dart';
-import 'package:dragginator/ui/navigate/background.dart';
-import 'package:dragginator/ui/navigate/nav_container.dart';
+
+// Flutter imports:
+import 'package:flutter/material.dart';
+
+// Package imports:
+import 'package:event_taxi/event_taxi.dart';
 import 'package:flare_flutter/base/animation/actor_animation.dart';
 import 'package:flare_flutter/flare.dart';
 import 'package:flare_flutter/flare_controller.dart';
-import 'package:flutter/material.dart';
-import 'package:event_taxi/event_taxi.dart';
 import 'package:logger/logger.dart';
+import 'package:package_info_plus/package_info_plus.dart';
+
+// Project imports:
 import 'package:dragginator/appstate_container.dart';
-import 'package:dragginator/localization.dart';
-import 'package:dragginator/service_locator.dart';
-import 'package:dragginator/ui/widgets/dialog.dart';
-import 'package:dragginator/util/sharedprefsutil.dart';
-import 'package:dragginator/util/caseconverter.dart';
-import 'package:package_info/package_info.dart';
 import 'package:dragginator/bus/events.dart';
+import 'package:dragginator/bus/navigation_event.dart';
+import 'package:dragginator/localization.dart';
+import 'package:dragginator/service/dragginator_service.dart';
+import 'package:dragginator/service_locator.dart';
+import 'package:dragginator/ui/navigate/background.dart';
+import 'package:dragginator/ui/navigate/nav_container.dart';
+import 'package:dragginator/ui/widgets/dialog.dart';
+import 'package:dragginator/util/caseconverter.dart';
+import 'package:dragginator/util/sharedprefsutil.dart';
 
 class AppHomePage extends StatefulWidget {
   AppHomePage() : super();
@@ -180,18 +187,15 @@ class _AppHomePageState extends State<AppHomePage>
         StateContainer.of(context).wallet.loading = false;
         StateContainer.of(context).wallet.historyLoading = false;
         if (event.delayPop) {
-        Future.delayed(Duration(milliseconds: 300), () {
+          Future.delayed(Duration(milliseconds: 300), () {
+            TabController _tabController = NavigationBus.tabController;
+            _tabController.animateTo(0);
+          });
+        } else if (!event.noPop) {
           TabController _tabController = NavigationBus.tabController;
           _tabController.animateTo(0);
-       
-        });
-      } else if (!event.noPop) {
-          TabController _tabController = NavigationBus.tabController;
-         _tabController.animateTo(0);
-       
-      }
+        }
       });
-      
     });
   }
 

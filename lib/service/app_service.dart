@@ -1,9 +1,15 @@
 // @dart=2.9
 
+// Dart imports:
 import 'dart:async';
 import 'dart:io';
+
+// Package imports:
+import 'package:diacritic/diacritic.dart';
 import 'package:event_taxi/event_taxi.dart';
 import 'package:logger/logger.dart';
+
+// Project imports:
 import 'package:dragginator/bus/events.dart';
 import 'package:dragginator/network/model/request/send_tx_request.dart';
 import 'package:dragginator/network/model/response/addlistlim_response.dart';
@@ -12,7 +18,6 @@ import 'package:dragginator/network/model/response/alias_get_response.dart';
 import 'package:dragginator/network/model/response/balance_get_response.dart';
 import 'package:dragginator/network/model/response/mpinsert_response.dart';
 import 'package:dragginator/network/model/response/servers_wallet_legacy.dart';
-import 'package:diacritic/diacritic.dart';
 import 'package:dragginator/network/model/response/wstatusget_response.dart';
 import 'package:dragginator/service/http_service.dart';
 import 'package:dragginator/service_locator.dart';
@@ -59,7 +64,7 @@ class AppService {
                 message.length == 10 + int.tryParse(message.substring(0, 10))) {
               message = message.substring(
                   10, 10 + int.tryParse(message.substring(0, 10)));
-                  WStatusGetResponse wStatusGetResponse =
+              WStatusGetResponse wStatusGetResponse =
                   wStatusGetResponseFromJson(message);
               if (wStatusGetResponse == null) {
                 EventTaxiImpl.singleton().fire(ConnStatusEvent(
@@ -172,7 +177,8 @@ class AppService {
     addressTxsResponse.tokens =
         await sl.get<HttpService>().getTokensBalance(address);
 
-    addressTxsResponse.result = new List<AddressTxsResponseResult>.empty(growable: true); 
+    addressTxsResponse.result =
+        new List<AddressTxsResponseResult>.empty(growable: true);
 
     try {
       ServerWalletLegacyResponse serverWalletLegacyResponse =
@@ -234,7 +240,7 @@ class AppService {
                     List blockChainTxs =
                         addlistlimResponseFromJson(blockchainTxListString);
 
-                    List txs = new List.empty(growable: true); 
+                    List txs = new List.empty(growable: true);
                     txs.addAll(mempoolTxs);
                     txs.addAll(blockChainTxs);
 

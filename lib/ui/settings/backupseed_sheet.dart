@@ -1,20 +1,27 @@
 // @dart=2.9
 
+// Dart imports:
 import 'dart:async';
-import 'package:auto_size_text/auto_size_text.dart';
+
+// Flutter imports:
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+
+// Package imports:
+import 'package:auto_size_text/auto_size_text.dart';
+
+// Project imports:
 import 'package:dragginator/app_icons.dart';
-import 'package:dragginator/localization.dart';
 import 'package:dragginator/appstate_container.dart';
 import 'package:dragginator/dimens.dart';
+import 'package:dragginator/localization.dart';
+import 'package:dragginator/styles.dart';
+import 'package:dragginator/ui/widgets/buttons.dart';
 import 'package:dragginator/ui/widgets/mnemonic_display.dart';
 import 'package:dragginator/ui/widgets/plainseed_display.dart';
 import 'package:dragginator/ui/widgets/sheets.dart';
-import 'package:dragginator/ui/widgets/buttons.dart';
-import 'package:dragginator/styles.dart';
-import 'package:dragginator/util/caseconverter.dart';
 import 'package:dragginator/util/app_ffi/keys/mnemonics.dart';
+import 'package:dragginator/util/caseconverter.dart';
 
 class AppSeedBackupSheet {
   String _seed;
@@ -77,17 +84,18 @@ class AppSeedBackupSheet {
                                   Container(
                                     margin: EdgeInsets.only(top: 15.0),
                                     constraints: BoxConstraints(
-                                        maxWidth: MediaQuery.of(context)
-                                                .size
-                                                .width -
-                                            140),
+                                        maxWidth:
+                                            MediaQuery.of(context).size.width -
+                                                140),
                                     child: Column(
                                       children: <Widget>[
                                         AutoSizeText(
                                           CaseChange.toUpperCase(
                                               showMnemonic
-                                                  ? AppLocalization.of(context).secretPhrase
-                                                  : AppLocalization.of(context).seed,
+                                                  ? AppLocalization.of(context)
+                                                      .secretPhrase
+                                                  : AppLocalization.of(context)
+                                                      .seed,
                                               context),
                                           style: AppStyles.textStyleHeader(
                                               context),
@@ -168,12 +176,14 @@ class AppSeedBackupSheet {
                                         ? AppButtonType.SUCCESS
                                         : AppButtonType.PRIMARY,
                                     _mnemonicCopied
-                                        ? AppLocalization.of(context).secretPhraseCopied
-                                        : AppLocalization.of(context).secretPhraseCopy,
+                                        ? AppLocalization.of(context)
+                                            .secretPhraseCopied
+                                        : AppLocalization.of(context)
+                                            .secretPhraseCopy,
                                     Dimens.BUTTON_BOTTOM_DIMENS, onPressed: () {
-                                      Clipboard.setData(new ClipboardData(
-                                            text: _mnemonic.join(" ")));
-                                            
+                                  Clipboard.setData(new ClipboardData(
+                                      text: _mnemonic.join(" ")));
+
                                   //UserDataUtil.setSecureClipboardItem(_mnemonic.join(" "));
                                   setState(() {
                                     // Set copied style
@@ -201,10 +211,13 @@ class AppSeedBackupSheet {
                                     _seedCopied
                                         ? AppButtonType.SUCCESS
                                         : AppButtonType.PRIMARY,
-                                    _seedCopied ? AppLocalization.of(context).seedCopiedShort : AppLocalization.of(context).copySeed,
+                                    _seedCopied
+                                        ? AppLocalization.of(context)
+                                            .seedCopiedShort
+                                        : AppLocalization.of(context).copySeed,
                                     Dimens.BUTTON_BOTTOM_DIMENS, onPressed: () {
-                                        Clipboard.setData(new ClipboardData(
-                                            text: _seed));
+                                  Clipboard.setData(
+                                      new ClipboardData(text: _seed));
                                   //UserDataUtil.setSecureClipboardItem(_seed);
                                   setState(() {
                                     // Set copied style

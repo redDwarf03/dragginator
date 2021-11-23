@@ -1,10 +1,16 @@
 // @dart=2.9
 
+// Dart imports:
 import 'dart:async';
 
-import 'package:dragginator/l10n/messages_all.dart';
+// Flutter imports:
 import 'package:flutter/material.dart';
+
+// Package imports:
 import 'package:intl/intl.dart';
+
+// Project imports:
+import 'package:dragginator/l10n/messages_all.dart';
 import 'package:dragginator/model/available_language.dart';
 import 'package:dragginator/service_locator.dart';
 import 'package:dragginator/util/sharedprefsutil.dart';
@@ -226,8 +232,7 @@ class AppLocalization {
   }
 
   String get dragginatorMergingHeader {
-    return Intl.message('Merging',
-        desc: '', name: 'dragginatorMergingHeader');
+    return Intl.message('Merging', desc: '', name: 'dragginatorMergingHeader');
   }
 
   String get dragginatorGetEggWithEggHeader {
@@ -257,7 +262,6 @@ class AppLocalization {
     return Intl.message('Allow to transfer',
         desc: '', name: 'dragginatorAllowTransfer');
   }
-
 
   String get dragginatorRegisterAnEggToTheHunt {
     return Intl.message('Register to the hunt',
@@ -290,7 +294,6 @@ class AppLocalization {
   String get poweredBy {
     return Intl.message('Powered by', desc: '', name: 'poweredBy');
   }
-
 
   ///  -- END DRAGGINATOR
 
@@ -447,13 +450,11 @@ class AppLocalization {
   }
 
   String get newWallet {
-    return Intl.message("New hunter",
-        desc: '', name: 'newWallet');
+    return Intl.message("New hunter", desc: '', name: 'newWallet');
   }
 
   String get importWallet {
-    return Intl.message("Load my profile",
-        desc: '', name: 'importWallet');
+    return Intl.message("Load my profile", desc: '', name: 'importWallet');
   }
 
   /// -- END INTRO ITEMS
@@ -535,7 +536,8 @@ class AppLocalization {
   }
 
   String get openfield {
-    return Intl.message("Data (Openfield)", desc: 'openfield', name: 'openfield');
+    return Intl.message("Data (Openfield)",
+        desc: 'openfield', name: 'openfield');
   }
 
   String get operation {
@@ -763,8 +765,7 @@ class AppLocalization {
   }
 
   String get historyHeader {
-    return Intl.message("My history",
-        desc: '', name: 'historyHeader');
+    return Intl.message("My history", desc: '', name: 'historyHeader');
   }
 
   String get tokensListTotalSupply {
@@ -1161,8 +1162,7 @@ class AppLocalization {
 
   /// PARAGRAPS
   String get passwordWillBeRequiredToOpenParagraph {
-    return Intl.message(
-        "This password will be required to open dragginator.",
+    return Intl.message("This password will be required to open dragginator.",
         desc:
             'A paragraph that tells the users that the created password will be required to open dragginator.',
         name: 'passwordWillBeRequiredToOpenParagraph');

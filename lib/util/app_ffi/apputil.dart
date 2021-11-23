@@ -1,21 +1,26 @@
 // @dart=2.9
 
+// Dart imports:
 import 'dart:convert';
 import 'dart:typed_data';
 
+// Flutter imports:
+import 'package:flutter/material.dart';
+
+// Package imports:
 import 'package:bip32/bip32.dart' as bip32;
 import 'package:bip39/bip39.dart' as bip39;
-import 'package:flutter/material.dart';
+import 'package:bs58check/bs58check.dart' as bs58check;
 import 'package:hex/hex.dart';
-import 'package:dragginator/model/db/appdb.dart';
-import 'package:dragginator/model/db/account.dart' as Account;
+
+// Project imports:
 import 'package:dragginator/appstate_container.dart';
 import 'package:dragginator/localization.dart';
+import 'package:dragginator/model/db/account.dart' as Account;
+import 'package:dragginator/model/db/appdb.dart';
 import 'package:dragginator/service_locator.dart';
-import 'package:bs58check/bs58check.dart' as bs58check;
 
 class AppUtil {
-
   String seedToAddress(String seed, int index) {
     String mnemonic = bip39.entropyToMnemonic(seed);
     //print("Mnemonic : " + mnemonic);
@@ -28,7 +33,8 @@ class AppUtil {
     //print("BIP 32 node (private Key) : " + HEX.encode(node.privateKey));
     //print("BIP 32 node (public Key) : " + HEX.encode(node.publicKey));
     //print("index : " + index.toString());
-    bip32.BIP32 addressDerived = node.derivePath("m/44'/209'/0'/0/" + index.toString());
+    bip32.BIP32 addressDerived =
+        node.derivePath("m/44'/209'/0'/0/" + index.toString());
     //print("BIP 32 Extended private Key : " + addressDerived.toBase58());
 
     //bip32.BIP32 childNeutered = addressDerived.neutered();

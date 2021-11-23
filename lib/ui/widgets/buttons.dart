@@ -1,7 +1,12 @@
 // @dart=2.9
 
-import 'package:auto_size_text/auto_size_text.dart';
+// Flutter imports:
 import 'package:flutter/material.dart';
+
+// Package imports:
+import 'package:auto_size_text/auto_size_text.dart';
+
+// Project imports:
 import 'package:dragginator/appstate_container.dart';
 import 'package:dragginator/styles.dart';
 import 'package:dragginator/ui/util/exceptions.dart';
@@ -34,7 +39,7 @@ class AppButton {
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(100.0)),
               color: disabled
-                  ? StateContainer.of(context).curTheme.primary60 
+                  ? StateContainer.of(context).curTheme.primary60
                   : StateContainer.of(context).curTheme.primary,
               child: AutoSizeText(buttonText,
                   textAlign: TextAlign.center,

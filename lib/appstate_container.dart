@@ -1,31 +1,37 @@
 // @dart=2.9
 
+// Dart imports:
 import 'dart:async';
-import 'package:dragginator/network/model/response/dragginator_list_from_address_response.dart';
-import 'package:dragginator/service/dragginator_service.dart';
-import 'package:dragginator/util/device_util.dart';
-import 'package:hex/hex.dart';
-import 'package:logger/logger.dart';
-import 'package:dragginator/model/wallet.dart';
-import 'package:event_taxi/event_taxi.dart';
+
+// Flutter imports:
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+
+// Package imports:
+import 'package:event_taxi/event_taxi.dart';
+import 'package:hex/hex.dart';
+import 'package:logger/logger.dart';
+
+// Project imports:
+import 'package:dragginator/bus/events.dart';
+import 'package:dragginator/model/address.dart';
+import 'package:dragginator/model/available_language.dart';
+import 'package:dragginator/model/db/account.dart';
+import 'package:dragginator/model/db/appdb.dart';
+import 'package:dragginator/model/vault.dart';
+import 'package:dragginator/model/wallet.dart';
 import 'package:dragginator/network/model/response/address_txs_response.dart';
 import 'package:dragginator/network/model/response/balance_get_response.dart';
+import 'package:dragginator/network/model/response/dragginator_list_from_address_response.dart';
 import 'package:dragginator/service/app_service.dart';
+import 'package:dragginator/service/dragginator_service.dart';
 import 'package:dragginator/service/http_service.dart';
-import 'package:dragginator/util/app_ffi/encrypt/crypter.dart';
-import 'package:dragginator/themes.dart';
 import 'package:dragginator/service_locator.dart';
-import 'package:dragginator/model/available_language.dart';
-import 'package:dragginator/model/address.dart';
-import 'package:dragginator/model/vault.dart';
-import 'package:dragginator/model/db/appdb.dart';
-import 'package:dragginator/model/db/account.dart';
-import 'package:dragginator/util/sharedprefsutil.dart';
+import 'package:dragginator/themes.dart';
 import 'package:dragginator/util/app_ffi/apputil.dart';
-import 'package:dragginator/bus/events.dart';
-
+import 'package:dragginator/util/app_ffi/encrypt/crypter.dart';
+import 'package:dragginator/util/device_util.dart';
+import 'package:dragginator/util/sharedprefsutil.dart';
 import 'util/sharedprefsutil.dart';
 
 class _InheritedStateContainer extends InheritedWidget {
@@ -93,7 +99,7 @@ class StateContainerState extends State<StateContainer> {
   String deviceIdentifier;
 
   int eggPrice = 0;
-  
+
   @override
   void initState() {
     super.initState();

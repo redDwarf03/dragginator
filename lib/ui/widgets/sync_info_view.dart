@@ -1,9 +1,15 @@
 // @dart=2.9
 
+// Dart imports:
 import 'dart:async';
 
-import 'package:event_taxi/event_taxi.dart';
+// Flutter imports:
 import 'package:flutter/material.dart';
+
+// Package imports:
+import 'package:event_taxi/event_taxi.dart';
+
+// Project imports:
 import 'package:dragginator/bus/events.dart';
 import 'package:dragginator/styles.dart';
 
@@ -63,7 +69,7 @@ class _SyncInfoViewState extends State<SyncInfoView> {
       mainAxisAlignment: MainAxisAlignment.end,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        Text(serverName, style: AppStyles.textStyleTiny(context)), 
+        Text(serverName, style: AppStyles.textStyleTiny(context)),
         connected == null || connected == false
             ? Icon(Icons.signal_cellular_alt_rounded, color: Colors.red)
             : Icon(Icons.signal_cellular_alt_rounded, color: Colors.green),

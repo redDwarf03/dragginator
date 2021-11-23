@@ -1,27 +1,35 @@
+// Dart imports:
 import 'dart:async';
+
+// Flutter imports:
+import 'package:flutter/material.dart';
+
+// Package imports:
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:circular_profile_avatar/circular_profile_avatar.dart';
+import 'package:flare_flutter/base/animation/actor_animation.dart';
+import 'package:flare_flutter/flare.dart';
+import 'package:flare_flutter/flare_controller.dart';
+import 'package:flutter_vibrate/flutter_vibrate.dart';
+import 'package:fluttericon/font_awesome5_icons.dart';
+import 'package:fluttericon/typicons_icons.dart';
+
+// Project imports:
+import 'package:dragginator/appstate_container.dart';
 import 'package:dragginator/dimens.dart';
+import 'package:dragginator/localization.dart';
 import 'package:dragginator/service/dragginator_service.dart';
+import 'package:dragginator/service_locator.dart';
+import 'package:dragginator/styles.dart';
 import 'package:dragginator/ui/dragginator/my_dragginator_detail.dart';
 import 'package:dragginator/ui/dragginator/my_dragginator_merging.dart';
 import 'package:dragginator/ui/send/send_confirm_sheet.dart';
 import 'package:dragginator/ui/util/ui_util.dart';
 import 'package:dragginator/ui/widgets/buttons.dart';
-import 'package:dragginator/ui/widgets/sheet_util.dart';
-import 'package:flare_flutter/base/animation/actor_animation.dart';
-import 'package:flare_flutter/flare.dart';
-import 'package:flare_flutter/flare_controller.dart';
-import 'package:flutter/material.dart';
-import 'package:dragginator/appstate_container.dart';
-import 'package:dragginator/localization.dart';
-import 'package:dragginator/service_locator.dart';
-import 'package:dragginator/styles.dart';
 import 'package:dragginator/ui/widgets/reactive_refresh.dart';
-import 'package:dragginator/util/sharedprefsutil.dart';
+import 'package:dragginator/ui/widgets/sheet_util.dart';
 import 'package:dragginator/util/hapticutil.dart';
-import 'package:fluttericon/font_awesome5_icons.dart';
-import 'package:fluttericon/typicons_icons.dart';
+import 'package:dragginator/util/sharedprefsutil.dart';
 
 class FirstPage extends StatefulWidget {
   final List<List> dragginatorList;
@@ -198,7 +206,7 @@ class _FirstPageStateState extends State<FirstPage>
     setState(() {
       _isRefreshing = true;
     });
-    sl.get<HapticUtil>().success();
+    sl.get<HapticUtil>().feedback(FeedbackType.success);
     StateContainer.of(context).requestUpdateDragginatorList();
 
     // Hide refresh indicator after 3 seconds if no server response
@@ -303,7 +311,7 @@ class _FirstPageStateState extends State<FirstPage>
                                         Sheets.showAppHeightNineSheet(
                                             context: context,
                                             widget: SendConfirmSheet(
-                                              displayTo: true,
+                                                displayTo: true,
                                                 title: AppLocalization.of(
                                                         context)
                                                     .dragginatorGetEggWithEggHeader,
@@ -340,60 +348,66 @@ class _FirstPageStateState extends State<FirstPage>
                                         ],
                                       )),
                                 ),
-                          StateContainer.of(context).wallet.accountBalance == 0 ? const SizedBox() :
-                          Container(
-                            margin: EdgeInsets.symmetric(horizontal: 6.0),
-                            decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                            ),
-                            child: FlatButton(
-                                onPressed: () {
-                                  Sheets.showAppHeightNineSheet(
-                                      context: context,
-                                      widget: SendConfirmSheet(
-                                        displayTo: false,
-                                          title: AppLocalization.of(context)
-                                              .dragginatorGetEggWithBisHeader
-                                              .replaceAll(
-                                                  '%1',
-                                                  StateContainer.of(context)
-                                                      .eggPrice
-                                                      .toString()),
-                                          amountRaw: "5",
-                                          operation: "",
-                                          openfield: "",
-                                          comment: "",
-                                          destination:
-                                              AppLocalization.of(context)
-                                                  .dragginatorAddress,
-                                          contactName: ""));
-                                },
-                                padding: EdgeInsets.all(0.0),
-                                shape: CircleBorder(),
-                                splashColor:
-                                    StateContainer.of(context).curTheme.text30,
-                                highlightColor:
-                                    StateContainer.of(context).curTheme.text15,
-                                child: Column(
-                                  children: [
-                                    Icon(FontAwesome5.money_bill_wave,
-                                        size: 26,
-                                        color: StateContainer.of(context)
-                                            .curTheme
-                                            .icon),
-                                    Text(
-                                      AppLocalization.of(context)
-                                          .dragginatorGetEggWithBisHeader
-                                          .replaceAll(
-                                              '%1',
-                                              StateContainer.of(context)
-                                                  .eggPrice
-                                                  .toString()),
-                                      style: AppStyles.textStyleTiny(context),
-                                    )
-                                  ],
-                                )),
-                          ),
+                          StateContainer.of(context).wallet.accountBalance == 0
+                              ? const SizedBox()
+                              : Container(
+                                  margin: EdgeInsets.symmetric(horizontal: 6.0),
+                                  decoration: BoxDecoration(
+                                    shape: BoxShape.circle,
+                                  ),
+                                  child: FlatButton(
+                                      onPressed: () {
+                                        Sheets.showAppHeightNineSheet(
+                                            context: context,
+                                            widget: SendConfirmSheet(
+                                                displayTo: false,
+                                                title: AppLocalization.of(
+                                                        context)
+                                                    .dragginatorGetEggWithBisHeader
+                                                    .replaceAll(
+                                                        '%1',
+                                                        StateContainer.of(
+                                                                context)
+                                                            .eggPrice
+                                                            .toString()),
+                                                amountRaw: "5",
+                                                operation: "",
+                                                openfield: "",
+                                                comment: "",
+                                                destination:
+                                                    AppLocalization.of(context)
+                                                        .dragginatorAddress,
+                                                contactName: ""));
+                                      },
+                                      padding: EdgeInsets.all(0.0),
+                                      shape: CircleBorder(),
+                                      splashColor: StateContainer.of(context)
+                                          .curTheme
+                                          .text30,
+                                      highlightColor: StateContainer.of(context)
+                                          .curTheme
+                                          .text15,
+                                      child: Column(
+                                        children: [
+                                          Icon(FontAwesome5.money_bill_wave,
+                                              size: 26,
+                                              color: StateContainer.of(context)
+                                                  .curTheme
+                                                  .icon),
+                                          Text(
+                                            AppLocalization.of(context)
+                                                .dragginatorGetEggWithBisHeader
+                                                .replaceAll(
+                                                    '%1',
+                                                    StateContainer.of(context)
+                                                        .eggPrice
+                                                        .toString()),
+                                            style: AppStyles.textStyleTiny(
+                                                context),
+                                          )
+                                        ],
+                                      )),
+                                ),
                         ],
                       )
                     ],

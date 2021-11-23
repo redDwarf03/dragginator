@@ -1,48 +1,53 @@
 // @dart=2.9
 
+// Dart imports:
 import 'dart:async';
-import 'package:dragginator/avatar.dart';
-import 'package:dragginator/ui/my_history.dart';
-import 'package:dragginator/ui/tokens/my_tokens_list.dart';
-import 'package:dragginator/ui/widgets/sync_info_view.dart';
-import 'package:dragginator/util/caseconverter.dart';
+
+// Flutter imports:
+import 'package:flutter/material.dart';
+
+// Package imports:
 import 'package:event_taxi/event_taxi.dart';
+import 'package:flutter_vibrate/flutter_vibrate.dart';
 import 'package:fluttericon/font_awesome5_icons.dart';
 import 'package:fluttericon/font_awesome_icons.dart';
 import 'package:fluttericon/iconic_icons.dart';
 import 'package:fluttericon/typicons_icons.dart';
 import 'package:logger/logger.dart';
+import 'package:package_info_plus/package_info_plus.dart';
+
+// Project imports:
+import 'package:dragginator/app_icons.dart';
+import 'package:dragginator/appstate_container.dart';
+import 'package:dragginator/avatar.dart';
+import 'package:dragginator/bus/events.dart';
+import 'package:dragginator/localization.dart';
+import 'package:dragginator/model/authentication_method.dart';
+import 'package:dragginator/model/db/appdb.dart';
+import 'package:dragginator/model/device_lock_timeout.dart';
+import 'package:dragginator/model/device_unlock_option.dart';
+import 'package:dragginator/model/vault.dart';
+import 'package:dragginator/service_locator.dart';
+import 'package:dragginator/styles.dart';
 import 'package:dragginator/ui/accounts/accountdetails_sheet.dart';
 import 'package:dragginator/ui/accounts/accounts_sheet.dart';
+import 'package:dragginator/ui/my_history.dart';
+import 'package:dragginator/ui/settings/backupseed_sheet.dart';
+import 'package:dragginator/ui/settings/contacts_widget.dart';
 import 'package:dragginator/ui/settings/custom_url_widget.dart';
 import 'package:dragginator/ui/settings/disable_password_sheet.dart';
 import 'package:dragginator/ui/settings/set_password_sheet.dart';
-import 'package:dragginator/ui/settings/tokens_widget.dart';
-import 'package:dragginator/ui/widgets/app_simpledialog.dart';
-import 'package:dragginator/ui/widgets/dialog.dart';
-import 'package:dragginator/ui/widgets/sheet_util.dart';
-import 'package:package_info/package_info.dart';
-import 'package:flutter/material.dart';
-import 'package:dragginator/appstate_container.dart';
-import 'package:dragginator/localization.dart';
-import 'package:dragginator/styles.dart';
-import 'package:dragginator/app_icons.dart';
-import 'package:dragginator/service_locator.dart';
-import 'package:dragginator/bus/events.dart';
-import 'package:dragginator/model/authentication_method.dart';
-import 'package:dragginator/model/device_unlock_option.dart';
-import 'package:dragginator/model/device_lock_timeout.dart';
-import 'package:dragginator/model/vault.dart';
-import 'package:dragginator/model/db/appdb.dart';
-import 'package:dragginator/ui/settings/backupseed_sheet.dart';
 import 'package:dragginator/ui/settings/settings_list_item.dart';
-import 'package:dragginator/ui/settings/contacts_widget.dart';
-import 'package:dragginator/ui/widgets/security.dart';
+import 'package:dragginator/ui/settings/tokens_widget.dart';
+import 'package:dragginator/ui/tokens/my_tokens_list.dart';
 import 'package:dragginator/ui/util/ui_util.dart';
-import 'package:dragginator/util/sharedprefsutil.dart';
+import 'package:dragginator/ui/widgets/app_simpledialog.dart';
+import 'package:dragginator/ui/widgets/security.dart';
+import 'package:dragginator/ui/widgets/sheet_util.dart';
+import 'package:dragginator/ui/widgets/sync_info_view.dart';
 import 'package:dragginator/util/biometrics.dart';
 import 'package:dragginator/util/hapticutil.dart';
-
+import 'package:dragginator/util/sharedprefsutil.dart';
 import '../../appstate_container.dart';
 import '../../util/sharedprefsutil.dart';
 
@@ -881,24 +886,36 @@ class _SettingsSheetState extends State<SettingsSheet>
                                   StateContainer.of(context).curTheme.text60)),
                     ),
                     StateContainer.of(context).wallet.tokens != null &&
-                    StateContainer.of(context).wallet.tokens.length > 0 &&
-                    StateContainer.of(context).wallet.tokens[0].tokenName != "" ?
-                    Divider(
-                      height: 2,
-                      color: StateContainer.of(context).curTheme.text15,
-                    ) : SizedBox(),
+                            StateContainer.of(context).wallet.tokens.length >
+                                0 &&
+                            StateContainer.of(context)
+                                    .wallet
+                                    .tokens[0]
+                                    .tokenName !=
+                                ""
+                        ? Divider(
+                            height: 2,
+                            color: StateContainer.of(context).curTheme.text15,
+                          )
+                        : SizedBox(),
                     StateContainer.of(context).wallet.tokens != null &&
-                    StateContainer.of(context).wallet.tokens.length > 0 && 
-                    StateContainer.of(context).wallet.tokens[0].tokenName != "" ?
-                    AppSettings.buildSettingsListItemSingleLine(
-                        context,
-                        AppLocalization.of(context).myTokensListHeader,
-                        Icons.scatter_plot_rounded, onPressed: () {
-                      setState(() {
-                        _myTokensListOpen = true;
-                      });
-                      _myTokensListController.forward();
-                    }) : SizedBox(),
+                            StateContainer.of(context).wallet.tokens.length >
+                                0 &&
+                            StateContainer.of(context)
+                                    .wallet
+                                    .tokens[0]
+                                    .tokenName !=
+                                ""
+                        ? AppSettings.buildSettingsListItemSingleLine(
+                            context,
+                            AppLocalization.of(context).myTokensListHeader,
+                            Icons.scatter_plot_rounded, onPressed: () {
+                            setState(() {
+                              _myTokensListOpen = true;
+                            });
+                            _myTokensListController.forward();
+                          })
+                        : SizedBox(),
                     Divider(
                       height: 2,
                       color: StateContainer.of(context).curTheme.text15,
@@ -912,23 +929,25 @@ class _SettingsSheetState extends State<SettingsSheet>
                       });
                       _tokensListController.forward();
                     }),
-                    StateContainer.of(context).wallet.history != null && 
-                    StateContainer.of(context).wallet.history.length > 0 ?
-                    Divider(
-                      height: 2,
-                      color: StateContainer.of(context).curTheme.text15,
-                    ) : SizedBox(),
-                    StateContainer.of(context).wallet.history != null && 
-                    StateContainer.of(context).wallet.history.length > 0 ?
-                    AppSettings.buildSettingsListItemSingleLine(
-                        context,
-                        AppLocalization.of(context).historyHeader,
-                        FontAwesome5.history, onPressed: () {
-                      setState(() {
-                        _myHistoryOpen = true;
-                      });
-                      _myHistoryController.forward();
-                    }) : SizedBox(),
+                    StateContainer.of(context).wallet.history != null &&
+                            StateContainer.of(context).wallet.history.length > 0
+                        ? Divider(
+                            height: 2,
+                            color: StateContainer.of(context).curTheme.text15,
+                          )
+                        : SizedBox(),
+                    StateContainer.of(context).wallet.history != null &&
+                            StateContainer.of(context).wallet.history.length > 0
+                        ? AppSettings.buildSettingsListItemSingleLine(
+                            context,
+                            AppLocalization.of(context).historyHeader,
+                            FontAwesome5.history, onPressed: () {
+                            setState(() {
+                              _myHistoryOpen = true;
+                            });
+                            _myHistoryController.forward();
+                          })
+                        : SizedBox(),
                     Divider(
                       height: 2,
                       color: StateContainer.of(context).curTheme.text15,
@@ -992,7 +1011,7 @@ class _SettingsSheetState extends State<SettingsSheet>
                                   AppLocalization.of(context)
                                       .fingerprintSeedBackup);
                           if (authenticated) {
-                            sl.get<HapticUtil>().fingerprintSucess();
+                            sl.get<HapticUtil>().feedback(FeedbackType.success);
                             StateContainer.of(context).getSeed().then((seed) {
                               AppSeedBackupSheet(seed).mainBottomSheet(context);
                             });
@@ -1062,7 +1081,7 @@ class _SettingsSheetState extends State<SettingsSheet>
                         context,
                         AppLocalization.of(context).logout,
                         FontAwesome.logout, onPressed: () {
-                          Navigator.of(context).pushReplacementNamed('/start_game');
+                      Navigator.of(context).pushReplacementNamed('/start_game');
                       /*AppDialogs.showConfirmDialog(
                           context,
                           CaseChange.toUpperCase(

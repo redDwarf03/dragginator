@@ -1,16 +1,21 @@
 // @dart=2.9
 
-import 'package:dragginator/network/model/response/address_txs_response.dart';
+// Flutter imports:
 import 'package:flutter/material.dart';
+
+// Package imports:
 import 'package:fluttericon/font_awesome_icons.dart';
 import 'package:intl/intl.dart';
 import 'package:logger/logger.dart';
+
+// Project imports:
+import 'package:dragginator/appstate_container.dart';
+import 'package:dragginator/localization.dart';
 import 'package:dragginator/model/token_ref.dart';
+import 'package:dragginator/network/model/response/address_txs_response.dart';
 import 'package:dragginator/service/http_service.dart';
 import 'package:dragginator/service_locator.dart';
 import 'package:dragginator/styles.dart';
-import 'package:dragginator/appstate_container.dart';
-import 'package:dragginator/localization.dart';
 
 class MyTokensList extends StatefulWidget {
   final AnimationController tokensListController;
@@ -27,7 +32,8 @@ class _MyTokensListState extends State<MyTokensList> {
   final Logger log = sl.get<Logger>();
 
   List<BisToken> _myBisTokenList = new List<BisToken>.empty(growable: true);
-  List<BisToken> _myBisTokenListForDisplay =  new List<BisToken>.empty(growable: true);
+  List<BisToken> _myBisTokenListForDisplay =
+      new List<BisToken>.empty(growable: true);
 
   @override
   void initState() {

@@ -1,10 +1,15 @@
 // @dart=2.9
 
-import 'package:dragginator/styles.dart';
+// Flutter imports:
 import 'package:flutter/material.dart';
+
+// Package imports:
 import 'package:fluttericon/font_awesome5_icons.dart';
 import 'package:fluttericon/font_awesome_icons.dart';
 import 'package:fluttericon/maki_icons.dart';
+
+// Project imports:
+import 'package:dragginator/styles.dart';
 
 class TokenRef {
   String token;

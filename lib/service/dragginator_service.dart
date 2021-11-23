@@ -7,13 +7,13 @@ import 'dart:async';
 import 'package:http/http.dart' as http;
 import 'package:logger/logger.dart';
 
+// Project imports:
 import 'package:dragginator/network/model/response/address_txs_response.dart';
 import 'package:dragginator/network/model/response/dragginator_infos_from_dna_response.dart';
 import 'package:dragginator/network/model/response/dragginator_list_from_address_response.dart';
 import 'package:dragginator/network/model/response/dragginator_merge_list_compatible_response.dart';
 import 'package:dragginator/network/model/response/dragginator_merge_list_reasons_not_compatible_response.dart';
 import 'package:dragginator/service_locator.dart';
-
 
 class DragginatorService {
   final Logger log = sl.get<Logger>();
@@ -127,7 +127,7 @@ class DragginatorService {
     }
   }
 
- Future<int> getEggPrice() async {
+  Future<int> getEggPrice() async {
     int price = 0;
     try {
       final http.Response response = await http.get(

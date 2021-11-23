@@ -1,16 +1,21 @@
 // @dart=2.9
 
+// Flutter imports:
 import 'package:flutter/material.dart';
+
+// Package imports:
 import 'package:fluttericon/font_awesome_icons.dart';
 import 'package:intl/intl.dart';
 import 'package:logger/logger.dart';
+
+// Project imports:
+import 'package:dragginator/appstate_container.dart';
+import 'package:dragginator/localization.dart';
+import 'package:dragginator/model/address.dart';
 import 'package:dragginator/model/token_ref.dart';
 import 'package:dragginator/service/http_service.dart';
 import 'package:dragginator/service_locator.dart';
 import 'package:dragginator/styles.dart';
-import 'package:dragginator/appstate_container.dart';
-import 'package:dragginator/localization.dart';
-import 'package:dragginator/model/address.dart';
 
 class TokensList extends StatefulWidget {
   final AnimationController tokensListController;
@@ -25,7 +30,8 @@ class _TokensListState extends State<TokensList> {
   final Logger log = sl.get<Logger>();
 
   List<TokenRef> _tokenRefs = new List<TokenRef>.empty(growable: true);
-  List<TokenRef> _tokenRefsForDisplay = new List<TokenRef>.empty(growable: true);
+  List<TokenRef> _tokenRefsForDisplay =
+      new List<TokenRef>.empty(growable: true);
 
   @override
   void initState() {

@@ -1,8 +1,10 @@
 // @dart=2.9
 
+// Flutter imports:
 import 'package:flutter/material.dart';
-import 'package:dragginator/appstate_container.dart';
 
+// Project imports:
+import 'package:dragginator/appstate_container.dart';
 
 class ReleaseNote extends StatefulWidget {
   @override
@@ -10,13 +12,9 @@ class ReleaseNote extends StatefulWidget {
 }
 
 class _ReleaseNoteState extends State<ReleaseNote> {
-
-
-
   @override
   void initState() {
     super.initState();
-
   }
 
   @override
@@ -26,7 +24,6 @@ class _ReleaseNoteState extends State<ReleaseNote> {
             EdgeInsets.only(bottom: MediaQuery.of(context).size.height * 0.035),
         child: Column(
           children: <Widget>[
-            
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -36,7 +33,7 @@ class _ReleaseNoteState extends State<ReleaseNote> {
                   width: 60,
                   height: 60,
                 ),
-               
+
                 Column(
                   children: <Widget>[
                     // Sheet handle
@@ -49,7 +46,6 @@ class _ReleaseNoteState extends State<ReleaseNote> {
                         borderRadius: BorderRadius.circular(100.0),
                       ),
                     ),
-                   
                   ],
                 ),
                 //Empty SizedBox
@@ -59,14 +55,10 @@ class _ReleaseNoteState extends State<ReleaseNote> {
                 ),
               ],
             ),
-
-           
             Expanded(
               child: Center(
                 child: Stack(
                   children: <Widget>[
-                   
-                  
                     // Outer ring
                     Center(
                       child: Container(
@@ -80,14 +72,10 @@ class _ReleaseNoteState extends State<ReleaseNote> {
                         ),
                       ),
                     ),
-                    
-                   
                   ],
                 ),
               ),
             ),
-
-           
           ],
         ));
   }

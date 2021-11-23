@@ -1,6 +1,9 @@
 // @dart=2.9
 
+// Flutter imports:
 import 'package:flutter/material.dart';
+
+// Project imports:
 import 'package:dragginator/localization.dart';
 import 'package:dragginator/model/setting_item.dart';
 

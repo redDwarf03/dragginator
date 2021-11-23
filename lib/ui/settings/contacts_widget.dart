@@ -1,26 +1,32 @@
 // @dart=2.9
 
+// Dart imports:
 import 'dart:async';
 
-import 'package:event_taxi/event_taxi.dart';
+// Flutter imports:
 import 'package:flutter/material.dart';
+
+// Package imports:
+import 'package:event_taxi/event_taxi.dart';
 import 'package:fluttericon/font_awesome_icons.dart';
 import 'package:logger/logger.dart';
-import 'package:dragginator/ui/widgets/sheet_util.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:dragginator/service_locator.dart';
-import 'package:dragginator/dimens.dart';
-import 'package:dragginator/styles.dart';
+
+// Project imports:
 import 'package:dragginator/appstate_container.dart';
-import 'package:dragginator/localization.dart';
 import 'package:dragginator/bus/events.dart';
+import 'package:dragginator/dimens.dart';
+import 'package:dragginator/localization.dart';
 import 'package:dragginator/model/address.dart';
 import 'package:dragginator/model/db/appdb.dart';
 import 'package:dragginator/model/db/contact.dart';
+import 'package:dragginator/service_locator.dart';
+import 'package:dragginator/styles.dart';
 import 'package:dragginator/ui/contacts/add_contact.dart';
 import 'package:dragginator/ui/contacts/contact_details.dart';
-import 'package:dragginator/ui/widgets/buttons.dart';
 import 'package:dragginator/ui/util/ui_util.dart';
+import 'package:dragginator/ui/widgets/buttons.dart';
+import 'package:dragginator/ui/widgets/sheet_util.dart';
 
 class ContactsList extends StatefulWidget {
   final AnimationController contactsController;

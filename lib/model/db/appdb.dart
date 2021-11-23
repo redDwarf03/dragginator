@@ -1,10 +1,15 @@
 // @dart=2.9
 
+// Dart imports:
 import 'dart:async';
 import 'dart:io' as io;
+
+// Package imports:
 import 'package:path/path.dart';
-import 'package:sqflite/sqflite.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:sqflite/sqflite.dart';
+
+// Project imports:
 import 'package:dragginator/model/db/account.dart';
 import 'package:dragginator/model/db/contact.dart';
 import 'package:dragginator/util/app_ffi/apputil.dart';
@@ -70,7 +75,7 @@ class DBHelper {
     var dbClient = await db;
     List<Map> list = await dbClient.rawQuery(
         'SELECT * FROM Contacts WHERE name LIKE \'%$pattern%\' ORDER BY LOWER(name)');
-    List<Contact> contacts = new List<Contact>.empty(growable: true); 
+    List<Contact> contacts = new List<Contact>.empty(growable: true);
     for (int i = 0; i < list.length; i++) {
       contacts.add(new Contact(
         id: list[i]['id'],
@@ -153,7 +158,7 @@ class DBHelper {
     var dbClient = await db;
     List<Map> list =
         await dbClient.rawQuery('SELECT * FROM Accounts ORDER BY acct_index');
-    List<Account> accounts = new List<Account>.empty(growable: true); 
+    List<Account> accounts = new List<Account>.empty(growable: true);
     for (int i = 0; i < list.length; i++) {
       accounts.add(Account(
           id: list[i]['id'],
@@ -177,7 +182,7 @@ class DBHelper {
     List<Map> list = await dbClient.rawQuery(
         'SELECT * FROM Accounts WHERE selected != 1 ORDER BY last_accessed DESC, acct_index ASC LIMIT ?',
         [limit]);
-    List<Account> accounts = new List<Account>.empty(growable: true); 
+    List<Account> accounts = new List<Account>.empty(growable: true);
     for (int i = 0; i < list.length; i++) {
       accounts.add(Account(
           id: list[i]['id'],
@@ -265,7 +270,8 @@ class DBHelper {
         [name, account.index]);
   }
 
-  Future<int> changeAccountDragginatorDna(Account account, String dna, String status) async {
+  Future<int> changeAccountDragginatorDna(
+      Account account, String dna, String status) async {
     var dbClient = await db;
     return await dbClient.rawUpdate(
         'UPDATE Accounts SET dragginatorDna = ?, dragginatorStatus = ? WHERE acct_index = ?',

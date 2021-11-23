@@ -1,20 +1,25 @@
 // @dart=2.9
 
+// Dart imports:
 import 'dart:async';
 import 'dart:io';
-import 'package:barcode_scan/barcode_scan.dart';
+
+// Flutter imports:
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+
+// Package imports:
+import 'package:barcode_scan2/barcode_scan2.dart';
 import 'package:logger/logger.dart';
-import 'package:dragginator/appstate_container.dart';
+import 'package:quiver/strings.dart';
+import 'package:validators/validators.dart';
+
+// Project imports:
 import 'package:dragginator/localization.dart';
 import 'package:dragginator/model/address.dart';
 import 'package:dragginator/service_locator.dart';
 import 'package:dragginator/ui/util/ui_util.dart';
 import 'package:dragginator/util/app_ffi/keys/seeds.dart';
-
-import 'package:quiver/strings.dart';
-import 'package:validators2/validators.dart';
 
 enum DataType { RAW, URL, ADDRESS, SEED }
 
@@ -22,7 +27,11 @@ class QRScanErrs {
   static const String PERMISSION_DENIED = "qr_denied";
   static const String UNKNOWN_ERROR = "qr_unknown";
   static const String CANCEL_ERROR = "qr_cancel";
-  static const List<String> ERROR_LIST = [PERMISSION_DENIED, UNKNOWN_ERROR, CANCEL_ERROR];
+  static const List<String> ERROR_LIST = [
+    PERMISSION_DENIED,
+    UNKNOWN_ERROR,
+    CANCEL_ERROR
+  ];
 }
 
 class UserDataUtil {
@@ -66,23 +75,26 @@ class UserDataUtil {
   static Future<String> getQRData(DataType type, BuildContext context) async {
     UIUtil.cancelLockEvent();
     try {
-      String data = await BarcodeScanner.scan(StateContainer.of(context).curTheme.qrScanTheme);
+      final ScanResult scanResult = await BarcodeScanner.scan();
+      final String data = scanResult.rawContent;
       if (isEmpty(data)) {
         return null;
       }
       return _parseData(data, type);
     } on PlatformException catch (e) {
-      if (e.code == BarcodeScanner.CameraAccessDenied) {
-        UIUtil.showSnackbar(AppLocalization.of(context).qrInvalidPermissions, context);
+      if (e.code == BarcodeScanner.cameraAccessDenied) {
+        UIUtil.showSnackbar(
+            AppLocalization.of(context).qrInvalidPermissions, context);
         return QRScanErrs.PERMISSION_DENIED;
       } else {
-        UIUtil.showSnackbar(AppLocalization.of(context).qrUnknownError, context);
+        UIUtil.showSnackbar(
+            AppLocalization.of(context).qrUnknownError, context);
         return QRScanErrs.UNKNOWN_ERROR;
       }
     } on FormatException {
       return QRScanErrs.CANCEL_ERROR;
     } catch (e) {
-      log.e("Unknown QR Scan Error ${e.toString()}", e);
+      print('Unknown QR Scan Error ${e.toString()}');
       return QRScanErrs.UNKNOWN_ERROR;
     }
   }
@@ -106,7 +118,9 @@ class UserDataUtil {
       });
       setStream = delayed.asStream().listen((_) {
         Clipboard.getData("text/plain").then((data) {
-          if (data != null && data.text != null && AppSeeds.isValidSeed(data.text)) {
+          if (data != null &&
+              data.text != null &&
+              AppSeeds.isValidSeed(data.text)) {
             Clipboard.setData(ClipboardData(text: ""));
           }
         });

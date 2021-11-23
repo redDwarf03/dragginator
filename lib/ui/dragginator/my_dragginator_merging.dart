@@ -1,20 +1,25 @@
 // @dart=2.9
 
-import 'package:dragginator/dimens.dart';
-import 'package:dragginator/localization.dart';
-import 'package:dragginator/ui/send/send_confirm_sheet.dart';
+// Flutter imports:
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+
+// Package imports:
+import 'package:circular_profile_avatar/circular_profile_avatar.dart';
+import 'package:flutter_radar_chart/flutter_radar_chart.dart';
+
+// Project imports:
+import 'package:dragginator/appstate_container.dart';
+import 'package:dragginator/dimens.dart';
+import 'package:dragginator/localization.dart';
 import 'package:dragginator/service/dragginator_service.dart';
 import 'package:dragginator/service_locator.dart';
 import 'package:dragginator/styles.dart';
-import 'package:dragginator/appstate_container.dart';
+import 'package:dragginator/ui/send/send_confirm_sheet.dart';
 import 'package:dragginator/ui/send/send_sheet.dart';
 import 'package:dragginator/ui/util/ui_util.dart';
 import 'package:dragginator/ui/widgets/buttons.dart';
 import 'package:dragginator/ui/widgets/sheet_util.dart';
-import 'package:flutter_radar_chart/flutter_radar_chart.dart';
-import 'package:circular_profile_avatar/circular_profile_avatar.dart';
 
 class MyDragginatorMerging extends StatefulWidget {
   final String address;

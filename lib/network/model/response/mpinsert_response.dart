@@ -4,8 +4,11 @@
 
 // @dart=2.9
 
+// Dart imports:
 import 'dart:convert';
 
-List<String> mpinsertResponseFromJson(String str) => List<String>.from(json.decode(str).map((x) => x));
+List<String> mpinsertResponseFromJson(String str) =>
+    List<String>.from(json.decode(str).map((x) => x));
 
-String mpinsertResponseToJson(List<String> data) => json.encode(List<dynamic>.from(data.map((x) => x)));
+String mpinsertResponseToJson(List<String> data) =>
+    json.encode(List<dynamic>.from(data.map((x) => x)));
