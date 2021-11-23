@@ -82,18 +82,13 @@ class _AppPasswordLockScreenState extends State<AppPasswordLockScreen> {
                                 AppLocalization.of(context).logoutReassurance,
                                 CaseChange.toUpperCase(
                                     AppLocalization.of(context).yes, context),
-                                () {
+                                () async {
                               // Delete all data
-                              sl.get<Vault>().deleteAll().then((_) {
-                                sl
-                                    .get<SharedPrefsUtil>()
-                                    .deleteAll()
-                                    .then((result) {
-                                  StateContainer.of(context).logOut();
-                                  Navigator.of(context).pushNamedAndRemoveUntil(
-                                      '/', (Route<dynamic> route) => false);
-                                });
-                              });
+                              await sl.get<Vault>().deleteAll();
+                              await sl.get<SharedPrefsUtil>().deleteAll();
+                              await StateContainer.of(context).logOut();
+                              Navigator.of(context).pushNamedAndRemoveUntil(
+                                  '/', (Route<dynamic> route) => false);
                             });
                           });
                         },

@@ -375,12 +375,12 @@ class StateContainerState extends State<StateContainer> {
     }
   }
 
-  void logOut() {
+  Future<void> logOut() async {
     setState(() {
       wallet = AppWallet();
       encryptedSecret = null;
     });
-    sl.get<DBHelper>().dropAccounts();
+    await sl.get<DBHelper>().dropAccounts();
   }
 
   Future<String> getSeed() async {

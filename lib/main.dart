@@ -14,13 +14,11 @@ import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:logger/logger.dart';
 import 'package:oktoast/oktoast.dart';
-import 'package:root_checker/root_checker.dart';
 
 // Project imports:
 import 'package:dragginator/appstate_container.dart';
 import 'package:dragginator/localization.dart';
 import 'package:dragginator/model/available_language.dart';
-import 'package:dragginator/model/db/appdb.dart';
 import 'package:dragginator/model/vault.dart';
 import 'package:dragginator/service_locator.dart';
 import 'package:dragginator/styles.dart';
@@ -218,7 +216,7 @@ class SplashState extends State<Splash> with WidgetsBindingObserver {
     // Update session key
     await sl.get<Vault>().updateSessionKey();
     // Check if device is rooted or jailbroken, show user a warning informing them of the risks if so
-    if (!(await sl.get<SharedPrefsUtil>().getHasSeenRootWarning()) &&
+    /*if (!(await sl.get<SharedPrefsUtil>().getHasSeenRootWarning()) &&
         (await RootChecker.isDeviceRooted)) {
       AppDialogs.showConfirmDialog(
           context,
@@ -238,7 +236,7 @@ class SplashState extends State<Splash> with WidgetsBindingObserver {
             }
           });
       return;
-    }
+    }*/
     if (!_hasCheckedLoggedIn) {
       _hasCheckedLoggedIn = true;
     } else {

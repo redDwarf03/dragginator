@@ -4,6 +4,8 @@
 import 'dart:async';
 
 // Flutter imports:
+import 'package:dragginator/ui/widgets/dialog.dart';
+import 'package:dragginator/util/caseconverter.dart';
 import 'package:flutter/material.dart';
 
 // Package imports:
@@ -1081,8 +1083,7 @@ class _SettingsSheetState extends State<SettingsSheet>
                         context,
                         AppLocalization.of(context).logout,
                         FontAwesome.logout, onPressed: () {
-                      Navigator.of(context).pushReplacementNamed('/start_game');
-                      /*AppDialogs.showConfirmDialog(
+                      AppDialogs.showConfirmDialog(
                           context,
                           CaseChange.toUpperCase(
                               AppLocalization.of(context).warning, context),
@@ -1096,20 +1097,16 @@ class _SettingsSheetState extends State<SettingsSheet>
                             AppLocalization.of(context).logoutAreYouSure,
                             AppLocalization.of(context).logoutReassurance,
                             CaseChange.toUpperCase(
-                                AppLocalization.of(context).yes, context), () {
+                                AppLocalization.of(context).yes, context),
+                            () async {
                           // Delete all data
-                          sl.get<Vault>().deleteAll().then((_) {
-                            sl
-                                .get<SharedPrefsUtil>()
-                                .deleteAll()
-                                .then((result) {
-                              StateContainer.of(context).logOut();
-                              Navigator.of(context).pushNamedAndRemoveUntil(
-                                  '/', (Route<dynamic> route) => false);
-                            });
-                          });
+                          await sl.get<Vault>().deleteAll();
+                          await sl.get<SharedPrefsUtil>().deleteAll();
+                          await StateContainer.of(context).logOut();
+                          Navigator.of(context).pushNamedAndRemoveUntil(
+                              '/', (Route<dynamic> route) => false);
                         });
-                      });*/
+                      });
                     }),
                     Divider(
                       height: 2,

@@ -412,7 +412,7 @@ class AppLocalization {
   }
 
   String get backupSeedConfirm {
-    return Intl.message('Are you sure that you backed up your seed?',
+    return Intl.message('Are you sure that you backed up your secret phrase?',
         desc: 'intro_new_wallet_backup', name: 'backupSeedConfirm');
   }
 
