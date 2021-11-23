@@ -50,8 +50,7 @@ dependencies:
   # Logger
   logger: ^1.1.0
 
-  # Native webview plugin
-  flutter_webview_plugin: ^0.4.0
+  webview_flutter: ^2.3.0
 
   bip32: ^2.0.0
 
