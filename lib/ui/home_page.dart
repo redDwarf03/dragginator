@@ -268,11 +268,11 @@ class _AppHomePageState extends State<AppHomePage>
 
   @override
   Widget build(BuildContext context) {
-    _displayReleaseNote
+    /*_displayReleaseNote
         ? WidgetsBinding.instance
             .addPostFrameCallback((_) => displayReleaseNote())
         : null;
-
+  */
     return WillPopScope(
         onWillPop: () {
           NavigationBus.tryPop();

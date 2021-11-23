@@ -71,23 +71,19 @@ class _StartGameStateState extends State<StartGame> {
                       width: 20,
                       height: 20,
                       child: Image.asset("assets/icon.png"),
-                      
                     ),
                   ),
-                  Text(" | ",
-                              style: AppStyles.textStyleVersion(context)),
-                          GestureDetector(
-                              onTap: () {
-                                Navigator.of(context).push(MaterialPageRoute(
-                                    builder: (BuildContext context) {
-                                  return UIUtil.showWebview(context,
-                                      AppLocalization.of(context).privacyUrl);
-                                }));
-                              },
-                              child: Text(
-                                  AppLocalization.of(context).privacyPolicy,
-                                  style: AppStyles.textStyleVersionUnderline(
-                                      context))),
+                  Text(" | ", style: AppStyles.textStyleVersion(context)),
+                  GestureDetector(
+                      onTap: () {
+                        Navigator.of(context).push(
+                            MaterialPageRoute(builder: (BuildContext context) {
+                          return UIUtil.showWebview(
+                              context, AppLocalization.of(context).privacyUrl);
+                        }));
+                      },
+                      child: Text(AppLocalization.of(context).privacyPolicy,
+                          style: AppStyles.textStyleVersionUnderline(context))),
                 ],
               ),
             ],

@@ -43,8 +43,7 @@ class SendSheet extends StatefulWidget {
   final bool sendATokenActive;
 
   SendSheet(
-      {
-      this.contact,
+      {this.contact,
       this.address,
       this.operation,
       this.openfield,
@@ -771,6 +770,7 @@ class _SendSheetState extends State<SendSheet> {
                               Sheets.showAppHeightNineSheet(
                                   context: context,
                                   widget: SendConfirmSheet(
+                                    displayTo: true,
                                     title: widget.title,
                                     amountRaw: _rawAmount == null
                                         ? NumberUtil.getAmountAsRaw(
@@ -789,6 +789,7 @@ class _SendSheetState extends State<SendSheet> {
                           Sheets.showAppHeightNineSheet(
                               context: context,
                               widget: SendConfirmSheet(
+                                displayTo: true,
                                 title: widget.title,
                                 amountRaw: _rawAmount == null
                                     ? NumberUtil.getAmountAsRaw(
@@ -822,7 +823,6 @@ class _SendSheetState extends State<SendSheet> {
                         } else if (QRScanErrs.ERROR_LIST.contains(scanResult)) {
                           return;
                         } else {
-
                           // Is a URI
                           Address address = Address(scanResult);
                           // See if this address belongs to a contact
@@ -901,6 +901,7 @@ class _SendSheetState extends State<SendSheet> {
                               Sheets.showAppHeightNineSheet(
                                   context: context,
                                   widget: SendConfirmSheet(
+                                    displayTo: true,
                                     title: widget.title,
                                     amountRaw: _rawAmount == null
                                         ? NumberUtil.getAmountAsRaw(

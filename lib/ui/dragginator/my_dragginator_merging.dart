@@ -180,7 +180,6 @@ class _MyDragginatorMergingStateState extends State<MyDragginatorMerging> {
                                                     ? 4
                                                     : 0),
                                           ),
-                                          
                                           alignment:
                                               AlignmentDirectional(-4, 0),
                                           child: Hero(
@@ -321,6 +320,7 @@ class _MyDragginatorMergingStateState extends State<MyDragginatorMerging> {
                                                       openfield: dna1selected +
                                                           ":" +
                                                           dna2selected,
+                                                      displayTo: false,
                                                       comment: "",
                                                       destination:
                                                           AppLocalization.of(

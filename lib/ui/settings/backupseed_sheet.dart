@@ -105,7 +105,7 @@ class AppSeedBackupSheet {
                                 height: 50,
                                 margin: EdgeInsetsDirectional.only(
                                     top: 10.0, end: 10.0),
-                                child: FlatButton(
+                                /*child: FlatButton(
                                   highlightColor: StateContainer.of(context)
                                       .curTheme
                                       .text15,
@@ -131,7 +131,7 @@ class AppSeedBackupSheet {
                                           BorderRadius.circular(100.0)),
                                   materialTapTargetSize:
                                       MaterialTapTargetSize.padded,
-                                ),
+                                ),*/
                               ),
                             ],
                           ),

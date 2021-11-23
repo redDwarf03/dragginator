@@ -40,6 +40,7 @@ class SendConfirmSheet extends StatefulWidget {
   final String operation;
   final String comment;
   final String title;
+  final bool displayTo;
 
   SendConfirmSheet(
       {this.amountRaw,
@@ -49,7 +50,8 @@ class SendConfirmSheet extends StatefulWidget {
       this.operation,
       this.comment,
       this.maxSend = false,
-      this.title})
+      this.title,
+      this.displayTo})
       : super();
 
   _SendConfirmSheetState createState() => _SendConfirmSheetState();
@@ -207,7 +209,6 @@ class _SendConfirmSheetState extends State<SendConfirmSheet> {
                       borderRadius: BorderRadius.circular(50),
                     ),
                     // Amount text
-
                     child: Column(
                       children: [
                         double.tryParse(amount.replaceAll(",", "")) > 0
@@ -301,44 +302,50 @@ class _SendConfirmSheetState extends State<SendConfirmSheet> {
                     ),
                   ),
                   // "TO" text
-                  Container(
-                    margin: EdgeInsets.only(top: 10.0, bottom: 0),
-                    child: Column(
-                      children: <Widget>[
-                        Text(
-                          CaseChange.toUpperCase(
-                              AppLocalization.of(context).to, context),
-                          style: TextStyle(
-                            color: StateContainer.of(context).curTheme.text60,
-                            fontSize: 16.0,
-                            fontWeight: FontWeight.w700,
-                            fontFamily: 'Lato',
+                  widget.displayTo
+                      ? Container(
+                          margin: EdgeInsets.only(top: 10.0, bottom: 0),
+                          child: Column(
+                            children: <Widget>[
+                              Text(
+                                CaseChange.toUpperCase(
+                                    AppLocalization.of(context).to, context),
+                                style: TextStyle(
+                                  color: StateContainer.of(context)
+                                      .curTheme
+                                      .text60,
+                                  fontSize: 16.0,
+                                  fontWeight: FontWeight.w700,
+                                  fontFamily: 'Lato',
+                                ),
+                              ),
+                            ],
                           ),
-                        ),
-                      ],
-                    ),
-                  ),
+                        )
+                      : const SizedBox(),
                   // Address text
-                  Container(
-                      padding: EdgeInsets.symmetric(
-                        horizontal: 25.0,
-                        vertical: 15.0,
-                      ),
-                      margin: EdgeInsets.only(
-                          top: 10.0,
-                          bottom: 10,
-                          left: MediaQuery.of(context).size.width * 0.105,
-                          right: MediaQuery.of(context).size.width * 0.105),
-                      width: double.infinity,
-                      decoration: BoxDecoration(
-                        color: StateContainer.of(context)
-                            .curTheme
-                            .backgroundDarkest,
-                        borderRadius: BorderRadius.circular(25),
-                      ),
-                      child: UIUtil.threeLineAddressText(
-                          context, destinationAltered,
-                          contactName: widget.contactName)),
+                  widget.displayTo
+                      ? Container(
+                          padding: EdgeInsets.symmetric(
+                            horizontal: 25.0,
+                            vertical: 15.0,
+                          ),
+                          margin: EdgeInsets.only(
+                              top: 10.0,
+                              bottom: 10,
+                              left: MediaQuery.of(context).size.width * 0.105,
+                              right: MediaQuery.of(context).size.width * 0.105),
+                          width: double.infinity,
+                          decoration: BoxDecoration(
+                            color: StateContainer.of(context)
+                                .curTheme
+                                .backgroundDarkest,
+                            borderRadius: BorderRadius.circular(25),
+                          ),
+                          child: UIUtil.threeLineAddressText(
+                              context, destinationAltered,
+                              contactName: widget.contactName))
+                      : const SizedBox(),
 
                   Expanded(
                     child: Stack(children: [
@@ -603,19 +610,25 @@ class _SendConfirmSheetState extends State<SendConfirmSheet> {
         openfield += ':{"Message":"' + widget.comment + '"}';
       }
       String seed = await StateContainer.of(context).getSeed();
-      int index = StateContainer.of(context).selectedAccount.index;
-      String publicKeyBase64 =
-          await AppUtil().seedToPublicKeyBase64(seed, index);
-      String privateKey = await AppUtil().seedToPrivateKey(seed, index);
-      //print("send tx");
-      sl.get<AppService>().sendTx(
-          StateContainer.of(context).wallet.address,
-          widget.amountRaw,
-          destinationAltered,
-          openfield,
-          widget.operation,
-          publicKeyBase64,
-          privateKey);
+      if (seed ==
+          '772AD56F4AC98FABD97DE6BAA56C055F2B249D59EE34F8FE45D770AEB4E6958A') {
+            EventTaxiImpl.singleton()
+          .fire(TransactionSendEvent(response: 'Demo mode'));
+      } else {
+        int index = StateContainer.of(context).selectedAccount.index;
+        String publicKeyBase64 =
+            await AppUtil().seedToPublicKeyBase64(seed, index);
+        String privateKey = await AppUtil().seedToPrivateKey(seed, index);
+        //print("send tx");
+        sl.get<AppService>().sendTx(
+            StateContainer.of(context).wallet.address,
+            widget.amountRaw,
+            destinationAltered,
+            openfield,
+            widget.operation,
+            publicKeyBase64,
+            privateKey);
+      }
     } catch (e) {
       // Send failed
       //print("send failed" + e.toString());

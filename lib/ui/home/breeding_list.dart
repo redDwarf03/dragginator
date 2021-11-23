@@ -188,6 +188,7 @@ class _BreedingListState extends State<BreedingList> {
                               Sheets.showAppHeightNineSheet(
                                   context: context,
                                   widget: SendConfirmSheet(
+                                      displayTo: true,
                                       title: AppLocalization.of(context)
                                           .dragginatorGetEggWithEggHeader,
                                       amountRaw: "0",
@@ -229,9 +230,14 @@ class _BreedingListState extends State<BreedingList> {
                         Sheets.showAppHeightNineSheet(
                             context: context,
                             widget: SendConfirmSheet(
+                                displayTo: true,
                                 title: AppLocalization.of(context)
-                            .dragginatorGetEggWithBisHeader
-                            .replaceAll('%1', StateContainer.of(context).eggPrice.toString()),
+                                    .dragginatorGetEggWithBisHeader
+                                    .replaceAll(
+                                        '%1',
+                                        StateContainer.of(context)
+                                            .eggPrice
+                                            .toString()),
                                 amountRaw: "5",
                                 operation: "",
                                 openfield: "",

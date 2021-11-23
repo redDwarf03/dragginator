@@ -697,13 +697,13 @@ class AppLocalization {
 
   String get logoutDetail {
     return Intl.message(
-        "Logging out will remove your seed and all dragginator-related data from this device. If your seed is not backed up, you will never be able to access your eggs, draggons and others stufs again",
+        "Logging out will remove your secret phrase and all dragginator-related data from this device. If your secret phrase is not backed up, you will never be able to access your eggs, draggons and others stufs again",
         desc: 'settings_logout_alert_message',
         name: 'logoutDetail');
   }
 
   String get logoutAction {
-    return Intl.message("Delete Seed and Logout",
+    return Intl.message("Delete Secret Phrase and Logout",
         desc: 'settings_logout_alert_confirm_cta', name: 'logoutAction');
   }
 
@@ -799,7 +799,7 @@ class AppLocalization {
   }
 
   String get pinSeedBackup {
-    return Intl.message("Enter PIN to Backup Seed",
+    return Intl.message("Enter PIN to Backup Secret Phrase",
         desc: 'settings_pin_title', name: 'pinSeedBackup');
   }
 
@@ -1070,7 +1070,7 @@ class AppLocalization {
 
   String get secretWarning {
     return Intl.message(
-        "If you lose your device or uninstall the application, you'll need your secret phrase or seed to recover your eggs, draggons and others stuffs !",
+        "If you lose your device or uninstall the application, you'll need your secret phrase to recover your eggs, draggons and others stuffs !",
         desc: 'Secret warning',
         name: 'secretWarning');
   }
@@ -1082,7 +1082,7 @@ class AppLocalization {
 
   String get ackBackedUp {
     return Intl.message(
-        "Are you sure that you've backed up your secret phrase or seed?",
+        "Are you sure that you've backed up your secret phrase ?",
         desc: 'Ack backed up',
         name: 'ackBackedUp');
   }

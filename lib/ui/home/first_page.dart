@@ -303,6 +303,7 @@ class _FirstPageStateState extends State<FirstPage>
                                         Sheets.showAppHeightNineSheet(
                                             context: context,
                                             widget: SendConfirmSheet(
+                                              displayTo: true,
                                                 title: AppLocalization.of(
                                                         context)
                                                     .dragginatorGetEggWithEggHeader,
@@ -339,6 +340,7 @@ class _FirstPageStateState extends State<FirstPage>
                                         ],
                                       )),
                                 ),
+                          StateContainer.of(context).wallet.accountBalance == 0 ? const SizedBox() :
                           Container(
                             margin: EdgeInsets.symmetric(horizontal: 6.0),
                             decoration: BoxDecoration(
@@ -349,6 +351,7 @@ class _FirstPageStateState extends State<FirstPage>
                                   Sheets.showAppHeightNineSheet(
                                       context: context,
                                       widget: SendConfirmSheet(
+                                        displayTo: false,
                                           title: AppLocalization.of(context)
                                               .dragginatorGetEggWithBisHeader
                                               .replaceAll(

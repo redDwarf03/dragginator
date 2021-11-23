@@ -64,10 +64,12 @@ class _AppPopupButtonState extends State<AppPopupButton> {
           Sheets.showAppHeightNineSheet(
               context: context,
               widget: SendConfirmSheet(
-                  amountRaw: address.amount,
-                  destination:
-                      contact != null ? contact.address : address.address,
-                  contactName: contact != null ? contact.name : null));
+                amountRaw: address.amount,
+                destination:
+                    contact != null ? contact.address : address.address,
+                contactName: contact != null ? contact.name : null,
+                displayTo: true,
+              ));
         } else {
           // Go to send sheet
           Sheets.showAppHeightNineSheet(
