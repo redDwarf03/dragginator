@@ -30,7 +30,6 @@ import 'package:dragginator/ui/widgets/dialog.dart';
 import 'package:dragginator/ui/widgets/sheets.dart';
 import 'package:dragginator/ui/widgets/tap_outside_unfocus.dart';
 import 'package:dragginator/util/caseconverter.dart';
-import 'package:dragginator/util/numberutil.dart';
 
 // Account Details Sheet
 class AccountDetailsSheet {

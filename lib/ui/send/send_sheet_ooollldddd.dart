@@ -10,7 +10,6 @@ import 'package:flutter/services.dart';
 // Package imports:
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:decimal/decimal.dart';
-import 'package:intl/intl.dart';
 import 'package:logger/logger.dart';
 
 // Project imports:
@@ -19,7 +18,6 @@ import 'package:dragginator/appstate_container.dart';
 import 'package:dragginator/dimens.dart';
 import 'package:dragginator/localization.dart';
 import 'package:dragginator/model/address.dart';
-import 'package:dragginator/model/bis_url.dart';
 import 'package:dragginator/model/db/appdb.dart';
 import 'package:dragginator/model/db/contact.dart';
 import 'package:dragginator/network/model/response/address_txs_response.dart';
@@ -46,9 +44,6 @@ class SendSheet extends StatefulWidget {
   final String title;
   final String actionButtonTitle;
   final bool sendATokenActive;
-  final String selectedTokenName;
-  final bool displayUrl;
-  final bool displayOptionalParamText;
 
   SendSheet(
       {this.contact,
@@ -58,9 +53,6 @@ class SendSheet extends StatefulWidget {
       this.quickSendAmount,
       this.title,
       this.actionButtonTitle,
-      this.selectedTokenName,
-      this.displayUrl,
-      this.displayOptionalParamText,
       @required this.sendATokenActive})
       : super();
 
@@ -97,10 +89,7 @@ class _SendSheetState extends State<SendSheet> {
   String _tokenQuantityValidationText = "";
   String _tokenValidationText = "";
   String _addressValidationText = "";
-  String _openfieldValidationText = "";
-  String _operationValidationText = "";
   String _selectedTokenName = "";
-
   String quickSendAmount;
   List<Contact> _contacts;
   bool animationOpen;
@@ -111,7 +100,6 @@ class _SendSheetState extends State<SendSheet> {
   // Buttons States (Used because we hide the buttons under certain conditions)
   bool _pasteButtonVisible = true;
   bool _showContactButton = true;
-  NumberFormat _localCurrencyFormat;
   bool isTokenToSendSwitched = false;
   String _rawAmount;
   String _rawTokenQuantity;
@@ -134,7 +122,6 @@ class _SendSheetState extends State<SendSheet> {
     _sendTokenQuantityController = TextEditingController();
     _sendAddressStyle = AddressStyle.TEXT60;
     _contacts = List();
-    _selectedTokenName = widget.selectedTokenName;
     quickSendAmount = widget.quickSendAmount;
     this.animationOpen = false;
     if (widget.contact != null) {
@@ -280,7 +267,6 @@ class _SendSheetState extends State<SendSheet> {
         });
       }
     });
-
     // Set quick send amount
     if (quickSendAmount != null) {
       _sendAmountController.text =
@@ -366,7 +352,7 @@ class _SendSheetState extends State<SendSheet> {
                           color: StateContainer.of(context).curTheme.text60,
                           fontSize: 16.0,
                           fontWeight: FontWeight.w700,
-                          fontFamily: 'Roboto',
+                          fontFamily: 'Lato',
                         ),
                       ),
                     ],
@@ -413,6 +399,7 @@ class _SendSheetState extends State<SendSheet> {
                                 // Column for Balance Text, Enter Amount container + Enter Amount Error container
                                 Column(
                                   children: <Widget>[
+                                    // Balance Text
                                     Container(
                                       child: RichText(
                                         textAlign: TextAlign.start,
@@ -427,8 +414,8 @@ class _SendSheetState extends State<SendSheet> {
                                                         .curTheme
                                                         .primary60,
                                                 fontSize: 14.0,
-                                                fontWeight: FontWeight.w100,
-                                                fontFamily: 'Roboto',
+                                                fontWeight: FontWeight.w300,
+                                                fontFamily: 'Lato',
                                               ),
                                             ),
                                             TextSpan(
@@ -442,7 +429,7 @@ class _SendSheetState extends State<SendSheet> {
                                                         .primary60,
                                                 fontSize: 14.0,
                                                 fontWeight: FontWeight.w700,
-                                                fontFamily: 'Roboto',
+                                                fontFamily: 'Lato',
                                               ),
                                             ),
                                             TextSpan(
@@ -453,11 +440,22 @@ class _SendSheetState extends State<SendSheet> {
                                                         .curTheme
                                                         .primary60,
                                                 fontSize: 14.0,
-                                                fontWeight: FontWeight.w100,
-                                                fontFamily: 'Roboto',
+                                                fontWeight: FontWeight.w300,
+                                                fontFamily: 'Lato',
                                               ),
                                             ),
                                           ],
+                                        ),
+                                      ),
+                                    ),
+                                    Container(
+                                      child: Text(
+                                        "*******",
+                                        style: TextStyle(
+                                          color: Colors.transparent,
+                                          fontSize: 14.0,
+                                          fontWeight: FontWeight.w300,
+                                          fontFamily: 'Lato',
                                         ),
                                       ),
                                     ),
@@ -476,7 +474,7 @@ class _SendSheetState extends State<SendSheet> {
                                             color: StateContainer.of(context)
                                                 .curTheme
                                                 .primary,
-                                            fontFamily: 'Roboto',
+                                            fontFamily: 'Lato',
                                             fontWeight: FontWeight.w600,
                                           )),
                                     ),
@@ -561,7 +559,7 @@ class _SendSheetState extends State<SendSheet> {
                                             color: StateContainer.of(context)
                                                 .curTheme
                                                 .primary,
-                                            fontFamily: 'Roboto',
+                                            fontFamily: 'Lato',
                                             fontWeight: FontWeight.w600,
                                           )),
                                     ),
@@ -590,194 +588,11 @@ class _SendSheetState extends State<SendSheet> {
                                               .curTheme
                                               .primary60,
                                           fontSize: 14.0,
-                                          fontWeight: FontWeight.w100,
-                                          fontFamily: 'Roboto',
+                                          fontWeight: FontWeight.w300,
+                                          fontFamily: 'Lato',
                                         ),
                                       ),
                                     ),
-                                    SizedBox(height: 10),
-                                    widget.displayUrl != null &&
-                                            widget.displayUrl == true
-                                        ? Container(
-                                            child: Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.center,
-                                              children: [
-                                                Column(
-                                                  children: [
-                                                    Text(
-                                                      AppLocalization.of(
-                                                              context)
-                                                          .pasteBisUrl,
-                                                      style: TextStyle(
-                                                        fontSize: 16.0,
-                                                        fontWeight:
-                                                            FontWeight.w100,
-                                                        fontFamily: 'Roboto',
-                                                        color:
-                                                            StateContainer.of(
-                                                                    context)
-                                                                .curTheme
-                                                                .text60,
-                                                      ),
-                                                    ),
-                                                    Text(
-                                                      AppLocalization.of(
-                                                              context)
-                                                          .pasteBisUrlPrefix,
-                                                      style: TextStyle(
-                                                        fontSize: 12.0,
-                                                        fontWeight:
-                                                            FontWeight.w100,
-                                                        fontFamily: 'Roboto',
-                                                        color:
-                                                            StateContainer.of(
-                                                                    context)
-                                                                .curTheme
-                                                                .text60,
-                                                      ),
-                                                    ),
-                                                  ],
-                                                ),
-                                                FlatButton(
-                                                  padding: EdgeInsets.all(14.0),
-                                                  highlightColor:
-                                                      StateContainer.of(context)
-                                                          .curTheme
-                                                          .primary15,
-                                                  splashColor:
-                                                      StateContainer.of(context)
-                                                          .curTheme
-                                                          .primary30,
-                                                  onPressed: () {
-                                                    if (!_pasteButtonVisible) {
-                                                      return;
-                                                    }
-                                                    Clipboard.getData(
-                                                            "text/plain")
-                                                        .then((ClipboardData
-                                                            data) async {
-                                                      if (data == null ||
-                                                          data.text == null ||
-                                                          data.text.contains(
-                                                                  "bis://") ==
-                                                              false) {
-                                                        UIUtil.showSnackbar(
-                                                            AppLocalization.of(
-                                                                    context)
-                                                                .pasteBisUrlError,
-                                                            context);
-
-                                                        return;
-                                                      }
-                                                      BisUrl bisUrl =
-                                                          await new BisUrl()
-                                                              .getInfo(
-                                                                  data.text);
-                                                      setState(() {
-                                                        _addressValidationText =
-                                                            "";
-                                                        _amountValidationText =
-                                                            "";
-                                                        _tokenValidationText =
-                                                            "";
-                                                        _tokenQuantityValidationText =
-                                                            "";
-                                                        _openfieldValidationText =
-                                                            "";
-                                                        _operationValidationText =
-                                                            "";
-                                                        _sendAddressController
-                                                                .text =
-                                                            bisUrl.address;
-                                                        _sendAmountController
-                                                                .text =
-                                                            bisUrl.amount;
-                                                        _sendCommentController
-                                                                .text =
-                                                            bisUrl.comment;
-                                                        _sendOpenfieldController
-                                                                .text =
-                                                            bisUrl.openfield;
-                                                        _sendOperationController
-                                                                .text =
-                                                            bisUrl.operation;
-                                                        isTokenToSendSwitched =
-                                                            bisUrl
-                                                                .isTokenToSend;
-                                                        _sendTokenQuantityController
-                                                                .text =
-                                                            bisUrl
-                                                                .tokenToSendQty
-                                                                .toString();
-                                                        _selectedTokenName =
-                                                            bisUrl.tokenName;
-
-                                                        validRequest =
-                                                            _validateRequest();
-                                                      });
-                                                    });
-                                                  },
-                                                  child: Icon(AppIcons.paste,
-                                                      size: 20,
-                                                      color: StateContainer.of(
-                                                              context)
-                                                          .curTheme
-                                                          .icon),
-                                                  shape: RoundedRectangleBorder(
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              200.0)),
-                                                )
-                                              ],
-                                            ),
-                                          )
-                                        : const SizedBox(),
-                                    SizedBox(height: 10),
-                                    widget.displayOptionalParamText != null &&
-                                            widget.displayOptionalParamText ==
-                                                true
-                                        ? Container(
-                                            margin: EdgeInsets.symmetric(
-                                                horizontal: 30),
-                                            child: Text(
-                                              CaseChange.toUpperCase(
-                                                  AppLocalization.of(context)
-                                                      .optionalParameters,
-                                                  context),
-                                              style: TextStyle(
-                                                color:
-                                                    StateContainer.of(context)
-                                                        .curTheme
-                                                        .text60,
-                                                fontSize: 16.0,
-                                                fontWeight: FontWeight.w700,
-                                                fontFamily: 'Roboto',
-                                              ),
-                                            ),
-                                          )
-                                        : const SizedBox(),
-                                    widget.displayOptionalParamText != null &&
-                                            widget.displayOptionalParamText ==
-                                                true
-                                        ? Container(
-                                            margin: EdgeInsets.symmetric(
-                                                horizontal: 30),
-                                            child: Text(
-                                              AppLocalization.of(context)
-                                                  .diacritic,
-                                              style: TextStyle(
-                                                color:
-                                                    StateContainer.of(context)
-                                                        .curTheme
-                                                        .primary60,
-                                                fontSize: 12.0,
-                                                fontWeight: FontWeight.w100,
-                                                fontFamily: 'Roboto',
-                                              ),
-                                            ),
-                                          )
-                                        : const SizedBox(),
                                     widget.sendATokenActive
                                         ? Container(
                                             child: Row(
@@ -789,8 +604,8 @@ class _SendSheetState extends State<SendSheet> {
                                                     .sendATokenQuestion,
                                                 style: TextStyle(
                                                   fontSize: 16.0,
-                                                  fontWeight: FontWeight.w100,
-                                                  fontFamily: 'Roboto',
+                                                  fontWeight: FontWeight.w300,
+                                                  fontFamily: 'Lato',
                                                   color:
                                                       StateContainer.of(context)
                                                           .curTheme
@@ -850,7 +665,7 @@ class _SendSheetState extends State<SendSheet> {
                                                             context)
                                                         .curTheme
                                                         .primary,
-                                                    fontFamily: 'Roboto',
+                                                    fontFamily: 'Lato',
                                                     fontWeight: FontWeight.w600,
                                                   )),
                                             ),
@@ -869,7 +684,7 @@ class _SendSheetState extends State<SendSheet> {
                                                             context)
                                                         .curTheme
                                                         .primary,
-                                                    fontFamily: 'Roboto',
+                                                    fontFamily: 'Lato',
                                                     fontWeight: FontWeight.w600,
                                                   )),
                                             ),
@@ -977,17 +792,18 @@ class _SendSheetState extends State<SendSheet> {
                           Sheets.showAppHeightNineSheet(
                               context: context,
                               widget: SendConfirmSheet(
-                                  displayTo: true,
-                                  title: widget.title,
-                                  amountRaw: _rawAmount == null
-                                      ? NumberUtil.getAmountAsRaw(
-                                          _sendAmountController.text)
-                                      : _rawAmount,
-                                  destination: _sendAddressController.text,
-                                  operation: _sendOperationController.text,
-                                  openfield: _sendOpenfieldController.text,
-                                  comment: _sendCommentController.text,
-                                  maxSend: _isMaxSend()));
+                                displayTo: true,
+                                title: widget.title,
+                                amountRaw: _rawAmount == null
+                                    ? NumberUtil.getAmountAsRaw(
+                                        _sendAmountController.text)
+                                    : _rawAmount,
+                                destination: _sendAddressController.text,
+                                operation: _sendOperationController.text,
+                                openfield: _sendOpenfieldController.text,
+                                comment: _sendCommentController.text,
+                                maxSend: _isMaxSend(),
+                              ));
                         }
                       }),
                     ],
@@ -1010,31 +826,6 @@ class _SendSheetState extends State<SendSheet> {
                         } else if (QRScanErrs.ERROR_LIST.contains(scanResult)) {
                           return;
                         } else {
-                          if (scanResult.contains("bis://")) {
-                            BisUrl bisUrl =
-                                await new BisUrl().getInfo(scanResult);
-                            setState(() {
-                              _addressValidationText = "";
-                              _amountValidationText = "";
-                              _tokenValidationText = "";
-                              _tokenQuantityValidationText = "";
-                              _openfieldValidationText = "";
-                              _operationValidationText = "";
-                              _sendAddressController.text = bisUrl.address;
-                              _sendAmountController.text = bisUrl.amount;
-                              _sendCommentController.text = bisUrl.comment;
-                              _sendOpenfieldController.text = bisUrl.openfield;
-                              _sendOperationController.text = bisUrl.operation;
-                              isTokenToSendSwitched = bisUrl.isTokenToSend;
-                              _sendTokenQuantityController.text =
-                                  bisUrl.tokenToSendQty.toString();
-                              _selectedTokenName = bisUrl.tokenName;
-
-                              validRequest = _validateRequest();
-                            });
-                            return;
-                          }
-
                           // Is a URI
                           Address address = Address(scanResult);
                           // See if this address belongs to a contact
@@ -1113,17 +904,19 @@ class _SendSheetState extends State<SendSheet> {
                               Sheets.showAppHeightNineSheet(
                                   context: context,
                                   widget: SendConfirmSheet(
-                                      title: widget.title,
-                                      amountRaw: _rawAmount == null
-                                          ? NumberUtil.getAmountAsRaw(
-                                              _sendAmountController.text)
-                                          : _rawAmount,
-                                      destination: contact != null
-                                          ? contact.address
-                                          : address.address,
-                                      contactName:
-                                          contact != null ? contact.name : null,
-                                      maxSend: _isMaxSend()));
+                                    displayTo: true,
+                                    title: widget.title,
+                                    amountRaw: _rawAmount == null
+                                        ? NumberUtil.getAmountAsRaw(
+                                            _sendAmountController.text)
+                                        : _rawAmount,
+                                    destination: contact != null
+                                        ? contact.address
+                                        : address.address,
+                                    contactName:
+                                        contact != null ? contact.name : null,
+                                    maxSend: _isMaxSend(),
+                                  ));
                             }
                           }
                         }
@@ -1137,60 +930,6 @@ class _SendSheetState extends State<SendSheet> {
         ));
   }
 
-  String _convertLocalCurrencyToCrypto() {
-    String convertedAmt = _sendAmountController.text.replaceAll(",", ".");
-    convertedAmt = NumberUtil.sanitizeNumber(convertedAmt);
-    if (convertedAmt.isEmpty) {
-      return "";
-    }
-    Decimal valueLocal = Decimal.parse(convertedAmt);
-    Decimal conversion = Decimal.parse(
-        StateContainer.of(context).wallet.localCurrencyConversion);
-    return NumberUtil.truncateDecimal(valueLocal / conversion).toString();
-  }
-
-  String _convertCryptoToLocalCurrency() {
-    String convertedAmt = NumberUtil.sanitizeNumber(_sendAmountController.text,
-        maxDecimalDigits: 2);
-    if (convertedAmt.isEmpty) {
-      return "";
-    }
-    Decimal valueCrypto = Decimal.parse(convertedAmt);
-    Decimal conversion = Decimal.parse(
-        StateContainer.of(context).wallet.localCurrencyConversion);
-    convertedAmt =
-        NumberUtil.truncateDecimal(valueCrypto * conversion, digits: 2)
-            .toString();
-    convertedAmt =
-        convertedAmt.replaceAll(".", _localCurrencyFormat.symbols.DECIMAL_SEP);
-    convertedAmt = _localCurrencyFormat.currencySymbol + convertedAmt;
-    return convertedAmt;
-  }
-
-  String _convertFeesToLocalCurrency() {
-    String convertedAmt = NumberUtil.sanitizeNumber(
-        sl
-            .get<AppService>()
-            .getFeesEstimation(
-                _sendOpenfieldController.text + _sendCommentController.text,
-                _sendOperationController.text)
-            .toStringAsFixed(5),
-        maxDecimalDigits: 5);
-    if (convertedAmt.isEmpty) {
-      return "";
-    }
-    Decimal valueCrypto = Decimal.parse(convertedAmt);
-    Decimal conversion = Decimal.parse(
-        StateContainer.of(context).wallet.localCurrencyConversion);
-    convertedAmt =
-        NumberUtil.truncateDecimal(valueCrypto * conversion, digits: 5)
-            .toString();
-    convertedAmt =
-        convertedAmt.replaceAll(".", _localCurrencyFormat.symbols.DECIMAL_SEP);
-    convertedAmt = _localCurrencyFormat.currencySymbol + convertedAmt;
-    return convertedAmt;
-  }
-
   // Determine if this is a max send or not by comparing balances
   bool _isMaxSend() {
     // Sanitize commas
@@ -1200,13 +939,10 @@ class _SendSheetState extends State<SendSheet> {
     try {
       String textField = _sendAmountController.text;
 
-      String balance;
-
-      balance = StateContainer.of(context)
+      String balance = StateContainer.of(context)
           .wallet
           .getAccountBalanceDisplay()
           .replaceAll(r",", "");
-
       // Convert to Integer representations
       int textFieldInt;
       int balanceInt;
@@ -1404,7 +1140,7 @@ class _SendSheetState extends State<SendSheet> {
         fontWeight: FontWeight.w700,
         fontSize: 16.0,
         color: StateContainer.of(context).curTheme.primary,
-        fontFamily: 'Roboto',
+        fontFamily: 'Lato',
       ),
       inputFormatters: _rawAmount == null
           ? [
@@ -1650,15 +1386,9 @@ class _SendSheetState extends State<SendSheet> {
         fontWeight: FontWeight.w700,
         fontSize: 16.0,
         color: StateContainer.of(context).curTheme.primary,
-        fontFamily: 'Roboto',
+        fontFamily: 'Lato',
       ),
       inputFormatters: [LengthLimitingTextInputFormatter(100000)],
-      onChanged: (text) {
-        // Always reset the error message to be less annoying
-        setState(() {
-          _openfieldValidationText = "";
-        });
-      },
       textInputAction: TextInputAction.next,
       maxLines: null,
       autocorrect: false,
@@ -1686,7 +1416,7 @@ class _SendSheetState extends State<SendSheet> {
         fontWeight: FontWeight.w700,
         fontSize: 16.0,
         color: StateContainer.of(context).curTheme.primary,
-        fontFamily: 'Roboto',
+        fontFamily: 'Lato',
       ),
       onChanged: (text) {
         // Always reset the error message to be less annoying
@@ -1720,7 +1450,7 @@ class _SendSheetState extends State<SendSheet> {
         fontWeight: FontWeight.w700,
         fontSize: 16.0,
         color: StateContainer.of(context).curTheme.primary,
-        fontFamily: 'Roboto',
+        fontFamily: 'Lato',
       ),
       inputFormatters: [
         LengthLimitingTextInputFormatter(16),
@@ -1771,15 +1501,9 @@ class _SendSheetState extends State<SendSheet> {
         fontWeight: FontWeight.w700,
         fontSize: 16.0,
         color: StateContainer.of(context).curTheme.primary,
-        fontFamily: 'Roboto',
+        fontFamily: 'Lato',
       ),
       inputFormatters: [LengthLimitingTextInputFormatter(32)],
-      onChanged: (text) {
-        // Always reset the error message to be less annoying
-        setState(() {
-          _operationValidationText = "";
-        });
-      },
       textInputAction: TextInputAction.next,
       maxLines: null,
       autocorrect: false,
@@ -1816,8 +1540,8 @@ class _SendSheetState extends State<SendSheet> {
               isDense: true),
           style: TextStyle(
             fontSize: 16.0,
-            fontWeight: FontWeight.w100,
-            fontFamily: 'Roboto',
+            fontWeight: FontWeight.w300,
+            fontFamily: 'Lato',
             color: StateContainer.of(context).curTheme.text60,
           ),
           items:
@@ -1836,8 +1560,8 @@ class _SendSheetState extends State<SendSheet> {
                                 ")",
                             style: TextStyle(
                               fontSize: 16.0,
-                              fontWeight: FontWeight.w100,
-                              fontFamily: 'Roboto',
+                              fontWeight: FontWeight.w300,
+                              fontFamily: 'Lato',
                               color: StateContainer.of(context).curTheme.text60,
                             ),
                           )));

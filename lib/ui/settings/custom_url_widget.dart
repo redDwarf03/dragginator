@@ -53,6 +53,7 @@ class _CustomUrlState extends State<CustomUrl> {
 
   bool useCustomWalletServer;
   bool useCustomExplorerUrl;
+  bool expertMode;
 
   String _walletServerHint = "";
   String _tokenApiHint = "";
@@ -81,6 +82,11 @@ class _CustomUrlState extends State<CustomUrl> {
     } else {
       useCustomExplorerUrl = true;
     }
+    expertMode = await sl.get<SharedPrefsUtil>().getExpertMode();
+  }
+
+  void updateExpertMode() async {
+    await sl.get<SharedPrefsUtil>().setExpertMode(expertMode);
   }
 
   void updateWalletServer() async {
@@ -424,6 +430,42 @@ class _CustomUrlState extends State<CustomUrl> {
                                                 )),
                                           )
                                         : SizedBox(),
+                                    Divider(
+                                      height: 2,
+                                      color: StateContainer.of(context)
+                                          .curTheme
+                                          .text15,
+                                    ),
+                                    Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          Text(
+                                            AppLocalization.of(context)
+                                                .expertModeSwitch,
+                                            style: TextStyle(
+                                              fontSize: 16.0,
+                                              fontWeight: FontWeight.w300,
+                                              fontFamily: 'Lato',
+                                              color: StateContainer.of(context)
+                                                  .curTheme
+                                                  .text60,
+                                            ),
+                                          ),
+                                          Switch(
+                                              value: expertMode,
+                                              onChanged: (value) {
+                                                setState(() {
+                                                  expertMode = value;
+                                                  updateExpertMode();
+                                                });
+                                              },
+                                              activeTrackColor:
+                                                  StateContainer.of(context)
+                                                      .curTheme
+                                                      .backgroundDarkest,
+                                              activeColor: Colors.green),
+                                        ]),
                                   ])
                             ])
                           ])))),

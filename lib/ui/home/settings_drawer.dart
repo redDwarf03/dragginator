@@ -4,8 +4,6 @@
 import 'dart:async';
 
 // Flutter imports:
-import 'package:dragginator/ui/widgets/dialog.dart';
-import 'package:dragginator/util/caseconverter.dart';
 import 'package:flutter/material.dart';
 
 // Package imports:
@@ -34,6 +32,7 @@ import 'package:dragginator/styles.dart';
 import 'package:dragginator/ui/accounts/accountdetails_sheet.dart';
 import 'package:dragginator/ui/accounts/accounts_sheet.dart';
 import 'package:dragginator/ui/my_history.dart';
+import 'package:dragginator/ui/send/send_sheet.dart';
 import 'package:dragginator/ui/settings/backupseed_sheet.dart';
 import 'package:dragginator/ui/settings/contacts_widget.dart';
 import 'package:dragginator/ui/settings/custom_url_widget.dart';
@@ -44,10 +43,12 @@ import 'package:dragginator/ui/settings/tokens_widget.dart';
 import 'package:dragginator/ui/tokens/my_tokens_list.dart';
 import 'package:dragginator/ui/util/ui_util.dart';
 import 'package:dragginator/ui/widgets/app_simpledialog.dart';
+import 'package:dragginator/ui/widgets/dialog.dart';
 import 'package:dragginator/ui/widgets/security.dart';
 import 'package:dragginator/ui/widgets/sheet_util.dart';
 import 'package:dragginator/ui/widgets/sync_info_view.dart';
 import 'package:dragginator/util/biometrics.dart';
+import 'package:dragginator/util/caseconverter.dart';
 import 'package:dragginator/util/hapticutil.dart';
 import 'package:dragginator/util/sharedprefsutil.dart';
 import '../../appstate_container.dart';
@@ -95,6 +96,8 @@ class _SettingsSheetState extends State<SettingsSheet>
 
   bool _customUrlOpen;
 
+  bool _expertMode;
+
   bool notNull(Object o) => o != null;
 
   @override
@@ -107,6 +110,7 @@ class _SettingsSheetState extends State<SettingsSheet>
     _securityOpen = false;
     _loadingAccounts = false;
     _customUrlOpen = false;
+    _expertMode = false;
     // Determine if they have face or fingerprint enrolled, if not hide the setting
     sl.get<BiometricUtil>().hasBiometrics().then((bool hasBiometrics) {
       setState(() {
@@ -117,6 +121,11 @@ class _SettingsSheetState extends State<SettingsSheet>
     sl.get<SharedPrefsUtil>().getAuthMethod().then((authMethod) {
       setState(() {
         _curAuthMethod = authMethod;
+      });
+    });
+    sl.get<SharedPrefsUtil>().getExpertMode().then((expertMode) {
+      setState(() {
+        _expertMode = expertMode;
       });
     });
     // Get default unlock settings
@@ -977,6 +986,26 @@ class _SettingsSheetState extends State<SettingsSheet>
                               color:
                                   StateContainer.of(context).curTheme.text60)),
                     ),
+                    _expertMode == null
+                        ? const SizedBox()
+                        : Divider(
+                            height: 2,
+                            color: StateContainer.of(context).curTheme.text15,
+                          ),
+                    _expertMode == null
+                        ? const SizedBox()
+                        : AppSettings.buildSettingsListItemSingleLine(
+                            context,
+                            AppLocalization.of(context).sendExpertMode,
+                            FontAwesome.share_squared, onPressed: () {
+                            Sheets.showAppHeightNineSheet(
+                                context: context,
+                                widget: SendSheet(
+                                  displayOptionalParamText: true,
+                                  displayUrl: true,
+                                  sendATokenActive: true,
+                                ));
+                          }),
                     Divider(
                       height: 2,
                       color: StateContainer.of(context).curTheme.text15,
@@ -1069,7 +1098,7 @@ class _SettingsSheetState extends State<SettingsSheet>
                     AppSettings.buildSettingsListItemSingleLine(
                         context,
                         AppLocalization.of(context).customUrlHeader,
-                        FontAwesome.code, onPressed: () {
+                        FontAwesome.cog, onPressed: () {
                       setState(() {
                         _customUrlOpen = true;
                       });

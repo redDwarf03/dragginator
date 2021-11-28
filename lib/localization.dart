@@ -66,7 +66,11 @@ class AppLocalization {
   }
 
   String get send {
-    return Intl.message('Send', desc: 'home_send_cta', name: 'send');
+    return Intl.message('Send', desc: '', name: 'send');
+  }
+
+  String get sendExpertMode {
+    return Intl.message('Send (Expert mode)', desc: '', name: 'sendExpertMode');
   }
 
   String get receive {
@@ -221,6 +225,18 @@ class AppLocalization {
 
   /// -- END GENERIC ITEMS
 
+  String get diacritic {
+    return Intl.message(
+        "Common accents and diacritical signs will be replacing with an equivalent character",
+        desc: 'diacritic',
+        name: 'diacritic');
+  }
+
+  String get optionalParameters {
+    return Intl.message("Optional Parameters",
+        desc: 'optionalParameters', name: 'optionalParameters');
+  }
+
   /// -- DRAGGINATOR
   String get dragginatorHeader {
     return Intl.message('Dragginator', desc: '', name: 'dragginatorHeader');
@@ -300,7 +316,7 @@ class AppLocalization {
   /// -- CUSTOM URL
 
   String get customUrlHeader {
-    return Intl.message('Custom Urls', desc: '', name: 'customUrlHeader');
+    return Intl.message('Settings', desc: '', name: 'customUrlHeader');
   }
 
   String get enterWalletServer {
@@ -320,6 +336,10 @@ class AppLocalization {
   String get enterExplorerUrlSwitch {
     return Intl.message('Use a custom explorer url',
         desc: '', name: 'enterExplorerUrlSwitch');
+  }
+
+  String get expertModeSwitch {
+    return Intl.message('Expert mode ?', desc: '', name: 'expertModeSwitch');
   }
 
   String get enterExplorerUrl {

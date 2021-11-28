@@ -11,7 +11,6 @@ import 'package:logger/logger.dart';
 // Project imports:
 import 'package:dragginator/appstate_container.dart';
 import 'package:dragginator/localization.dart';
-import 'package:dragginator/model/address.dart';
 import 'package:dragginator/model/token_ref.dart';
 import 'package:dragginator/service/http_service.dart';
 import 'package:dragginator/service_locator.dart';

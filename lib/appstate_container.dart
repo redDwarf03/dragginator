@@ -2,6 +2,7 @@
 
 // Dart imports:
 import 'dart:async';
+import 'dart:io';
 
 // Flutter imports:
 import 'package:flutter/foundation.dart';
@@ -11,6 +12,7 @@ import 'package:flutter/material.dart';
 import 'package:event_taxi/event_taxi.dart';
 import 'package:hex/hex.dart';
 import 'package:logger/logger.dart';
+import 'package:uni_links/uni_links.dart';
 
 // Project imports:
 import 'package:dragginator/bus/events.dart';
@@ -90,6 +92,8 @@ class StateContainerState extends State<StateContainer> {
   Account recentLast;
   Account recentSecondLast;
 
+  // Initial deep link
+  String initialDeepLink;
   // Deep link changes
   StreamSubscription _deepLinkSub;
 
@@ -113,6 +117,14 @@ class StateContainerState extends State<StateContainer> {
         curLanguage = language;
       });
     });
+    if (!kIsWeb && (Platform.isAndroid || Platform.isIOS)) {
+      // Get initial deep link
+      getInitialLink().then((initialLink) {
+        setState(() {
+          initialDeepLink = initialLink;
+        });
+      });
+    }
   }
 
   // Subscriptions
@@ -214,6 +226,14 @@ class StateContainerState extends State<StateContainer> {
         updateRecentlyUsedAccounts();
       }
     });
+    // Deep link has been updated
+    if (!kIsWeb && (Platform.isAndroid || Platform.isIOS)) {
+      _deepLinkSub = uriLinkStream.listen((Uri link) {
+        setState(() {
+          initialDeepLink = link.toString();
+        });
+      });
+    }
   }
 
   @override

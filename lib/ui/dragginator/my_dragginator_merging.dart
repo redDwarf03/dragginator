@@ -16,7 +16,6 @@ import 'package:dragginator/service/dragginator_service.dart';
 import 'package:dragginator/service_locator.dart';
 import 'package:dragginator/styles.dart';
 import 'package:dragginator/ui/send/send_confirm_sheet.dart';
-import 'package:dragginator/ui/send/send_sheet.dart';
 import 'package:dragginator/ui/util/ui_util.dart';
 import 'package:dragginator/ui/widgets/buttons.dart';
 import 'package:dragginator/ui/widgets/sheet_util.dart';

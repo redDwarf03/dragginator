@@ -309,7 +309,7 @@ class _SendConfirmSheetState extends State<SendConfirmSheet> {
                     ),
                   ),
                   // "TO" text
-                  widget.displayTo
+                  widget.displayTo == null || widget.displayTo
                       ? Container(
                           margin: EdgeInsets.only(top: 10.0, bottom: 0),
                           child: Column(
@@ -331,7 +331,7 @@ class _SendConfirmSheetState extends State<SendConfirmSheet> {
                         )
                       : const SizedBox(),
                   // Address text
-                  widget.displayTo
+                  widget.displayTo == null || widget.displayTo
                       ? Container(
                           padding: EdgeInsets.symmetric(
                             horizontal: 25.0,

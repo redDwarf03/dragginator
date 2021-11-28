@@ -43,6 +43,7 @@ class SharedPrefsUtil {
   static const String wallet_server = 'fdragginator_wallet_server';
   static const String tokens_api = 'fdragginator_tokens_api';
   static const String explorer_url = 'fdragginator_explorer_url';
+  static const String expert_mode = 'fdragginator_expert_mode';
 
   // For plain-text data
   Future<void> set(String key, value) async {
@@ -185,6 +186,14 @@ class SharedPrefsUtil {
 
   Future<bool> getLock() async {
     return await get(lock, defaultValue: false);
+  }
+
+  Future<void> setExpertMode(bool value) async {
+    return await set(expert_mode, value);
+  }
+
+  Future<bool> getExpertMode() async {
+    return await get(expert_mode, defaultValue: false);
   }
 
   Future<void> setLockTimeout(LockTimeoutSetting setting) async {

@@ -19,11 +19,15 @@ import 'package:dragginator/appstate_container.dart';
 import 'package:dragginator/bus/events.dart';
 import 'package:dragginator/bus/navigation_event.dart';
 import 'package:dragginator/localization.dart';
+import 'package:dragginator/model/bis_url.dart';
 import 'package:dragginator/service/dragginator_service.dart';
 import 'package:dragginator/service_locator.dart';
 import 'package:dragginator/ui/navigate/background.dart';
 import 'package:dragginator/ui/navigate/nav_container.dart';
+import 'package:dragginator/ui/send/send_confirm_sheet.dart';
+import 'package:dragginator/ui/util/routes.dart';
 import 'package:dragginator/ui/widgets/dialog.dart';
+import 'package:dragginator/ui/widgets/sheet_util.dart';
 import 'package:dragginator/util/caseconverter.dart';
 import 'package:dragginator/util/sharedprefsutil.dart';
 
@@ -216,6 +220,25 @@ class _AppHomePageState extends State<AppHomePage>
     }
   }
 
+  Future<void> handleDeepLink(String link) async {
+    BisUrl bisUrl = await new BisUrl().getInfo(Uri.decodeFull(link));
+
+    // Remove any other screens from stack
+    Navigator.of(context).popUntil(RouteUtils.withNameLike('/home'));
+
+    // Go to send confirm with amount
+    Sheets.showAppHeightNineSheet(
+        context: context,
+        widget: SendConfirmSheet(
+            displayTo: true,
+            amountRaw: bisUrl.amount,
+            operation: bisUrl.operation,
+            openfield: bisUrl.openfield,
+            comment: bisUrl.comment,
+            destination: bisUrl.address,
+            contactName: bisUrl.contactName));
+  }
+
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
     // Handle websocket connection when app is in background
@@ -227,6 +250,11 @@ class _AppHomePageState extends State<AppHomePage>
         break;
       case AppLifecycleState.resumed:
         cancelLockEvent();
+        if (!StateContainer.of(context).wallet.loading &&
+            StateContainer.of(context).initialDeepLink != null) {
+          handleDeepLink(StateContainer.of(context).initialDeepLink);
+          StateContainer.of(context).initialDeepLink = null;
+        }
         super.didChangeAppLifecycleState(state);
         break;
       default:

@@ -1,6 +1,11 @@
 // @dart=2.9
 
+// Package imports:
+import 'package:decimal/decimal.dart';
+import 'package:intl/intl.dart';
+
 // Project imports:
+import 'package:dragginator/model/available_currency.dart';
 import 'package:dragginator/network/model/response/address_txs_response.dart';
 import 'package:dragginator/network/model/response/dragginator_list_from_address_response.dart';
 import 'package:dragginator/util/numberutil.dart';
@@ -15,11 +20,13 @@ class AppWallet {
   List<AddressTxsResponseResult> _history;
   List<BisToken> _tokens;
   List<List> _dragginatorList;
+  String _localCurrencyPrice;
 
   AppWallet(
       {String address,
       double accountBalance,
       String representative,
+      String localCurrencyPrice,
       List<AddressTxsResponseResult> history,
       bool loading,
       bool historyLoading,
@@ -27,6 +34,7 @@ class AppWallet {
       List<DragginatorListFromAddressResponse> dragginatorList}) {
     _address = address;
     _accountBalance = accountBalance ?? 0;
+    _localCurrencyPrice = localCurrencyPrice ?? "0";
     _history =
         history ?? new List<AddressTxsResponseResult>.empty(growable: true);
     _tokens = tokens ?? new List<BisToken>.empty(growable: true);
@@ -92,5 +100,35 @@ class AppWallet {
 
   set dragginatorList(List<List> value) {
     _dragginatorList = value;
+  }
+
+  String getLocalCurrencyPrice(AvailableCurrency currency,
+      {String locale = "en_US"}) {
+    Decimal converted = Decimal.parse(_localCurrencyPrice) *
+        NumberUtil.getRawAsUsableDecimal(_accountBalance.toString());
+    return NumberFormat.currency(
+            locale: locale, symbol: currency.getCurrencySymbol())
+        .format(converted.toDouble());
+  }
+
+  String getLocalCurrencyPriceMoinsFees(
+      AvailableCurrency currency, double estimationFees,
+      {String locale = "en_US"}) {
+    double value = _accountBalance - estimationFees;
+    Decimal converted = Decimal.parse(_localCurrencyPrice) *
+        NumberUtil.getRawAsUsableDecimal(value.toString());
+    return NumberFormat.currency(
+            locale: locale,
+            symbol: currency.getCurrencySymbol(),
+            decimalDigits: 5)
+        .format(converted.toDouble());
+  }
+
+  set localCurrencyPrice(String value) {
+    _localCurrencyPrice = value;
+  }
+
+  String get localCurrencyConversion {
+    return _localCurrencyPrice;
   }
 }

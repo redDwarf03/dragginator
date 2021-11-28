@@ -2,7 +2,6 @@
 
 // Dart imports:
 import 'dart:async';
-import 'dart:io';
 
 // Flutter imports:
 import 'package:flutter/material.dart';
@@ -10,6 +9,7 @@ import 'package:flutter/material.dart';
 // Package imports:
 import 'package:event_taxi/event_taxi.dart';
 import 'package:oktoast/oktoast.dart';
+import 'package:webview_flutter/webview_flutter.dart';
 
 // Project imports:
 import 'package:dragginator/appstate_container.dart';
@@ -17,7 +17,6 @@ import 'package:dragginator/bus/events.dart';
 import 'package:dragginator/localization.dart';
 import 'package:dragginator/styles.dart';
 import 'package:dragginator/ui/util/exceptions.dart';
-import 'package:webview_flutter/webview_flutter.dart';
 
 enum ThreeLineAddressTextType { PRIMARY60, PRIMARY, SUCCESS, SUCCESS_FULL }
 enum OneLineAddressTextType { PRIMARY60, PRIMARY, SUCCESS }
@@ -410,7 +409,6 @@ class UIUtil {
     );
   }
 
-
   static Widget showDragginatorHelp(BuildContext context) {
     cancelLockEvent();
     return WebView(
@@ -418,7 +416,6 @@ class UIUtil {
       gestureNavigationEnabled: true,
     );
   }
-
 
   static double drawerWidth(BuildContext context) {
     if (MediaQuery.of(context).size.width < 375)
