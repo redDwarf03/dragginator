@@ -13,6 +13,7 @@ import 'package:flare_flutter/flare_controller.dart';
 import 'package:flutter_vibrate/flutter_vibrate.dart';
 import 'package:fluttericon/font_awesome5_icons.dart';
 import 'package:fluttericon/typicons_icons.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 // Project imports:
 import 'package:dragginator/appstate_container.dart';
@@ -170,32 +171,118 @@ class _FirstPageStateState extends State<FirstPage>
   // Return widget for list
   Widget _getListWidget(BuildContext context) {
     return ReactiveRefreshIndicator(
-      child: GridView.count(
-        crossAxisCount: 3,
-        children: List.generate(widget.dragginatorList.length, (index) {
-          return Center(
-              child: Stack(children: <Widget>[
-            InkWell(
-              onTap: () {
-                Sheets.showAppHeightNineSheet(
-                    context: context,
-                    widget: MyDragginatorDetail(
-                        StateContainer.of(context).selectedAccount.address,
-                        StateContainer.of(context)
-                            .wallet
-                            .dragginatorList[index]));
-              },
-              child: CircularProfileAvatar(
-                UIUtil.getDragginatorURL(widget.dragginatorList[index][1].dna,
-                    widget.dragginatorList[index][1].status),
-                elevation: 25,
-                radius: 50.0,
-                backgroundColor: Colors.transparent,
+      child: widget.dragginatorList.length == 0
+          ? Container(
+              margin: EdgeInsets.symmetric(horizontal: 30.0),
+              child: SingleChildScrollView(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text('Welcome new hunter !',
+                        style: AppStyles.textStyleHeader(context)),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    Text('What is Dragginator ?',
+                        style: AppStyles.textStyleSettingItemHeader(context)),
+                    Text(
+                        'Dragginator is a game based upon collectible virtual animals you can raise and breed.',
+                        style: AppStyles.textStyleTransactionWelcome(context)),
+                    Text('Each one is born as an Egg, with specific DNA info.',
+                        style: AppStyles.textStyleTransactionWelcome(context)),
+                    Text(
+                        'Each one is more or less capable for a specific task, and can be common or very rare.',
+                        style: AppStyles.textStyleTransactionWelcome(context)),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    Text('How to start your collection?',
+                        style: AppStyles.textStyleSettingItemHeader(context)),
+                    Text(
+                        'Find the egg and dragon hunters on the dedicated discord who will offer you your first eggs to start your adventure',
+                        style: AppStyles.textStyleTransactionWelcome(context)),
+                    ElevatedButton(
+                        style: ButtonStyle(
+                            backgroundColor: MaterialStateProperty.all(
+                                StateContainer.of(context).curTheme.primary)),
+                        child: Text('Join us on discord',
+                            style: AppStyles.textStyleDiscordAccess(context)),
+                        onPressed: _launchURL),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    Text('What can I do when I have my first eggs?',
+                        style: AppStyles.textStyleSettingItemHeader(context)),
+                    Text(
+                        'Once you have eggs at your disposal, you can merge them to make them stronger and then send them to another hunter.',
+                        style: AppStyles.textStyleTransactionWelcome(context)),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    Text(
+                        'The ultimate challenge is to see a draggon hatch from an egg. For this it will take tenacity and patience.',
+                        style:
+                            AppStyles.textStyleTransactionWelcomeBold(context)),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    Text('How to hatch an egg?',
+                        style: AppStyles.textStyleSettingItemHeader(context)),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    Container(
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(10),
+                            topRight: Radius.circular(10),
+                            bottomLeft: Radius.circular(10),
+                            bottomRight: Radius.circular(10)),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withOpacity(0.5),
+                            spreadRadius: 5,
+                            blurRadius: 3,
+                            offset: Offset(0, 4),
+                          ),
+                        ],
+                      ),
+                      child: Image.asset("assets/workflow_dragginator.png"),
+                    ),
+                  ],
+                ),
               ),
+            )
+          : GridView.count(
+              crossAxisCount: 3,
+              children: List.generate(widget.dragginatorList.length, (index) {
+                return Center(
+                    child: Stack(children: <Widget>[
+                  InkWell(
+                    onTap: () {
+                      Sheets.showAppHeightNineSheet(
+                          context: context,
+                          widget: MyDragginatorDetail(
+                              StateContainer.of(context)
+                                  .selectedAccount
+                                  .address,
+                              StateContainer.of(context)
+                                  .wallet
+                                  .dragginatorList[index]));
+                    },
+                    child: CircularProfileAvatar(
+                      UIUtil.getDragginatorURL(
+                          widget.dragginatorList[index][1].dna,
+                          widget.dragginatorList[index][1].status),
+                      elevation: 25,
+                      radius: 50.0,
+                      backgroundColor: Colors.transparent,
+                    ),
+                  ),
+                ]));
+              }),
             ),
-          ]));
-        }),
-      ),
       onRefresh: _refresh,
       isRefreshing: _isRefreshing,
     );
@@ -463,5 +550,10 @@ class _FirstPageStateState extends State<FirstPage>
             ],
           ),
         ]);
+  }
+
+  void _launchURL() async {
+    String _url = 'https://discord.com/invite/dKVZd4z';
+    if (!await launch(_url)) throw 'Could not launch $_url';
   }
 }

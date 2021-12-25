@@ -289,18 +289,18 @@ class AppStyles {
   static TextStyle textStyleTransactionWelcome(BuildContext context) {
     return TextStyle(
       fontSize: AppFontSizes.small,
-      fontWeight: FontWeight.w200,
+      fontWeight: FontWeight.w300,
       color: StateContainer.of(context).curTheme.text,
       fontFamily: 'Lato',
     );
   }
 
   // Transaction Welcome Text
-  static TextStyle textStyleTransactionWelcomePrimary(BuildContext context) {
+  static TextStyle textStyleTransactionWelcomeBold(BuildContext context) {
     return TextStyle(
       fontSize: AppFontSizes.small,
-      fontWeight: FontWeight.w200,
-      color: StateContainer.of(context).curTheme.primary,
+      fontWeight: FontWeight.w500,
+      color: StateContainer.of(context).curTheme.text,
       fontFamily: 'Lato',
     );
   }
@@ -470,6 +470,15 @@ class AppStyles {
 
   // Text style for setting item header
   static TextStyle textStyleSettingItemHeader(BuildContext context) {
+    return TextStyle(
+      fontFamily: "Lato",
+      fontSize: AppFontSizes.medium,
+      fontWeight: FontWeight.w600,
+      color: StateContainer.of(context).curTheme.text,
+    );
+  }
+
+  static TextStyle textStyleDiscordAccess(BuildContext context) {
     return TextStyle(
       fontFamily: "Lato",
       fontSize: AppFontSizes.medium,

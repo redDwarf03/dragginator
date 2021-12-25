@@ -417,6 +417,13 @@ class UIUtil {
     );
   }
 
+  static Widget showDiscord(BuildContext context) {
+    return WebView(
+      initialUrl: 'https://discord.com/invite/dKVZd4z',
+      gestureNavigationEnabled: true,
+    );
+  }
+
   static double drawerWidth(BuildContext context) {
     if (MediaQuery.of(context).size.width < 375)
       return MediaQuery.of(context).size.width * 0.94;

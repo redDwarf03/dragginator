@@ -3,7 +3,7 @@ description: Dragginator
 
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 
-version: 1.0.10+10
+version: 1.0.12+12
 
 environment:
   sdk: '>=2.12.0 <3.0.0'
@@ -50,7 +50,7 @@ dependencies:
   # Logger
   logger: ^1.1.0
 
-  webview_flutter: ^2.3.0
+  webview_flutter: ^3.0.0
 
   bip32: ^2.0.0
 
@@ -59,6 +59,8 @@ dependencies:
   # Flutter plugin for accepting incoming links - App/Deep Links (Android), Universal Links and Custom URL schemes (iOS)
   uni_links: ^0.5.1
 
+  url_launcher: ^6.0.17
+  
   # SQLite
   sqflite: ^2.0.0+4
 
@@ -170,7 +172,7 @@ dev_dependencies:
 # following page: https://www.dartlang.org/tools/pub/pubspec
 
 flutter_icons:
-  android: true
+  android: 'launcher_icon'
   ios: true
   image_path: "assets/dragginator_icon_bis_color.png"
 
@@ -210,26 +212,7 @@ flutter:
         - asset: fonts/Comfortaa-Light.ttf
           weight: 300
   assets:
-    - assets/QR.svg
-    - assets/icon.png
-    - assets/send_animation.flr
-    - assets/searchseedqr_animation_magnifyingglassonly.flr
-    - assets/searchseedqr_animation_glassonly.flr
-    - assets/searchseedqr_animation_qronly.flr
-    - assets/searchseedmanual_animation_magnifyingglassonly.flr
-    - assets/searchseedmanual_animation_glassonly.flr
-    - assets/searchseedmanual_animation_seedonly.flr
-    - assets/sharecard_logo.svg
-    - assets/pulltosend_animation.flr
-    - assets/sheethandle_animation.flr
-    - assets/dragginator_background.png    
-    - assets/dragginator_background_opacity70.png
-    - assets/avatar_default.png
-    - assets/dragginator_logo.png
-    - assets/dragginator_logo_tiny.png
-    - assets/dragginator_logo_start.png
-    - assets/models/obj/male02/male02.obj
-    - assets/textures/uv_grid_opengl.jpg
+    - assets/
     
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
